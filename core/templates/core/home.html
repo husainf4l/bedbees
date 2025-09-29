@@ -3,93 +3,77 @@
 {% block title %}Home - Bedbees{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container mx-auto px-4 py-12">
     <!-- Popular Destinations Section -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Popular Destinations</h2>
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/300x200?text=Dubai" class="card-img-top" alt="Dubai">
-                        <div class="card-body">
-                            <h5 class="card-title">Dubai</h5>
-                            <p class="card-text">Experience luxury and adventure in the city of gold.</p>
-                        </div>
-                    </div>
+    <section class="mb-16">
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Popular Destinations</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <img src="https://via.placeholder.com/300x200?text=Dubai" alt="Dubai" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h5 class="text-xl font-semibold mb-2 text-gray-900">Dubai</h5>
+                    <p class="text-gray-600">Experience luxury and adventure in the city of gold.</p>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/300x200?text=Paris" class="card-img-top" alt="Paris">
-                        <div class="card-body">
-                            <h5 class="card-title">Paris</h5>
-                            <p class="card-text">The city of love and lights awaits your visit.</p>
-                        </div>
-                    </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <img src="https://via.placeholder.com/300x200?text=Paris" alt="Paris" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h5 class="text-xl font-semibold mb-2 text-gray-900">Paris</h5>
+                    <p class="text-gray-600">The city of love and lights awaits your visit.</p>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/300x200?text=Tokyo" class="card-img-top" alt="Tokyo">
-                        <div class="card-body">
-                            <h5 class="card-title">Tokyo</h5>
-                            <p class="card-text">Blend tradition with modernity in Japan's capital.</p>
-                        </div>
-                    </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <img src="https://via.placeholder.com/300x200?text=Tokyo" alt="Tokyo" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h5 class="text-xl font-semibold mb-2 text-gray-900">Tokyo</h5>
+                    <p class="text-gray-600">Blend tradition with modernity in Japan's capital.</p>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/300x200?text=Bali" class="card-img-top" alt="Bali">
-                        <div class="card-body">
-                            <h5 class="card-title">Bali</h5>
-                            <p class="card-text">Relax on pristine beaches and explore ancient temples.</p>
-                        </div>
-                    </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <img src="https://via.placeholder.com/300x200?text=Bali" alt="Bali" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h5 class="text-xl font-semibold mb-2 text-gray-900">Bali</h5>
+                    <p class="text-gray-600">Relax on pristine beaches and explore ancient temples.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Featured Experiences Section -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Featured Experiences</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/400x250?text=Desert+Safari" class="card-img-top" alt="Desert Safari">
-                        <div class="card-body">
-                            <h5 class="card-title">Desert Safari</h5>
-                            <p class="card-text">Thrilling dune bashing and traditional Bedouin experiences.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-primary fw-bold">$89</span>
-                                <small class="text-muted">per person</small>
-                            </div>
+    <section class="mb-16 bg-gray-100 py-16 -mx-4 px-4">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Featured Experiences</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <img src="https://via.placeholder.com/400x250?text=Desert+Safari" alt="Desert Safari" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h5 class="text-xl font-semibold mb-2 text-gray-900">Desert Safari</h5>
+                        <p class="text-gray-600 mb-4">Thrilling dune bashing and traditional Bedouin experiences.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">$89</span>
+                            <span class="text-sm text-gray-500">per person</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/400x250?text=Cooking+Class" class="card-img-top" alt="Cooking Class">
-                        <div class="card-body">
-                            <h5 class="card-title">Traditional Cooking Class</h5>
-                            <p class="card-text">Learn to cook authentic local cuisine with expert chefs.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-primary fw-bold">$65</span>
-                                <small class="text-muted">per person</small>
-                            </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <img src="https://via.placeholder.com/400x250?text=Cooking+Class" alt="Cooking Class" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h5 class="text-xl font-semibold mb-2 text-gray-900">Traditional Cooking Class</h5>
+                        <p class="text-gray-600 mb-4">Learn to cook authentic local cuisine with expert chefs.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">$65</span>
+                            <span class="text-sm text-gray-500">per person</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="https://via.placeholder.com/400x250?text=Temple+Visit" class="card-img-top" alt="Temple Visit">
-                        <div class="card-body">
-                            <h5 class="card-title">Ancient Temple Exploration</h5>
-                            <p class="card-text">Discover historical sites and spiritual heritage.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-primary fw-bold">$45</span>
-                                <small class="text-muted">per person</small>
-                            </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <img src="https://via.placeholder.com/400x250?text=Temple+Visit" alt="Temple Visit" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h5 class="text-xl font-semibold mb-2 text-gray-900">Ancient Temple Exploration</h5>
+                        <p class="text-gray-600 mb-4">Discover historical sites and spiritual heritage.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">$45</span>
+                            <span class="text-sm text-gray-500">per person</span>
                         </div>
                     </div>
                 </div>
@@ -98,11 +82,15 @@
     </section>
 
     <!-- Call to Action Section -->
-    <section class="py-5 bg-primary text-white">
-        <div class="container text-center">
-            <h2 class="mb-4">Ready for Your Next Adventure?</h2>
-            <p class="lead mb-4">Join thousands of travelers who trust Bedbees for unforgettable experiences.</p>
-            <a href="#signup" class="btn btn-light btn-lg">Get Started</a>
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16 rounded-lg">
+        <div class="container mx-auto text-center px-4">
+            <h2 class="text-3xl font-bold mb-4">Ready for Your Next Adventure?</h2>
+            <p class="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+                Join thousands of travelers who trust Bedbees for unforgettable experiences.
+            </p>
+            <a href="#signup" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
+                Get Started
+            </a>
         </div>
     </section>
 </div>
