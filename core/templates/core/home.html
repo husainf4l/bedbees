@@ -1,0 +1,109 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home - Bedbees{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Popular Destinations Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Popular Destinations</h2>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200?text=Dubai" class="card-img-top" alt="Dubai">
+                        <div class="card-body">
+                            <h5 class="card-title">Dubai</h5>
+                            <p class="card-text">Experience luxury and adventure in the city of gold.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200?text=Paris" class="card-img-top" alt="Paris">
+                        <div class="card-body">
+                            <h5 class="card-title">Paris</h5>
+                            <p class="card-text">The city of love and lights awaits your visit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200?text=Tokyo" class="card-img-top" alt="Tokyo">
+                        <div class="card-body">
+                            <h5 class="card-title">Tokyo</h5>
+                            <p class="card-text">Blend tradition with modernity in Japan's capital.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x200?text=Bali" class="card-img-top" alt="Bali">
+                        <div class="card-body">
+                            <h5 class="card-title">Bali</h5>
+                            <p class="card-text">Relax on pristine beaches and explore ancient temples.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Experiences Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Featured Experiences</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400x250?text=Desert+Safari" class="card-img-top" alt="Desert Safari">
+                        <div class="card-body">
+                            <h5 class="card-title">Desert Safari</h5>
+                            <p class="card-text">Thrilling dune bashing and traditional Bedouin experiences.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">$89</span>
+                                <small class="text-muted">per person</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400x250?text=Cooking+Class" class="card-img-top" alt="Cooking Class">
+                        <div class="card-body">
+                            <h5 class="card-title">Traditional Cooking Class</h5>
+                            <p class="card-text">Learn to cook authentic local cuisine with expert chefs.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">$65</span>
+                                <small class="text-muted">per person</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400x250?text=Temple+Visit" class="card-img-top" alt="Temple Visit">
+                        <div class="card-body">
+                            <h5 class="card-title">Ancient Temple Exploration</h5>
+                            <p class="card-text">Discover historical sites and spiritual heritage.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">$45</span>
+                                <small class="text-muted">per person</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready for Your Next Adventure?</h2>
+            <p class="lead mb-4">Join thousands of travelers who trust Bedbees for unforgettable experiences.</p>
+            <a href="#signup" class="btn btn-light btn-lg">Get Started</a>
+        </div>
+    </section>
+</div>
+{% endblock %}
