@@ -1,0 +1,555 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if edit_mode %}Edit{% else %}View{% endif %} {{ listing_type|title }} - {{ listing.property_name|default:listing.tour_name }}
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <button onclick="window.history.back()" class="mr-4 p-2 hover:bg-gray-100 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900">
+                            {% if edit_mode %}Edit{% else %}View{% endif %} {{ listing_type|title }}
+                        </h1>
+                        <p class="text-sm text-gray-500">{{ listing.property_name|default:listing.tour_name }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    {% if not edit_mode %}
+                        <button onclick="editListing({{ listing.id }}, '{{ listing_type }}')"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-edit mr-2"></i>Edit
+                        </button>
+                        <button onclick="updateListing({{ listing.id }}, '{{ listing_type }}')"
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <i class="fas fa-sync mr-2"></i>Update
+                        </button>
+                    {% else %}
+                        <button type="button" onclick="window.history.back()"
+                                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" form="listing-form"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-save mr-2"></i>Save Changes
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                {% if edit_mode %}
+                    <!-- Edit Form -->
+                    <form id="listing-form" method="post" class="space-y-8">
+                        {% csrf_token %}
+
+                        <!-- Basic Information -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Basic Information</h2>
+
+                            {% if listing_type == 'accommodation' %}
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Property Name *</label>
+                                        <input type="text" name="property_name" value="{{ listing.property_name }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Property Type *</label>
+                                        <select name="property_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                            {% for type_value, type_label in listing.PROPERTY_TYPES %}
+                                                <option value="{{ type_value }}" {% if listing.property_type == type_value %}selected{% endif %}>{{ type_label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                                        <input type="text" name="country" value="{{ listing.country }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                        <input type="text" name="city" value="{{ listing.city }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Street Address *</label>
+                                        <input type="text" name="street_address" value="{{ listing.street_address }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Tour Name *</label>
+                                        <input type="text" name="tour_name" value="{{ listing.tour_name }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Tour Category *</label>
+                                        <select name="tour_category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                            {% for cat_value, cat_label in listing.TOUR_CATEGORIES %}
+                                                <option value="{{ cat_value }}" {% if listing.tour_category == cat_value %}selected{% endif %}>{{ cat_label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Duration *</label>
+                                        <input type="text" name="duration" value="{{ listing.duration }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                                        <input type="text" name="country" value="{{ listing.country }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                        <input type="text" name="city" value="{{ listing.city }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Capacity & Details -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">
+                                {% if listing_type == 'accommodation' %}Capacity & Rooms{% else %}Capacity & Participants{% endif %}
+                            </h2>
+
+                            {% if listing_type == 'accommodation' %}
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Rooms *</label>
+                                        <input type="number" name="num_rooms" value="{{ listing.num_rooms }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Beds per Room *</label>
+                                        <input type="number" name="beds_per_room" value="{{ listing.beds_per_room }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Bed Type *</label>
+                                        <select name="bed_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                            {% for bed_value, bed_label in listing.BED_TYPES %}
+                                                <option value="{{ bed_value }}" {% if listing.bed_type == bed_value %}selected{% endif %}>{{ bed_label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Number of Bathrooms *</label>
+                                        <input type="number" name="num_bathrooms" value="{{ listing.num_bathrooms }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Maximum Guests *</label>
+                                        <input type="number" name="max_guests" value="{{ listing.max_guests }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Participants *</label>
+                                        <input type="number" name="min_participants" value="{{ listing.min_participants }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Maximum Participants *</label>
+                                        <input type="number" name="max_participants" value="{{ listing.max_participants }}" min="1"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Age Restrictions</label>
+                                        <input type="text" name="age_restrictions" value="{{ listing.age_restrictions }}"
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                               placeholder="e.g., 18+ adults only">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Description</h2>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Tagline *</label>
+                                    <input type="text" name="tagline" value="{{ listing.tagline }}"
+                                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                           placeholder="A short, catchy description" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Description *</label>
+                                    <textarea name="full_description" rows="6"
+                                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ listing.full_description }}</textarea>
+                                </div>
+                                {% if listing_type == 'tour' %}
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Itinerary *</label>
+                                        <textarea name="itinerary" rows="6"
+                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>{{ listing.itinerary }}</textarea>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Pricing -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Pricing</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {% if listing_type == 'accommodation' %}
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Base Price per Night *</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                                            <input type="number" name="base_price" value="{{ listing.base_price }}" step="0.01" min="0"
+                                                   class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Cleaning Fee</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                                            <input type="number" name="cleaning_fee" value="{{ listing.cleaning_fee }}" step="0.01" min="0"
+                                                   class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Price per Person *</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                                            <input type="number" name="price_per_person" value="{{ listing.price_per_person }}" step="0.01" min="0"
+                                                   class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Fitness Level *</label>
+                                        <select name="fitness_level" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                            {% for level_value, level_label in listing.FITNESS_LEVELS %}
+                                                <option value="{{ level_value }}" {% if listing.fitness_level == level_value %}selected{% endif %}>{{ level_label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Policies -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Policies</h2>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cancellation Policy *</label>
+                                    <select name="cancellation_policy" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        {% for policy_value, policy_label in listing.CANCELLATION_POLICIES %}
+                                            <option value="{{ policy_value }}" {% if listing.cancellation_policy == policy_value %}selected{% endif %}>{{ policy_label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                {% if listing_type == 'accommodation' %}
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">House Rules</label>
+                                        <textarea name="house_rules" rows="4"
+                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">{{ listing.house_rules }}</textarea>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+
+                {% else %}
+                    <!-- View Mode -->
+                    <div class="space-y-8">
+                        <!-- Photos -->
+                        {% if photos %}
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                                <h2 class="text-lg font-semibold text-gray-900 mb-6">Photos</h2>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    {% for photo in photos %}
+                                        <div class="aspect-square rounded-lg overflow-hidden">
+                                            <img src="{{ photo.image.url }}" alt="{{ photo.caption|default:'Listing photo' }}"
+                                                 class="w-full h-full object-cover hover:scale-105 transition-transform cursor-pointer">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Basic Information -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Basic Information</h2>
+
+                            {% if listing_type == 'accommodation' %}
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Property Name</span>
+                                        <p class="text-gray-900">{{ listing.property_name }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Property Type</span>
+                                        <p class="text-gray-900">{{ listing.get_property_type_display }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Location</span>
+                                        <p class="text-gray-900">{{ listing.city }}, {{ listing.country }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Address</span>
+                                        <p class="text-gray-900">{{ listing.street_address }}</p>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Tour Name</span>
+                                        <p class="text-gray-900">{{ listing.tour_name }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Category</span>
+                                        <p class="text-gray-900">{{ listing.get_tour_category_display }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Duration</span>
+                                        <p class="text-gray-900">{{ listing.duration }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Location</span>
+                                        <p class="text-gray-900">{{ listing.city }}, {{ listing.country }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Capacity & Details -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">
+                                {% if listing_type == 'accommodation' %}Capacity & Rooms{% else %}Capacity & Participants{% endif %}
+                            </h2>
+
+                            {% if listing_type == 'accommodation' %}
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.num_rooms }}</div>
+                                        <div class="text-sm text-gray-500">Rooms</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.beds_per_room }}</div>
+                                        <div class="text-sm text-gray-500">Beds/Room</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.num_bathrooms }}</div>
+                                        <div class="text-sm text-gray-500">Bathrooms</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.max_guests }}</div>
+                                        <div class="text-sm text-gray-500">Max Guests</div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.min_participants }}</div>
+                                        <div class="text-sm text-gray-500">Min Participants</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.max_participants }}</div>
+                                        <div class="text-sm text-gray-500">Max Participants</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.get_fitness_level_display|slice:":1" }}</div>
+                                        <div class="text-sm text-gray-500">Fitness Level</div>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                        <div class="text-2xl font-bold text-gray-900">{{ listing.price_per_person }}</div>
+                                        <div class="text-sm text-gray-500">$ per Person</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Description</h2>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Tagline</span>
+                                    <p class="text-gray-900 italic">{{ listing.tagline }}</p>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Full Description</span>
+                                    <p class="text-gray-900 whitespace-pre-line">{{ listing.full_description }}</p>
+                                </div>
+                                {% if listing_type == 'tour' and listing.itinerary %}
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Itinerary</span>
+                                        <p class="text-gray-900 whitespace-pre-line">{{ listing.itinerary }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Policies -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Pricing & Policies</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {% if listing_type == 'accommodation' %}
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Base Price</span>
+                                        <p class="text-2xl font-bold text-green-600">${{ listing.base_price }}/night</p>
+                                    </div>
+                                    {% if listing.cleaning_fee %}
+                                        <div>
+                                            <span class="text-sm font-medium text-gray-500">Cleaning Fee</span>
+                                            <p class="text-lg font-semibold text-gray-900">${{ listing.cleaning_fee }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Price per Person</span>
+                                        <p class="text-2xl font-bold text-green-600">${{ listing.price_per_person }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-500">Fitness Level</span>
+                                        <p class="text-gray-900">{{ listing.get_fitness_level_display }}</p>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <span class="text-sm font-medium text-gray-500">Cancellation Policy</span>
+                                    <p class="text-gray-900">{{ listing.get_cancellation_policy_display }}</p>
+                                </div>
+                                {% if listing_type == 'accommodation' and listing.house_rules %}
+                                    <div class="md:col-span-2">
+                                        <span class="text-sm font-medium text-gray-500">House Rules</span>
+                                        <p class="text-gray-900 whitespace-pre-line">{{ listing.house_rules }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Status & Dates -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6">Status & Information</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm font-medium text-gray-500">Status</div>
+                                    <div class="text-lg font-semibold {% if listing.is_published %}text-green-600{% else %}text-yellow-600{% endif %}">
+                                        {% if listing.is_published %}Published{% else %}Draft{% endif %}
+                                    </div>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm font-medium text-gray-500">Active</div>
+                                    <div class="text-lg font-semibold {% if listing.is_active %}text-green-600{% else %}text-red-600{% endif %}">
+                                        {% if listing.is_active %}Yes{% else %}No{% endif %}
+                                    </div>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm font-medium text-gray-500">Last Updated</div>
+                                    <div class="text-sm font-semibold text-gray-900">{{ listing.updated_at|date:"M d, Y" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        {% if not edit_mode %}
+                            <button onclick="editListing({{ listing.id }}, '{{ listing_type }}')"
+                                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-edit mr-2"></i>Edit Listing
+                            </button>
+                            <button onclick="updateListing({{ listing.id }}, '{{ listing_type }}')"
+                                    class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i class="fas fa-sync mr-2"></i>Update & Refresh
+                            </button>
+                        {% endif %}
+                        <button onclick="window.history.back()"
+                                class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Listing Stats -->
+                {% if not edit_mode %}
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Listing Statistics</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Views</span>
+                                <span class="font-semibold">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Bookings</span>
+                                <span class="font-semibold">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Revenue</span>
+                                <span class="font-semibold">$0.00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Rating</span>
+                                <span class="font-semibold">No reviews yet</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Helper functions for the listing detail page
+function editListing(listingId, type) {
+    if (type === 'accommodation') {
+        window.location.href = `/accommodation/${listingId}/edit/`;
+    } else if (type === 'tour') {
+        window.location.href = `/tour/${listingId}/edit/`;
+    }
+}
+
+function updateListing(listingId, type) {
+    const confirmed = confirm(`🔄 Update Listing #${listingId}?\n\nThis will:\n• Refresh pricing & availability\n• Update calendar sync\n• Refresh photos & description\n• Sync with booking platforms\n• Update search ranking\n\nProceed with update?`);
+
+    if (confirmed) {
+        if (type === 'accommodation') {
+            window.location.href = `/accommodation/${listingId}/update/`;
+        } else if (type === 'tour') {
+            window.location.href = `/tour/${listingId}/update/`;
+        }
+    }
+}
+</script>
+
+{% endblock %}

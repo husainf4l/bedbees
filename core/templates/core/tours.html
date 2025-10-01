@@ -4,12 +4,12 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16 mb-8">
+<section class="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 mb-8">
     <div class="absolute inset-0 bg-black/20"></div>
     <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
     <div class="relative container mx-auto px-4 text-center">
         <h1 class="text-4xl font-bold mb-4">{{ display_category }}</h1>
-        <p class="text-lg mb-6 max-w-2xl mx-auto text-blue-100">
+        <p class="text-lg mb-8 max-w-2xl mx-auto text-blue-100">
             {% if category == 'share-trip' %}
                 Join fellow travelers on shared adventures and meet like-minded people while exploring amazing destinations.
             {% elif category == 'private' %}
@@ -28,6 +28,30 @@
                 Discover amazing tours and experiences across the Middle East and beyond.
             {% endif %}
         </p>
+
+        <!-- Search Form -->
+        <div class="max-w-2xl mx-auto mb-6">
+            <form method="GET" action="/tours/" class="bg-white rounded-lg shadow-lg p-4">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <div class="flex-1">
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ search_query }}"
+                            placeholder="Search tours, experiences, destinations..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        >
+                    </div>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search Experiences
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="#tours" class="inline-block bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                 Browse Tours

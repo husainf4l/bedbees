@@ -3,6 +3,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from .forms import HostRegistrationForm, HostProfileForm, AccommodationForm, TourForm
 from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto
 
@@ -26,7 +28,14 @@ def home(request):
 
 def tours(request, category=None):
     """Tours page view"""
-    # Demo tours data
+
+    # Get real tours from database (both published AND active)
+    real_tours = Tour.objects.filter(
+        is_published=True,
+        is_active=True
+    ).select_related('host')
+
+    # Demo tours data (fallback if no real listings)
     demo_tours = [
         {
             'id': '1',
@@ -315,6 +324,26 @@ def tours(request, category=None):
         }
     ]
 
+    # Handle search functionality
+    search_query = request.GET.get('q', '').strip()
+    tours = demo_tours
+
+    if search_query:
+        # Filter tours based on search query
+        filtered_tours = []
+        query_lower = search_query.lower()
+
+        for tour in demo_tours:
+            # Search in title, location, description, category, and tags
+            if (query_lower in tour['title'].lower() or
+                query_lower in tour['location'].lower() or
+                query_lower in tour['description'].lower() or
+                query_lower in tour['category'].lower() or
+                any(query_lower in tag.lower() for tag in tour['tags'])):
+                filtered_tours.append(tour)
+
+        tours = filtered_tours
+
     # Category mapping
     category_mapping = {
         'share-trip': 'share_trip',
@@ -327,15 +356,11 @@ def tours(request, category=None):
         'all': None
     }
 
-    # Filter tours by category
-    if category and category.lower() in category_mapping:
+    # Filter tours by category (in addition to search)
+    if category and category.lower() in category_mapping and not search_query:
         filter_cat = category_mapping[category.lower()]
         if filter_cat:
-            filtered_tours = [tour for tour in demo_tours if tour['category'] == filter_cat]
-        else:
-            filtered_tours = demo_tours
-    else:
-        filtered_tours = demo_tours
+            tours = [tour for tour in tours if tour['category'] == filter_cat]
 
     # Category display names
     category_names = {
@@ -351,12 +376,17 @@ def tours(request, category=None):
 
     display_category = category_names.get(category, 'Explore All Experiences') if category else 'Explore All Experiences'
 
+    # Combine real and demo tours
+    combined_tours = list(real_tours) + tours if real_tours.exists() else tours
+
     context = {
-        'tours': filtered_tours,
+        'tours': combined_tours,
+        'real_tours': real_tours,
         'category': category,
         'display_category': display_category,
-        'total_tours': len(filtered_tours),
-        'all_categories': category_names
+        'total_tours': len(combined_tours),
+        'all_categories': category_names,
+        'search_query': search_query,
     }
 
     return render(request, 'core/tours.html', context)
@@ -471,6 +501,258 @@ def share_trip_tours(request):
             'meeting_point': 'Roman Theater entrance',
             'includes': ['Expert guide', 'Site entrance fees', 'Historical commentary'],
             'excludes': ['Personal expenses', 'Transportation', 'Food and drinks']
+        },
+        {
+            'id': 'st7',
+            'title': 'Traditional Middle Eastern Cooking Class',
+            'location': 'Various locations',
+            'description': 'Learn to cook authentic local cuisine with expert chefs. Includes market visit and hands-on cooking shared with fellow food enthusiasts.',
+            'price': 65,
+            'currency': 'USD',
+            'duration': '4 hours',
+            'group_size': 'Max 12 people',
+            'rating': 4.7,
+            'reviews': 1245,
+            'difficulty': 'Easy',
+            'highlights': ['Market visit with local vendors', 'Hands-on cooking experience', 'Traditional recipe secrets', 'Authentic meal tasting'],
+            'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Local cooking school',
+            'includes': ['Professional chef instructor', 'All cooking ingredients', 'Recipe booklet', 'Traditional meal'],
+            'excludes': ['Transportation to venue', 'Personal shopping', 'Beverages']
+        },
+        {
+            'id': 'st8',
+            'title': 'Red Sea Scuba Diving Adventure',
+            'location': 'Aqaba, Jordan',
+            'description': 'Explore the vibrant underwater world of the Red Sea with professional PADI-certified instructors and fellow diving enthusiasts.',
+            'price': 185,
+            'currency': 'USD',
+            'duration': '5 hours',
+            'group_size': 'Max 6 people',
+            'rating': 4.8,
+            'reviews': 756,
+            'difficulty': 'Intermediate',
+            'highlights': ['Professional PADI instructors', 'Coral reef exploration', 'Marine life photography', 'Safety briefing included'],
+            'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Aqaba diving center',
+            'includes': ['PADI certified instructor', 'Full diving equipment', 'Safety briefing', 'Underwater photos'],
+            'excludes': ['Transportation to site', 'Dive certification', 'Personal expenses']
+        },
+        {
+            'id': 'st9',
+            'title': 'Lebanon Paragliding Experience',
+            'location': 'Harissa, Lebanon',
+            'description': 'Soar above the stunning Lebanese coastline and mountains in a tandem paragliding flight with fellow adventure seekers.',
+            'price': 220,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 8 people',
+            'rating': 4.5,
+            'reviews': 433,
+            'difficulty': 'Easy',
+            'highlights': ['Tandem paragliding flight', 'Stunning coastal views', 'Professional pilot', 'Safety equipment provided'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Harissa mountain station',
+            'includes': ['Professional pilot', 'Safety equipment', 'Flight certificate', 'Transportation to takeoff'],
+            'excludes': ['Personal expenses', 'Video recording', 'Additional flights']
+        },
+        {
+            'id': 'st10',
+            'title': 'Dubai Desert Safari with BBQ',
+            'location': 'Dubai, UAE',
+            'description': 'Thrilling desert adventure with dune bashing, camel riding, traditional BBQ dinner, and belly dancing shared with fellow travelers.',
+            'price': 85,
+            'currency': 'USD',
+            'duration': '6 hours',
+            'group_size': '4-6 people',
+            'rating': 4.7,
+            'reviews': 3245,
+            'difficulty': 'Easy',
+            'highlights': ['Dune bashing experience', 'Camel riding', 'Traditional BBQ dinner', 'Belly dancing performance'],
+            'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Dubai desert camp pickup',
+            'includes': ['4x4 desert vehicle', 'Camel riding', 'BBQ dinner', 'Cultural performance'],
+            'excludes': ['Personal expenses', 'Transportation to pickup point', 'Alcoholic beverages']
+        },
+        {
+            'id': 'st11',
+            'title': 'Paphos Archaeological Group Tour',
+            'location': 'Paphos, Cyprus',
+            'description': 'Join a group of history enthusiasts to explore the UNESCO World Heritage archaeological sites of Paphos with an expert archaeologist guide.',
+            'price': 35,
+            'currency': 'USD',
+            'duration': '4 hours',
+            'group_size': '8-20 people',
+            'rating': 4.7,
+            'reviews': 624,
+            'difficulty': 'Easy',
+            'highlights': ['UNESCO World Heritage sites', 'Expert archaeologist guide', 'Ancient mosaics', 'Roman theaters'],
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Paphos archaeological park',
+            'includes': ['Expert archaeologist guide', 'Site entrance fees', 'Historical commentary'],
+            'excludes': ['Personal expenses', 'Transportation', 'Food and drinks']
+        },
+        {
+            'id': 'st12',
+            'title': 'Muscat Coastal Dhow Cruise',
+            'location': 'Muscat, Oman',
+            'description': 'Experience Oman\'s stunning coastline with a traditional dhow cruise, visiting forts and fishing villages with fellow travelers.',
+            'price': 75,
+            'currency': 'USD',
+            'duration': '6 hours',
+            'group_size': 'Max 15 people',
+            'rating': 4.8,
+            'reviews': 654,
+            'difficulty': 'Easy',
+            'highlights': ['Traditional dhow boat', 'Coastal fort visits', 'Fishing village exploration', 'Sunset views'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Muscat harbor',
+            'includes': ['Traditional dhow cruise', 'Guided fort visits', 'Refreshments', 'Cultural commentary'],
+            'excludes': ['Personal expenses', 'Transportation to harbor', 'Additional activities']
+        },
+        {
+            'id': 'st13',
+            'title': 'Istanbul Bosphorus Cruise',
+            'location': 'Istanbul, Turkey',
+            'description': 'Cruise the historic Bosphorus Strait, connecting Europe and Asia, with fellow travelers while enjoying stunning views and local culture.',
+            'price': 55,
+            'currency': 'USD',
+            'duration': '4 hours',
+            'group_size': 'Max 30 people',
+            'rating': 4.6,
+            'reviews': 1876,
+            'difficulty': 'Easy',
+            'highlights': ['Bosphorus Strait cruise', 'Europe-Asia crossing', 'Historic waterfront palaces', 'Local seafood lunch'],
+            'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Istanbul cruise terminal',
+            'includes': ['Bosphorus cruise', 'Guided commentary', 'Traditional lunch', 'Audio guide'],
+            'excludes': ['Personal expenses', 'Transportation to terminal', 'Gratuities']
+        },
+        {
+            'id': 'st14',
+            'title': 'Marrakech Medina Food Tour',
+            'location': 'Marrakech, Morocco',
+            'description': 'Discover the vibrant flavors of Marrakech through its bustling souks and hidden food stalls with fellow culinary adventurers.',
+            'price': 45,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 10 people',
+            'rating': 4.8,
+            'reviews': 1456,
+            'difficulty': 'Easy',
+            'highlights': ['Authentic street food tasting', 'Souk exploration', 'Local chef interactions', 'Traditional Moroccan sweets'],
+            'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Jemaa el-Fnaa square',
+            'includes': ['Local food guide', 'Food tastings', 'Cultural insights', 'Market navigation'],
+            'excludes': ['Transportation', 'Full meals', 'Personal purchases']
+        },
+        {
+            'id': 'st15',
+            'title': 'Cairo Khan el-Khalili Bazaar Tour',
+            'location': 'Cairo, Egypt',
+            'description': 'Navigate the historic Khan el-Khalili bazaar, experiencing authentic Egyptian culture and shopping with fellow travelers.',
+            'price': 30,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 12 people',
+            'rating': 4.5,
+            'reviews': 2134,
+            'difficulty': 'Easy',
+            'highlights': ['Historic bazaar exploration', 'Traditional crafts', 'Spice market visit', 'Mint tea ceremony'],
+            'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Khan el-Khalili entrance',
+            'includes': ['Local guide', 'Mint tea tasting', 'Cultural commentary', 'Market map'],
+            'excludes': ['Personal purchases', 'Transportation', 'Full meals']
+        },
+        {
+            'id': 'st16',
+            'title': 'Beirut Food & Culture Walking Tour',
+            'location': 'Beirut, Lebanon',
+            'description': 'Experience Beirut\'s culinary renaissance through its diverse neighborhoods, tasting authentic Lebanese cuisine with fellow food lovers.',
+            'price': 55,
+            'currency': 'USD',
+            'duration': '4 hours',
+            'group_size': 'Max 8 people',
+            'rating': 4.7,
+            'reviews': 987,
+            'difficulty': 'Easy',
+            'highlights': ['Authentic Lebanese mezze', 'Local bakery visits', 'Street food exploration', 'Cultural insights'],
+            'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Beirut city center',
+            'includes': ['Local food expert guide', 'Food tastings', 'Cultural commentary', 'Walking tour'],
+            'excludes': ['Transportation', 'Full meals', 'Alcoholic beverages']
+        },
+        {
+            'id': 'st17',
+            'title': 'Doha Souq Waqif Cultural Experience',
+            'location': 'Doha, Qatar',
+            'description': 'Immerse yourself in Qatari culture at Souq Waqif, exploring traditional markets and experiencing authentic Arabian hospitality.',
+            'price': 40,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 15 people',
+            'rating': 4.6,
+            'reviews': 1456,
+            'difficulty': 'Easy',
+            'highlights': ['Traditional souq exploration', 'Arabic coffee ceremony', 'Craft demonstrations', 'Cultural performances'],
+            'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Souq Waqif entrance',
+            'includes': ['Local cultural guide', 'Arabic coffee tasting', 'Cultural demonstrations', 'Market navigation'],
+            'excludes': ['Personal purchases', 'Transportation', 'Full meals']
+        },
+        {
+            'id': 'st18',
+            'title': 'Amman Downtown Cultural Walk',
+            'location': 'Amman, Jordan',
+            'description': 'Explore Amman\'s vibrant downtown district, discovering Roman theaters, Ottoman architecture, and local street life with fellow travelers.',
+            'price': 35,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 12 people',
+            'rating': 4.5,
+            'reviews': 1234,
+            'difficulty': 'Easy',
+            'highlights': ['Roman Theater visit', 'Ottoman architecture', 'Local street food', 'Contemporary art scene'],
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Amman downtown square',
+            'includes': ['Local guide', 'Site entrance fees', 'Cultural commentary', 'Street food tasting'],
+            'excludes': ['Transportation', 'Full meals', 'Personal expenses']
+        },
+        {
+            'id': 'st19',
+            'title': 'Muscat Muttrah Souq Exploration',
+            'location': 'Muscat, Oman',
+            'description': 'Dive into Oman\'s maritime heritage at Muttrah Souq, exploring spice markets and traditional crafts with fellow cultural enthusiasts.',
+            'price': 35,
+            'currency': 'USD',
+            'duration': '2 hours',
+            'group_size': 'Max 10 people',
+            'rating': 4.6,
+            'reviews': 876,
+            'difficulty': 'Easy',
+            'highlights': ['Spice market exploration', 'Traditional crafts', 'Omani coffee tasting', 'Maritime history'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Muttrah Corniche',
+            'includes': ['Local guide', 'Spice tasting', 'Cultural insights', 'Market navigation'],
+            'excludes': ['Personal purchases', 'Transportation', 'Full meals']
+        },
+        {
+            'id': 'st20',
+            'title': 'Nicosia Green Line Buffer Zone Tour',
+            'location': 'Nicosia, Cyprus',
+            'description': 'Experience Cyprus\'s unique divided history on this guided tour of the Green Line, exploring the buffer zone that separates north and south.',
+            'price': 40,
+            'currency': 'USD',
+            'duration': '3 hours',
+            'group_size': 'Max 8 people',
+            'rating': 4.7,
+            'reviews': 654,
+            'difficulty': 'Easy',
+            'highlights': ['UN buffer zone exploration', 'Divided city history', 'Abandoned buildings', 'Peacekeeping insights'],
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'meeting_point': 'Nicosia city center',
+            'includes': ['Expert guide', 'Historical commentary', 'Peacekeeping insights', 'Cultural context'],
+            'excludes': ['Personal expenses', 'Transportation', 'Border crossing permits']
         }
     ]
 
@@ -542,6 +824,498 @@ def signup(request):
 
 def accommodations(request):
     """Accommodations page view"""
+
+    # Get real accommodations from database (both published AND active)
+    real_accommodations = Accommodation.objects.filter(
+        is_published=True,
+        is_active=True
+    ).select_related('host')
+
+    # Demo accommodations data (fallback if no real listings)
+    demo_accommodations = [
+        {
+            'id': '1',
+            'name': 'Luxury Beach Resort & Spa',
+            'location': 'Maldives',
+            'description': 'Experience paradise at our beachfront resort with private villas, world-class spa, and stunning ocean views.',
+            'price': 450,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 1250,
+            'type': 'resort',
+            'amenities': ['WiFi', 'Pool', 'Spa', 'Beach Access', 'Restaurant'],
+            'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Villa with Ocean View',
+            'cancellation_policy': 'Free cancellation up to 24 hours',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Private beach access', '24/7 concierge', 'Spa treatments included', 'Daily housekeeping']
+        },
+        {
+            'id': '2',
+            'name': 'Boutique City Hotel Downtown',
+            'location': 'Dubai, UAE',
+            'description': 'Charming boutique hotel in the heart of the city with modern design, rooftop bar, and easy access to attractions.',
+            'price': 250,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 890,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Gym', 'Rooftop Bar', 'Concierge', 'Business Center'],
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Deluxe City View Room',
+            'cancellation_policy': 'Free cancellation up to 48 hours',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Burj Khalifa views', 'Metro station nearby', 'Business center', 'Fitness center']
+        },
+        {
+            'id': '3',
+            'name': 'Mountain View Chalet',
+            'location': 'Swiss Alps, Switzerland',
+            'description': 'Rustic mountain chalet with stunning alpine views and modern amenities for the perfect mountain retreat.',
+            'price': 350,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 567,
+            'type': 'chalet',
+            'amenities': ['WiFi', 'Fireplace', 'Hot Tub', 'Mountain Views', 'Ski Access'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Alpine Chalet',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Ski-in/ski-out access', 'Wood-burning fireplace', 'Private hot tub', 'Mountain views']
+        },
+        {
+            'id': '4',
+            'name': 'Historic Riad Marrakech',
+            'location': 'Marrakech, Morocco',
+            'description': 'Traditional Moroccan riad in the heart of the medina with authentic architecture and modern comforts.',
+            'price': 180,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 745,
+            'type': 'riad',
+            'amenities': ['WiFi', 'Courtyard', 'Traditional Decor', 'Rooftop Terrace', 'Hammam'],
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Traditional Riad Suite',
+            'cancellation_policy': 'Free cancellation up to 3 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Medina location', 'Traditional Moroccan architecture', 'Rooftop terrace', 'Hammam spa']
+        },
+        {
+            'id': '5',
+            'name': 'Overwater Bungalow Paradise',
+            'location': 'Bora Bora, French Polynesia',
+            'description': 'Luxurious overwater bungalow with direct lagoon access and breathtaking sunset views.',
+            'price': 650,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 423,
+            'type': 'bungalow',
+            'amenities': ['WiFi', 'Private Deck', 'Lagoon Access', 'Butler Service', 'Snorkeling'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Overwater Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Crystal clear lagoon', 'Sunset views', 'Private butler service', 'Snorkeling equipment']
+        },
+        {
+            'id': '6',
+            'name': 'Urban Loft Apartment',
+            'location': 'Tokyo, Japan',
+            'description': 'Modern loft apartment in trendy Shibuya district with city views and contemporary design.',
+            'price': 120,
+            'currency': 'USD',
+            'rating': 4.5,
+            'reviews': 1100,
+            'type': 'apartment',
+            'amenities': ['WiFi', 'Kitchen', 'City Views', 'Washing Machine', 'Near Subway'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 3,
+            'room_type': 'Modern Loft',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Shibuya district', 'City skyline views', 'Fully equipped kitchen', 'Subway access']
+        },
+        {
+            'id': '7',
+            'name': 'Desert Oasis Camp',
+            'location': 'Sahara Desert, Morocco',
+            'description': 'Authentic Bedouin camp in the heart of the Sahara with traditional tents and star-filled skies.',
+            'price': 85,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 892,
+            'type': 'camp',
+            'amenities': ['Traditional Meals', 'Campfire', 'Desert Views', 'Guided Tours', 'Bedouin Hospitality'],
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Traditional Bedouin Tent',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Starry night skies', 'Traditional Bedouin experience', 'Camel treks available', 'Authentic Moroccan cuisine']
+        },
+        {
+            'id': '8',
+            'name': 'Lake Como Villa',
+            'location': 'Lake Como, Italy',
+            'description': 'Elegant villa overlooking Lake Como with private gardens and stunning mountain views.',
+            'price': 420,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 634,
+            'type': 'villa',
+            'amenities': ['WiFi', 'Private Garden', 'Lake Views', 'Swimming Pool', 'Boat Dock'],
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Lakefront Villa',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Private lake access', 'Mountain views', 'Professional chef available', 'Boat included']
+        },
+        {
+            'id': '9',
+            'name': 'Santorini Cave Hotel',
+            'location': 'Santorini, Greece',
+            'description': 'Unique cave hotel carved into volcanic rock with caldera views and traditional Cycladic architecture.',
+            'price': 280,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 756,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Caldera Views', 'Infinity Pool', 'Spa Services', 'Restaurant'],
+            'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Cave Suite with Caldera View',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Volcanic cave architecture', 'Sunset caldera views', 'Infinity pool', 'Traditional Greek breakfast']
+        },
+        {
+            'id': '10',
+            'name': 'Amazon Rainforest Lodge',
+            'location': 'Amazon Rainforest, Brazil',
+            'description': 'Eco-lodge deep in the Amazon with guided jungle walks and authentic indigenous experiences.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.5,
+            'reviews': 423,
+            'type': 'lodge',
+            'amenities': ['Eco-Friendly', 'Jungle Tours', 'Indigenous Guides', 'Sustainable Dining', 'Wildlife Viewing'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Jungle Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '12:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Sustainable tourism', 'Indigenous community support', 'Wildlife encounters', 'Eco-friendly practices']
+        },
+        {
+            'id': '11',
+            'name': 'Icelandic Glacier Retreat',
+            'location': 'Vatnajökull, Iceland',
+            'description': 'Glass-domed igloo on a glacier with northern lights views and ice cave explorations.',
+            'price': 380,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 345,
+            'type': 'igloo',
+            'amenities': ['Northern Lights Views', 'Glacier Access', 'Ice Cave Tours', 'Thermal Bath', 'Arctic Dining'],
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Glass Igloo Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Glass dome ceiling', 'Northern lights viewing', 'Glacier hiking', 'Ice cave exploration']
+        },
+        {
+            'id': '12',
+            'name': 'Parisian Haussmann Apartment',
+            'location': 'Paris, France',
+            'description': 'Elegant 19th-century apartment in a Haussmann building with original moldings and modern updates.',
+            'price': 220,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 678,
+            'type': 'apartment',
+            'amenities': ['WiFi', 'Kitchen', 'Historic Architecture', 'Concierge', 'Laundry Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 1,
+            'max_guests': 4,
+            'room_type': 'Haussmann Apartment',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Historic 6th arrondissement', 'Walking distance to Louvre', 'Original architectural details', 'Concierge service']
+        },
+        {
+            'id': '13',
+            'name': 'Taj Mahal Palace Hotel',
+            'location': 'Mumbai, India',
+            'description': 'Iconic colonial-era hotel with opulent architecture, sea-facing rooms, and legendary hospitality.',
+            'price': 320,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 1234,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Sea Views', 'Spa', 'Multiple Restaurants', 'Business Center'],
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Sea View Deluxe Room',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Gateway of India views', 'Colonial architecture', 'Award-winning restaurants', 'Royal heritage']
+        },
+        {
+            'id': '14',
+            'name': 'Great Barrier Reef Resort',
+            'location': 'Cairns, Australia',
+            'description': 'Luxury resort with direct reef access, marine biology center, and underwater observatories.',
+            'price': 480,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 567,
+            'type': 'resort',
+            'amenities': ['Reef Access', 'Marine Biology Center', 'Diving Center', 'Spa', 'Multiple Pools'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Reef View Suite',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Direct reef access', 'Underwater observatory', 'Marine research center', 'Diving certification courses']
+        },
+        {
+            'id': '15',
+            'name': 'Scottish Highlands Castle',
+            'location': 'Scottish Highlands, Scotland',
+            'description': 'Historic castle in the Scottish Highlands with lochs, mountains, and traditional hospitality.',
+            'price': 395,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 456,
+            'type': 'castle',
+            'amenities': ['WiFi', 'Fireplace', 'Loch Views', 'Whisky Bar', 'Gardens'],
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 5,
+            'bathrooms': 4,
+            'max_guests': 10,
+            'room_type': 'Castle Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Historic castle architecture', 'Loch and mountain views', 'Whisky tasting experiences', 'Private gardens']
+        },
+        {
+            'id': '16',
+            'name': 'Patagonia Glacier Lodge',
+            'location': 'Torres del Paine, Chile',
+            'description': 'Remote lodge in Patagonia with glacier views, hiking trails, and authentic Chilean hospitality.',
+            'price': 265,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 389,
+            'type': 'lodge',
+            'amenities': ['Glacier Views', 'Hiking Trails', 'Fireplace', 'Local Cuisine', 'Guide Services'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Glacier View Cabin',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Torres del Paine views', 'Guided hiking tours', 'Authentic Patagonian cuisine', 'Sustainable practices']
+        },
+        {
+            'id': '17',
+            'name': 'Venetian Canal Palace',
+            'location': 'Venice, Italy',
+            'description': 'Historic palace on the Grand Canal with Renaissance architecture and modern luxury amenities.',
+            'price': 550,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 723,
+            'type': 'palace',
+            'amenities': ['Canal Views', 'Private Boat', 'Historic Architecture', 'Spa', 'Fine Dining'],
+            'image': 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Canal View Palace Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Grand Canal location', 'Renaissance architecture', 'Private boat service', 'Michelin-star dining']
+        },
+        {
+            'id': '18',
+            'name': 'Bali Rice Terrace Villa',
+            'location': 'Ubud, Bali, Indonesia',
+            'description': 'Luxurious villa nestled in rice terraces with traditional Balinese architecture and spa facilities.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 891,
+            'type': 'villa',
+            'amenities': ['Rice Terrace Views', 'Private Pool', 'Spa', 'Traditional Architecture', 'Yoga Pavilion'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Rice Terrace Villa',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['UNESCO rice terraces', 'Traditional Balinese design', 'Daily yoga sessions', 'Organic farm-to-table dining']
+        },
+        {
+            'id': '19',
+            'name': 'New York Penthouse',
+            'location': 'Manhattan, New York, USA',
+            'description': 'Ultra-luxury penthouse with Central Park views, private terrace, and 24/7 concierge service.',
+            'price': 850,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 234,
+            'type': 'penthouse',
+            'amenities': ['Central Park Views', 'Private Terrace', 'Concierge', 'Spa Bathroom', 'Chef Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Central Park Penthouse',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Central Park views', 'Private rooftop terrace', '24/7 concierge', 'Personal chef service']
+        },
+        {
+            'id': '20',
+            'name': 'Safari Luxury Tent Camp',
+            'location': 'Serengeti, Tanzania',
+            'description': 'Luxury safari camp with canvas tents, private decks, and unparalleled wildlife viewing opportunities.',
+            'price': 425,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 567,
+            'type': 'camp',
+            'amenities': ['Wildlife Viewing', 'Private Decks', 'Guided Safaris', 'Butler Service', 'Luxury Camping'],
+            'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Luxury Safari Tent',
+            'cancellation_policy': 'Free cancellation up to 21 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Big Five wildlife viewing', 'Private viewing decks', 'Guided safari drives', 'Authentic Maasai cultural experiences']
+        }
+    ]
+
+    # Handle search functionality
+    search_query = request.GET.get('q', '').strip()
+    accommodations = demo_accommodations
+
+    if search_query:
+        # Filter accommodations based on search query
+        filtered_accommodations = []
+        query_lower = search_query.lower()
+
+        for accommodation in demo_accommodations:
+            # Search in name, location, description, type, and amenities
+            if (query_lower in accommodation['name'].lower() or
+                query_lower in accommodation['location'].lower() or
+                query_lower in accommodation['description'].lower() or
+                query_lower in accommodation['type'].lower() or
+                any(query_lower in amenity.lower() for amenity in accommodation['amenities'])):
+                filtered_accommodations.append(accommodation)
+
+        accommodations = filtered_accommodations
+
+    # Filter by type if provided (in addition to search)
+    accommodation_type = request.GET.get('type')
+    if accommodation_type and not search_query:
+        accommodations = [acc for acc in accommodations if acc['type'] == accommodation_type]
+
+    # Get booking parameters
+    checkin = request.GET.get('checkin', '')
+    checkout = request.GET.get('checkout', '')
+    adults = request.GET.get('adults', '2')
+    kids = request.GET.get('kids', '0')
+    rooms = request.GET.get('rooms', '1')
+
+    # Set default values if not provided
+    if not checkin:
+        from datetime import datetime, timedelta
+        checkin = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    if not checkout:
+        from datetime import datetime, timedelta
+        checkout = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+
+    # Combine real and demo accommodations
+    combined_accommodations = list(real_accommodations) + accommodations if real_accommodations.exists() else accommodations
+
+    context = {
+        'accommodations': combined_accommodations,
+        'real_accommodations': real_accommodations,
+        'current_type': accommodation_type,
+        'total_accommodations': len(combined_accommodations),
+        'types': ['resort', 'hotel', 'chalet', 'riad', 'bungalow', 'apartment'],
+        'search_query': search_query,
+        'checkin': checkin,
+        'checkout': checkout,
+        'adults': adults,
+        'kids': kids,
+        'rooms': rooms,
+    }
+
+    return render(request, 'core/accommodations.html', context)
+
+def accommodation_detail(request, id):
+    """Individual accommodation detail page view"""
     # Demo accommodations data
     demo_accommodations = [
         {
@@ -555,7 +1329,15 @@ def accommodations(request):
             'reviews': 1250,
             'type': 'resort',
             'amenities': ['WiFi', 'Pool', 'Spa', 'Beach Access', 'Restaurant'],
-            'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Villa with Ocean View',
+            'cancellation_policy': 'Free cancellation up to 24 hours',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Private beach access', '24/7 concierge', 'Spa treatments included', 'Daily housekeeping']
         },
         {
             'id': '2',
@@ -568,7 +1350,15 @@ def accommodations(request):
             'reviews': 890,
             'type': 'hotel',
             'amenities': ['WiFi', 'Gym', 'Rooftop Bar', 'Concierge', 'Business Center'],
-            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Deluxe City View Room',
+            'cancellation_policy': 'Free cancellation up to 48 hours',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Burj Khalifa views', 'Metro station nearby', 'Business center', 'Fitness center']
         },
         {
             'id': '3',
@@ -581,7 +1371,15 @@ def accommodations(request):
             'reviews': 567,
             'type': 'chalet',
             'amenities': ['WiFi', 'Fireplace', 'Hot Tub', 'Mountain Views', 'Ski Access'],
-            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Alpine Chalet',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Ski-in/ski-out access', 'Wood-burning fireplace', 'Private hot tub', 'Mountain views']
         },
         {
             'id': '4',
@@ -594,7 +1392,15 @@ def accommodations(request):
             'reviews': 745,
             'type': 'riad',
             'amenities': ['WiFi', 'Courtyard', 'Traditional Decor', 'Rooftop Terrace', 'Hammam'],
-            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Traditional Riad Suite',
+            'cancellation_policy': 'Free cancellation up to 3 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Medina location', 'Traditional Moroccan architecture', 'Rooftop terrace', 'Hammam spa']
         },
         {
             'id': '5',
@@ -607,7 +1413,15 @@ def accommodations(request):
             'reviews': 423,
             'type': 'bungalow',
             'amenities': ['WiFi', 'Private Deck', 'Lagoon Access', 'Butler Service', 'Snorkeling'],
-            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Overwater Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Crystal clear lagoon', 'Sunset views', 'Private butler service', 'Snorkeling equipment']
         },
         {
             'id': '6',
@@ -620,25 +1434,348 @@ def accommodations(request):
             'reviews': 1100,
             'type': 'apartment',
             'amenities': ['WiFi', 'Kitchen', 'City Views', 'Washing Machine', 'Near Subway'],
-            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 3,
+            'room_type': 'Modern Loft',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Shibuya district', 'City skyline views', 'Fully equipped kitchen', 'Subway access']
+        },
+        {
+            'id': '7',
+            'name': 'Desert Oasis Camp',
+            'location': 'Sahara Desert, Morocco',
+            'description': 'Authentic Bedouin camp in the heart of the Sahara with traditional tents and star-filled skies.',
+            'price': 85,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 892,
+            'type': 'camp',
+            'amenities': ['Traditional Meals', 'Campfire', 'Desert Views', 'Guided Tours', 'Bedouin Hospitality'],
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Traditional Bedouin Tent',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Starry night skies', 'Traditional Bedouin experience', 'Camel treks available', 'Authentic Moroccan cuisine']
+        },
+        {
+            'id': '8',
+            'name': 'Lake Como Villa',
+            'location': 'Lake Como, Italy',
+            'description': 'Elegant villa overlooking Lake Como with private gardens and stunning mountain views.',
+            'price': 420,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 634,
+            'type': 'villa',
+            'amenities': ['WiFi', 'Private Garden', 'Lake Views', 'Swimming Pool', 'Boat Dock'],
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Lakefront Villa',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Private lake access', 'Mountain views', 'Professional chef available', 'Boat included']
+        },
+        {
+            'id': '9',
+            'name': 'Santorini Cave Hotel',
+            'location': 'Santorini, Greece',
+            'description': 'Unique cave hotel carved into volcanic rock with caldera views and traditional Cycladic architecture.',
+            'price': 280,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 756,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Caldera Views', 'Infinity Pool', 'Spa Services', 'Restaurant'],
+            'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Cave Suite with Caldera View',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Volcanic cave architecture', 'Sunset caldera views', 'Infinity pool', 'Traditional Greek breakfast']
+        },
+        {
+            'id': '10',
+            'name': 'Amazon Rainforest Lodge',
+            'location': 'Amazon Rainforest, Brazil',
+            'description': 'Eco-lodge deep in the Amazon with guided jungle walks and authentic indigenous experiences.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.5,
+            'reviews': 423,
+            'type': 'lodge',
+            'amenities': ['Eco-Friendly', 'Jungle Tours', 'Indigenous Guides', 'Sustainable Dining', 'Wildlife Viewing'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Jungle Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '12:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Sustainable tourism', 'Indigenous community support', 'Wildlife encounters', 'Eco-friendly practices']
+        },
+        {
+            'id': '11',
+            'name': 'Icelandic Glacier Retreat',
+            'location': 'Vatnajökull, Iceland',
+            'description': 'Glass-domed igloo on a glacier with northern lights views and ice cave explorations.',
+            'price': 380,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 345,
+            'type': 'igloo',
+            'amenities': ['Northern Lights Views', 'Glacier Access', 'Ice Cave Tours', 'Thermal Bath', 'Arctic Dining'],
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Glass Igloo Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Glass dome ceiling', 'Northern lights viewing', 'Glacier hiking', 'Ice cave exploration']
+        },
+        {
+            'id': '12',
+            'name': 'Parisian Haussmann Apartment',
+            'location': 'Paris, France',
+            'description': 'Elegant 19th-century apartment in a Haussmann building with original moldings and modern updates.',
+            'price': 220,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 678,
+            'type': 'apartment',
+            'amenities': ['WiFi', 'Kitchen', 'Historic Architecture', 'Concierge', 'Laundry Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 1,
+            'max_guests': 4,
+            'room_type': 'Haussmann Apartment',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Historic 6th arrondissement', 'Walking distance to Louvre', 'Original architectural details', 'Concierge service']
+        },
+        {
+            'id': '13',
+            'name': 'Taj Mahal Palace Hotel',
+            'location': 'Mumbai, India',
+            'description': 'Iconic colonial-era hotel with opulent architecture, sea-facing rooms, and legendary hospitality.',
+            'price': 320,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 1234,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Sea Views', 'Spa', 'Multiple Restaurants', 'Business Center'],
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Sea View Deluxe Room',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Gateway of India views', 'Colonial architecture', 'Award-winning restaurants', 'Royal heritage']
+        },
+        {
+            'id': '14',
+            'name': 'Great Barrier Reef Resort',
+            'location': 'Cairns, Australia',
+            'description': 'Luxury resort with direct reef access, marine biology center, and underwater observatories.',
+            'price': 480,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 567,
+            'type': 'resort',
+            'amenities': ['Reef Access', 'Marine Biology Center', 'Diving Center', 'Spa', 'Multiple Pools'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Reef View Suite',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Direct reef access', 'Underwater observatory', 'Marine research center', 'Diving certification courses']
+        },
+        {
+            'id': '15',
+            'name': 'Scottish Highlands Castle',
+            'location': 'Scottish Highlands, Scotland',
+            'description': 'Historic castle in the Scottish Highlands with lochs, mountains, and traditional hospitality.',
+            'price': 395,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 456,
+            'type': 'castle',
+            'amenities': ['WiFi', 'Fireplace', 'Loch Views', 'Whisky Bar', 'Gardens'],
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 5,
+            'bathrooms': 4,
+            'max_guests': 10,
+            'room_type': 'Castle Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Historic castle architecture', 'Loch and mountain views', 'Whisky tasting experiences', 'Private gardens']
+        },
+        {
+            'id': '16',
+            'name': 'Patagonia Glacier Lodge',
+            'location': 'Torres del Paine, Chile',
+            'description': 'Remote lodge in Patagonia with glacier views, hiking trails, and authentic Chilean hospitality.',
+            'price': 265,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 389,
+            'type': 'lodge',
+            'amenities': ['Glacier Views', 'Hiking Trails', 'Fireplace', 'Local Cuisine', 'Guide Services'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Glacier View Cabin',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Torres del Paine views', 'Guided hiking tours', 'Authentic Patagonian cuisine', 'Sustainable practices']
+        },
+        {
+            'id': '17',
+            'name': 'Venetian Canal Palace',
+            'location': 'Venice, Italy',
+            'description': 'Historic palace on the Grand Canal with Renaissance architecture and modern luxury amenities.',
+            'price': 550,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 723,
+            'type': 'palace',
+            'amenities': ['Canal Views', 'Private Boat', 'Historic Architecture', 'Spa', 'Fine Dining'],
+            'image': 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Canal View Palace Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Grand Canal location', 'Renaissance architecture', 'Private boat service', 'Michelin-star dining']
+        },
+        {
+            'id': '18',
+            'name': 'Bali Rice Terrace Villa',
+            'location': 'Ubud, Bali, Indonesia',
+            'description': 'Luxurious villa nestled in rice terraces with traditional Balinese architecture and spa facilities.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 891,
+            'type': 'villa',
+            'amenities': ['Rice Terrace Views', 'Private Pool', 'Spa', 'Traditional Architecture', 'Yoga Pavilion'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Rice Terrace Villa',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['UNESCO rice terraces', 'Traditional Balinese design', 'Daily yoga sessions', 'Organic farm-to-table dining']
+        },
+        {
+            'id': '19',
+            'name': 'New York Penthouse',
+            'location': 'Manhattan, New York, USA',
+            'description': 'Ultra-luxury penthouse with Central Park views, private terrace, and 24/7 concierge service.',
+            'price': 850,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 234,
+            'type': 'penthouse',
+            'amenities': ['Central Park Views', 'Private Terrace', 'Concierge', 'Spa Bathroom', 'Chef Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Central Park Penthouse',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Central Park views', 'Private rooftop terrace', '24/7 concierge', 'Personal chef service']
+        },
+        {
+            'id': '20',
+            'name': 'Safari Luxury Tent Camp',
+            'location': 'Serengeti, Tanzania',
+            'description': 'Luxury safari camp with canvas tents, private decks, and unparalleled wildlife viewing opportunities.',
+            'price': 425,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 567,
+            'type': 'camp',
+            'amenities': ['Wildlife Viewing', 'Private Decks', 'Guided Safaris', 'Butler Service', 'Luxury Camping'],
+            'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Luxury Safari Tent',
+            'cancellation_policy': 'Free cancellation up to 21 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Big Five wildlife viewing', 'Private viewing decks', 'Guided safari drives', 'Authentic Maasai cultural experiences']
         }
     ]
 
-    # Filter by type if provided
-    accommodation_type = request.GET.get('type')
-    if accommodation_type:
-        filtered_accommodations = [acc for acc in demo_accommodations if acc['type'] == accommodation_type]
-    else:
-        filtered_accommodations = demo_accommodations
+    # Find the accommodation by ID
+    accommodation = None
+    for acc in demo_accommodations:
+        if str(acc['id']) == str(id):
+            accommodation = acc
+            break
+
+    if not accommodation:
+        # If accommodation not found, redirect to accommodations list
+        return redirect('accommodations')
+
+    # Get booking parameters from request or set defaults
+    checkin = request.GET.get('checkin', '')
+    checkout = request.GET.get('checkout', '')
+    adults = request.GET.get('adults', '2')
+    kids = request.GET.get('kids', '0')
+    rooms = request.GET.get('rooms', '1')
+
+    # Set default values if not provided
+    if not checkin:
+        from datetime import datetime, timedelta
+        checkin = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    if not checkout:
+        from datetime import datetime, timedelta
+        checkout = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
 
     context = {
-        'accommodations': filtered_accommodations,
-        'current_type': accommodation_type,
-        'total_accommodations': len(filtered_accommodations),
-        'types': ['resort', 'hotel', 'chalet', 'riad', 'bungalow', 'apartment']
+        'accommodation': accommodation,
+        'checkin': checkin,
+        'checkout': checkout,
+        'adults': adults,
+        'kids': kids,
+        'rooms': rooms,
     }
 
-    return render(request, 'core/accommodations.html', context)
+    return render(request, 'core/accommodation_detail.html', context)
 
 def hostregister(request):
     """Host registration page view"""
@@ -1033,3 +2170,980 @@ def bookings(request):
         'sort_by': sort_by,
     }
     return render(request, 'core/bookings.html', context)
+
+
+def countries(request):
+    """Countries page view"""
+    # Demo countries data
+    demo_countries = [
+        {
+            'name': 'Jordan',
+            'code': 'jordan',
+            'description': 'Explore the ancient wonders of Jordan, from the rose-red city of Petra to the salty shores of the Dead Sea.',
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 245,
+            'tours_count': 89,
+            'attractions': ['Petra', 'Dead Sea', 'Wadi Rum', 'Jerash', 'Amman Citadel']
+        },
+        {
+            'name': 'Cyprus',
+            'code': 'cyprus',
+            'description': 'Discover the Mediterranean paradise of Cyprus with its stunning beaches, ancient history, and vibrant culture.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 312,
+            'tours_count': 156,
+            'attractions': ['Nicosia', 'Limassol', 'Paphos', 'Troodos Mountains', 'Famagusta']
+        },
+        {
+            'name': 'Greece',
+            'code': 'greece',
+            'description': 'Experience the birthplace of Western civilization with its iconic islands, ancient ruins, and delicious cuisine.',
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 567,
+            'tours_count': 234,
+            'attractions': ['Athens', 'Santorini', 'Mykonos', 'Crete', 'Olympia']
+        },
+        {
+            'name': 'Turkey',
+            'code': 'turkey',
+            'description': 'Bridge between Europe and Asia, offering rich history, stunning landscapes, and warm hospitality.',
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 423,
+            'tours_count': 198,
+            'attractions': ['Istanbul', 'Cappadocia', 'Pamukkale', 'Ephesus', 'Antalya']
+        },
+        {
+            'name': 'Egypt',
+            'code': 'egypt',
+            'description': 'Home to the ancient pyramids and pharaohs, with a rich history spanning thousands of years.',
+            'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 389,
+            'tours_count': 167,
+            'attractions': ['Pyramids of Giza', 'Luxor', 'Aswan', 'Cairo', 'Red Sea']
+        },
+        {
+            'name': 'Morocco',
+            'code': 'morocco',
+            'description': 'A land of contrasts with bustling souks, stunning deserts, and the majestic Atlas Mountains.',
+            'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 278,
+            'tours_count': 145,
+            'attractions': ['Marrakech', 'Sahara Desert', 'Chefchaouen', 'Atlas Mountains', 'Fes']
+        },
+        {
+            'name': 'United Arab Emirates',
+            'code': 'uae',
+            'description': 'A modern oasis of luxury and innovation, blending traditional Arabian culture with cutting-edge architecture.',
+            'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 892,
+            'tours_count': 345,
+            'attractions': ['Burj Khalifa', 'Palm Jumeirah', 'Dubai Mall', 'Sheikh Zayed Grand Mosque', 'Dubai Desert Safari']
+        },
+        {
+            'name': 'Lebanon',
+            'code': 'lebanon',
+            'description': 'A Mediterranean jewel known for its ancient history, vibrant culture, and stunning coastal beauty.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 234,
+            'tours_count': 156,
+            'attractions': ['Beirut', 'Baalbek', 'Byblos', 'Jeita Grotto', 'Cedars of God']
+        },
+        {
+            'name': 'Qatar',
+            'code': 'qatar',
+            'description': 'A modern Arabian nation blending rich heritage with world-class luxury and sporting excellence.',
+            'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 167,
+            'tours_count': 89,
+            'attractions': ['Doha', 'Museum of Islamic Art', 'Souq Waqif', 'Katara Cultural Village', 'Al Zubarah Fort']
+        },
+        {
+            'name': 'Saudi Arabia',
+            'code': 'saudi-arabia',
+            'description': 'The heart of Islam with ancient deserts, modern cities, and sacred pilgrimage sites.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 445,
+            'tours_count': 234,
+            'attractions': ['Mecca', 'Medina', 'Riyadh', 'AlUla', 'Red Sea Coast']
+        },
+        {
+            'name': 'Kuwait',
+            'code': 'kuwait',
+            'description': 'A modern Gulf state with rich cultural heritage, stunning desert landscapes, and warm hospitality.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 123,
+            'tours_count': 67,
+            'attractions': ['Kuwait City', 'Kuwait Towers', 'Liberation Tower', 'Tareq Rajab Museum', 'Al Shaheed Park']
+        },
+        {
+            'name': 'Bahrain',
+            'code': 'bahrain',
+            'description': 'An island kingdom blending ancient Dilmun civilization with modern Arabian Gulf culture.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': ['Manama', 'Bahrain Fort', 'Al Fateh Grand Mosque', 'Bahrain World Trade Center', 'Tree of Life']
+        },
+        {
+            'name': 'Oman',
+            'code': 'oman',
+            'description': 'An Arabian paradise of stunning deserts, turquoise coasts, and ancient fortresses.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 156,
+            'tours_count': 78,
+            'attractions': ['Muscat', 'Nizwa Fort', 'Wahiba Sands', 'Jebel Shams', 'Sur']
+        },
+        {
+            'name': 'Syria',
+            'code': 'syria',
+            'description': 'Ancient land of civilization with rich history, stunning architecture, and Mediterranean charm.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': ['Damascus', 'Aleppo', 'Palmyra', 'Krak des Chevaliers', 'Bosra']
+        },
+        {
+            'name': 'Iraq',
+            'code': 'iraq',
+            'description': 'Land of ancient Mesopotamia with rich history, archaeological treasures, and cultural heritage.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 67,
+            'tours_count': 34,
+            'attractions': ['Baghdad', 'Babylon', 'Uruk', 'Karbala', 'Erbil Citadel']
+        },
+        {
+            'name': 'Yemen',
+            'code': 'yemen',
+            'description': 'Ancient land of spices, towering mountains, and rich cultural heritage.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 45,
+            'tours_count': 23,
+            'attractions': ['Sana\'a', 'Socotra Island', 'Zabid', 'Shibam', 'Aden']
+        }
+    ]
+    
+    # Handle search functionality
+    search_query = request.GET.get('q', '').strip()
+    countries = demo_countries
+    
+    if search_query:
+        # Filter countries based on search query
+        filtered_countries = []
+        query_lower = search_query.lower()
+        
+        for country in demo_countries:
+            # Search in country name, description, and attractions
+            if (query_lower in country['name'].lower() or 
+                query_lower in country['description'].lower() or
+                any(query_lower in attraction.lower() for attraction in country['attractions'])):
+                filtered_countries.append(country)
+        
+        countries = filtered_countries
+    
+    context = {
+        'countries': countries,
+        'search_query': search_query,
+    }
+    return render(request, 'core/countries.html', context)
+
+
+def country_detail(request, country):
+    """Country detail page view"""
+    # Demo country data
+    countries_data = {
+        'jordan': {
+            'name': 'Jordan',
+            'description': 'Explore the ancient wonders of Jordan, from the rose-red city of Petra to the salty shores of the Dead Sea.',
+            'long_description': 'Jordan, a country steeped in history and natural beauty, offers travelers an unforgettable journey through time. From the majestic rock-cut architecture of Petra to the therapeutic waters of the Dead Sea, every corner tells a story of ancient civilizations and breathtaking landscapes.',
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 245,
+            'tours_count': 89,
+            'attractions': [
+                {'name': 'Petra', 'description': 'Ancient rock-cut city and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Dead Sea', 'description': 'Lowest point on Earth with mineral-rich waters', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Wadi Rum', 'description': 'Desert landscape known as Valley of the Moon', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jerash', 'description': 'Ancient Roman city with well-preserved ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Amman Citadel', 'description': 'Ancient fortress overlooking the capital city', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Petra Marriott\'s Wadi Rum Nabatean Resort', 'location': 'Wadi Rum', 'rating': 4.8, 'price': 250, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mövenpick Resort Petra', 'location': 'Petra', 'rating': 4.6, 'price': 180, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Kempinski Hotel Ishtar Dead Sea', 'location': 'Dead Sea', 'rating': 4.7, 'price': 220, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Petra Full Day Tour', 'duration': '8 hours', 'price': 85, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Wadi Rum Desert Safari', 'duration': '6 hours', 'price': 65, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dead Sea Experience', 'duration': '4 hours', 'price': 45, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'cyprus': {
+            'name': 'Cyprus',
+            'description': 'Discover the Mediterranean paradise of Cyprus with its stunning beaches, ancient history, and vibrant culture.',
+            'long_description': 'Cyprus, the third largest island in the Mediterranean, offers a perfect blend of ancient history and modern luxury. From the divided capital of Nicosia to the stunning beaches of Paphos, Cyprus provides an unforgettable Mediterranean experience with rich cultural heritage and breathtaking natural beauty.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 312,
+            'tours_count': 156,
+            'attractions': [
+                {'name': 'Nicosia', 'description': 'Last divided capital in Europe with rich history', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Limassol', 'description': 'Vibrant coastal city with medieval castle', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Paphos', 'description': 'UNESCO site with ancient mosaics and beaches', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Troodos Mountains', 'description': 'Mountainous region with Byzantine churches', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Famagusta', 'description': 'Historic city with Venetian walls and Gothic cathedral', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Amathus Beach Hotel Limassol', 'location': 'Limassol', 'rating': 4.7, 'price': 180, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Constantinou Bros Asimina Suites', 'location': 'Paphos', 'rating': 4.8, 'price': 220, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Four Seasons Hotel Limassol', 'location': 'Limassol', 'rating': 4.9, 'price': 350, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Nicosia Cultural Walking Tour', 'duration': '3 hours', 'price': 25, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Paphos Archaeological Park Tour', 'duration': '4 hours', 'price': 35, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Troodos Mountains Adventure', 'duration': '8 hours', 'price': 85, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'greece': {
+            'name': 'Greece',
+            'description': 'Experience the birthplace of Western civilization with its iconic islands, ancient ruins, and delicious cuisine.',
+            'long_description': 'Greece, the cradle of Western civilization, offers an extraordinary journey through ancient history and stunning natural beauty. From the iconic Acropolis in Athens to the breathtaking sunsets of Santorini, Greece combines archaeological wonders with pristine beaches and world-renowned cuisine.',
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80',
+            'accommodations_count': 567,
+            'tours_count': 234,
+            'attractions': [
+                {'name': 'Athens', 'description': 'Ancient capital with Acropolis and Parthenon', 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'Santorini', 'description': 'Stunning volcanic island with white-washed buildings', 'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mykonos', 'description': 'Cosmopolitan island known for nightlife and beaches', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Crete', 'description': 'Largest Greek island with palaces and gorges', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Olympia', 'description': 'Birthplace of the Olympic Games', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Canaves Oia Boutique Hotel', 'location': 'Santorini', 'rating': 4.9, 'price': 450, 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'St. Regis Athens', 'location': 'Athens', 'rating': 4.8, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Grace Hotel Mykonos', 'location': 'Mykonos', 'rating': 4.7, 'price': 320, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'}
+            ],
+            'tours': [
+                {'name': 'Acropolis of Athens Tour', 'duration': '4 hours', 'price': 45, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'Santorini Sunset Cruise', 'duration': '3 hours', 'price': 65, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mykonos Island Hopping', 'duration': '8 hours', 'price': 120, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'turkey': {
+            'name': 'Turkey',
+            'description': 'Bridge between Europe and Asia, offering rich history, stunning landscapes, and warm hospitality.',
+            'long_description': 'Turkey, straddling two continents, offers a fascinating blend of Eastern and Western cultures. From the majestic Hagia Sophia in Istanbul to the surreal fairy chimneys of Cappadocia, Turkey provides an incredible diversity of experiences from ancient ruins to modern cities.',
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 423,
+            'tours_count': 198,
+            'attractions': [
+                {'name': 'Istanbul', 'description': 'City of two continents with Hagia Sophia and Blue Mosque', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cappadocia', 'description': 'Surreal landscape with cave dwellings and hot air balloons', 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Pamukkale', 'description': 'Natural thermal pools and ancient Hierapolis', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ephesus', 'description': 'Ancient Greek city with well-preserved ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Antalya', 'description': 'Mediterranean coastal city with ancient harbor', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Ciragan Palace Kempinski Istanbul', 'location': 'Istanbul', 'rating': 4.9, 'price': 420, 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Museum Hotel Cappadocia', 'location': 'Cappadocia', 'rating': 4.8, 'price': 280, 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Regnum Carya Golf & Spa Resort', 'location': 'Antalya', 'rating': 4.7, 'price': 250, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Istanbul Cultural Heritage Tour', 'duration': '7 hours', 'price': 75, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cappadocia Hot Air Balloon Tour', 'duration': '4 hours', 'price': 180, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ephesus and Pamukkale Day Trip', 'duration': '12 hours', 'price': 95, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'egypt': {
+            'name': 'Egypt',
+            'description': 'Home to the ancient pyramids and pharaohs, with a rich history spanning thousands of years.',
+            'long_description': 'Egypt, the land of the pharaohs, offers an unparalleled journey through one of the world\'s greatest ancient civilizations. From the majestic pyramids of Giza to the temples of Luxor, Egypt combines archaeological wonders with modern cities and the stunning Red Sea coastline.',
+            'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 389,
+            'tours_count': 167,
+            'attractions': [
+                {'name': 'Pyramids of Giza', 'description': 'Ancient wonders and last remaining Seven Wonders', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Luxor', 'description': 'City of temples with Karnak and Valley of the Kings', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aswan', 'description': 'Southern city with temples and Nile River beauty', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cairo', 'description': 'Vibrant capital with Egyptian Museum and Khan el-Khalili', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Red Sea', 'description': 'Crystal clear waters perfect for diving and snorkeling', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Cairo at Nile Plaza', 'location': 'Cairo', 'rating': 4.8, 'price': 320, 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kempinski Nile Hotel Cairo', 'location': 'Cairo', 'rating': 4.7, 'price': 280, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jaz Makadi Star & Spa Resort', 'location': 'Red Sea', 'rating': 4.6, 'price': 220, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Pyramids and Sphinx Full Day Tour', 'duration': '8 hours', 'price': 65, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Luxor and Karnak Temple Tour', 'duration': '6 hours', 'price': 55, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nile River Felucca Cruise', 'duration': '3 hours', 'price': 35, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'morocco': {
+            'name': 'Morocco',
+            'description': 'A land of contrasts with bustling souks, stunning deserts, and the majestic Atlas Mountains.',
+            'long_description': 'Morocco, a North African gem, offers an exotic blend of ancient traditions and vibrant modernity. From the bustling souks of Marrakech to the vast Sahara Desert, Morocco provides an unforgettable journey through colorful markets, stunning architecture, and breathtaking landscapes.',
+            'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 278,
+            'tours_count': 145,
+            'attractions': [
+                {'name': 'Marrakech', 'description': 'Imperial city with Bahia Palace and Saadian Tombs', 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sahara Desert', 'description': 'Vast desert with sand dunes and Berber camps', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Chefchaouen', 'description': 'Blue-washed mountain town with stunning views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Atlas Mountains', 'description': 'Majestic mountain range with Berber villages', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Fes', 'description': 'Ancient medina and spiritual capital of Morocco', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Nomad Palace Camp', 'location': 'Sahara Desert', 'rating': 4.8, 'price': 180, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Riad Kniza Marrakech', 'location': 'Marrakech', 'rating': 4.7, 'price': 150, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dar Moha Hotel', 'location': 'Marrakech', 'rating': 4.6, 'price': 120, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'}
+            ],
+            'tours': [
+                {'name': 'Marrakech Medina Walking Tour', 'duration': '4 hours', 'price': 35, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Atlas Mountains Trek', 'duration': '3 days', 'price': 280, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sahara Desert Camel Trek', 'duration': '2 days', 'price': 220, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'uae': {
+            'name': 'United Arab Emirates',
+            'description': 'A modern oasis of luxury and innovation, blending traditional Arabian culture with cutting-edge architecture.',
+            'long_description': 'The United Arab Emirates represents the pinnacle of modern luxury and cultural fusion. From the iconic Burj Khalifa in Dubai to the traditional souks of Abu Dhabi, the UAE offers an extraordinary blend of ancient Bedouin heritage and futuristic innovation.',
+            'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 892,
+            'tours_count': 345,
+            'attractions': [
+                {'name': 'Burj Khalifa', 'description': 'World\'s tallest building with stunning city views', 'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Palm Jumeirah', 'description': 'Artificial island paradise with luxury resorts', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dubai Mall', 'description': 'World\'s largest shopping and entertainment complex', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sheikh Zayed Grand Mosque', 'description': 'Magnificent mosque with intricate Islamic architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dubai Desert Safari', 'description': 'Thrilling desert adventure with dune bashing', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Burj Al Arab Jumeirah', 'location': 'Dubai', 'rating': 4.9, 'price': 1200, 'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Armani Hotel Dubai', 'location': 'Dubai', 'rating': 4.8, 'price': 450, 'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Emirates Palace', 'location': 'Abu Dhabi', 'rating': 4.9, 'price': 580, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Dubai City Highlights Tour', 'duration': '8 hours', 'price': 95, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Abu Dhabi Cultural Tour', 'duration': '6 hours', 'price': 85, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Desert Safari Experience', 'duration': '6 hours', 'price': 75, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'lebanon': {
+            'name': 'Lebanon',
+            'description': 'A Mediterranean jewel known for its ancient history, vibrant culture, and stunning coastal beauty.',
+            'long_description': 'Lebanon, often called the "Paris of the Middle East," offers a fascinating blend of ancient Phoenician heritage and modern Mediterranean charm. From the historic ruins of Baalbek to the vibrant streets of Beirut, Lebanon provides an unforgettable journey through time and culture.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 234,
+            'tours_count': 156,
+            'attractions': [
+                {'name': 'Beirut', 'description': 'Vibrant capital city with historic and modern attractions', 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Baalbek', 'description': 'Ancient Roman temple complex and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Byblos', 'description': 'Oldest continuously inhabited city in the world', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jeita Grotto', 'description': 'Spectacular limestone cave with underground river', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cedars of God', 'description': 'Ancient cedar forest in the mountains', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Beirut', 'location': 'Beirut', 'rating': 4.8, 'price': 350, 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Le Gray Beirut', 'location': 'Beirut', 'rating': 4.7, 'price': 280, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'The Mayflower Hotel', 'location': 'Beirut', 'rating': 4.6, 'price': 220, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'}
+            ],
+            'tours': [
+                {'name': 'Beirut City Exploration', 'duration': '4 hours', 'price': 45, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Baalbek and Anjar Day Trip', 'duration': '8 hours', 'price': 85, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Byblos and Jbeil Coastal Tour', 'duration': '6 hours', 'price': 65, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'qatar': {
+            'name': 'Qatar',
+            'description': 'A modern Arabian nation blending rich heritage with world-class luxury and sporting excellence.',
+            'long_description': 'Qatar, a peninsula nation in the Arabian Gulf, represents the perfect fusion of ancient Bedouin traditions and modern architectural marvels. From the stunning Museum of Islamic Art in Doha to the spectacular venues that hosted the FIFA World Cup, Qatar offers an extraordinary cultural and sporting experience.',
+            'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 167,
+            'tours_count': 89,
+            'attractions': [
+                {'name': 'Doha', 'description': 'Modern capital with stunning Islamic architecture', 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Museum of Islamic Art', 'description': 'World-class museum showcasing Islamic art and culture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Souq Waqif', 'description': 'Traditional market with authentic Arabian atmosphere', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Katara Cultural Village', 'description': 'Cultural complex showcasing Qatari heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Zubarah Fort', 'description': '18th-century fort and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Doha', 'location': 'Doha', 'rating': 4.9, 'price': 420, 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mandarin Oriental Doha', 'location': 'Doha', 'rating': 4.8, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'The St. Regis Doha', 'location': 'Doha', 'rating': 4.7, 'price': 320, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'}
+            ],
+            'tours': [
+                {'name': 'Doha City Highlights Tour', 'duration': '6 hours', 'price': 75, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Desert Safari Adventure', 'duration': '8 hours', 'price': 120, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cultural Heritage Tour', 'duration': '4 hours', 'price': 55, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'saudi-arabia': {
+            'name': 'Saudi Arabia',
+            'description': 'The heart of Islam with ancient deserts, modern cities, and sacred pilgrimage sites.',
+            'long_description': 'Saudi Arabia, the birthplace of Islam and home to its holiest sites, offers a profound journey through ancient deserts and ultramodern cities. From the sacred mosques of Mecca and Medina to the futuristic developments of Riyadh and NEOM, Saudi Arabia represents the perfect blend of spiritual heritage and visionary innovation.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 445,
+            'tours_count': 234,
+            'attractions': [
+                {'name': 'Mecca', 'description': 'Holiest city in Islam with the Kaaba and Grand Mosque', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Medina', 'description': 'Second holiest city with Prophet\'s Mosque', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Riyadh', 'description': 'Modern capital with museums and cultural sites', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'AlUla', 'description': 'Ancient oasis city with Nabatean tombs', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Red Sea Coast', 'description': 'Stunning coastline with coral reefs and beaches', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Riyadh', 'location': 'Riyadh', 'rating': 4.9, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'The Ritz-Carlton Riyadh', 'location': 'Riyadh', 'rating': 4.8, 'price': 350, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Shangri-La Hotel AlUla', 'location': 'AlUla', 'rating': 4.9, 'price': 420, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Riyadh Cultural Tour', 'duration': '6 hours', 'price': 85, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'AlUla Ancient Wonders Tour', 'duration': '8 hours', 'price': 120, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Red Sea Coastal Adventure', 'duration': '10 hours', 'price': 150, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'kuwait': {
+            'name': 'Kuwait',
+            'description': 'A modern Gulf state with rich cultural heritage, stunning desert landscapes, and warm hospitality.',
+            'long_description': 'Kuwait, a small but vibrant Gulf nation, offers a perfect blend of traditional Arabian culture and modern urban sophistication. From the magnificent Kuwait Towers to the pristine beaches along the Arabian Gulf, Kuwait provides an authentic Arabian experience with world-class museums and cultural sites.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 123,
+            'tours_count': 67,
+            'attractions': [
+                {'name': 'Kuwait City', 'description': 'Modern capital with traditional souks and contemporary architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kuwait Towers', 'description': 'Iconic water towers symbolizing Kuwait\'s modernity', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Liberation Tower', 'description': 'Tallest structure in Kuwait with panoramic views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tareq Rajab Museum', 'description': 'Cultural museum showcasing Kuwaiti heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Shaheed Park', 'description': 'Beautiful coastal park with beaches and recreational facilities', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'The Regency Hotel Kuwait', 'location': 'Kuwait City', 'rating': 4.7, 'price': 220, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Crowne Plaza Kuwait', 'location': 'Kuwait City', 'rating': 4.6, 'price': 180, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Marina Hotel Kuwait', 'location': 'Kuwait City', 'rating': 4.5, 'price': 150, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Kuwait City Sightseeing Tour', 'duration': '4 hours', 'price': 45, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Desert Safari Experience', 'duration': '6 hours', 'price': 85, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cultural Heritage Tour', 'duration': '5 hours', 'price': 55, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'bahrain': {
+            'name': 'Bahrain',
+            'description': 'An island kingdom blending ancient Dilmun civilization with modern Arabian Gulf culture.',
+            'long_description': 'Bahrain, the smallest Arab country, offers a fascinating journey through 5,000 years of civilization. From the ancient Bahrain Fort to the modern Bahrain World Trade Center, this island kingdom provides an authentic Arabian experience with pristine beaches, rich cultural heritage, and warm hospitality.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': [
+                {'name': 'Manama', 'description': 'Vibrant capital with modern skyscrapers and traditional souks', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bahrain Fort', 'description': 'Ancient fort dating back to 2800 BC', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Al Fateh Grand Mosque', 'description': 'Largest mosque in Bahrain with stunning architecture', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bahrain World Trade Center', 'description': 'Iconic twin towers with integrated wind turbines', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tree of Life', 'description': 'Ancient tree in the desert, a natural wonder', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Bahrain Bay', 'location': 'Manama', 'rating': 4.8, 'price': 320, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'The Ritz-Carlton Bahrain', 'location': 'Manama', 'rating': 4.7, 'price': 280, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Gulf Hotel Bahrain', 'location': 'Manama', 'rating': 4.5, 'price': 180, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Manama City Tour', 'duration': '4 hours', 'price': 45, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Historical Bahrain Tour', 'duration': '6 hours', 'price': 65, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Desert and Coastal Adventure', 'duration': '8 hours', 'price': 95, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'oman': {
+            'name': 'Oman',
+            'description': 'An Arabian paradise of stunning deserts, turquoise coasts, and ancient fortresses.',
+            'long_description': 'Oman, a land of dramatic landscapes and rich maritime heritage, offers an extraordinary Arabian experience. From the rugged Hajar Mountains to the pristine beaches of the Arabian Sea, Oman combines ancient forts and traditional souks with modern luxury resorts and warm Omani hospitality.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 156,
+            'tours_count': 78,
+            'attractions': [
+                {'name': 'Muscat', 'description': 'Beautiful capital with white-washed buildings and harbor', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nizwa Fort', 'description': 'Impressive 17th-century fort with circular towers', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Wahiba Sands', 'description': 'Spectacular desert with red dunes and Bedouin camps', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jebel Shams', 'description': 'Highest mountain in Oman with breathtaking views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sur', 'description': 'Coastal town famous for traditional dhow building', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'The Chedi Muscat', 'location': 'Muscat', 'rating': 4.9, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Bustan Palace', 'location': 'Muscat', 'rating': 4.8, 'price': 420, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Anantara Al Jabal Al Akhdar Resort', 'location': 'Jabal Akhdar', 'rating': 4.7, 'price': 280, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Muscat City and Forts Tour', 'duration': '6 hours', 'price': 75, 'rating': 4.8, 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Desert Safari Adventure', 'duration': '8 hours', 'price': 120, 'rating': 4.9, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mountain and Coastal Exploration', 'duration': '10 hours', 'price': 150, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'syria': {
+            'name': 'Syria',
+            'description': 'Ancient land of civilization with rich history, stunning architecture, and Mediterranean charm.',
+            'long_description': 'Syria, the cradle of civilization, offers an extraordinary journey through thousands of years of human history. From the ancient city of Damascus to the stunning Crusader castles, Syria represents the perfect blend of Mediterranean culture, Islamic architecture, and archaeological wonders.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': [
+                {'name': 'Damascus', 'description': 'Ancient capital city with Umayyad Mosque and souks', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aleppo', 'description': 'Historic city with Citadel and ancient medina', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Palmyra', 'description': 'Ancient oasis city with Roman ruins', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Krak des Chevaliers', 'description': 'Magnificent Crusader castle and UNESCO site', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bosra', 'description': 'Ancient Roman theater and archaeological site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Four Seasons Hotel Damascus', 'location': 'Damascus', 'rating': 4.6, 'price': 220, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sham Palace Hotel', 'location': 'Damascus', 'rating': 4.4, 'price': 150, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Dedeman Damascus Hotel', 'location': 'Damascus', 'rating': 4.3, 'price': 120, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Damascus Old City Tour', 'duration': '4 hours', 'price': 35, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Palmyra and Krak des Chevaliers', 'duration': '10 hours', 'price': 85, 'rating': 4.7, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aleppo Cultural Heritage Tour', 'duration': '6 hours', 'price': 55, 'rating': 4.4, 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'iraq': {
+            'name': 'Iraq',
+            'description': 'Land of ancient Mesopotamia with rich history, archaeological treasures, and cultural heritage.',
+            'long_description': 'Iraq, the birthplace of civilization, offers an unparalleled journey through the cradle of human history. From the ancient ziggurats of Mesopotamia to the magnificent mosques of Baghdad, Iraq represents thousands of years of cultural and scientific achievements that shaped the modern world.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 67,
+            'tours_count': 34,
+            'attractions': [
+                {'name': 'Baghdad', 'description': 'Historic capital with Abbasid heritage and modern developments', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Babylon', 'description': 'Ancient city with Hanging Gardens and Ishtar Gate', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Uruk', 'description': 'Ancient Sumerian city and birthplace of writing', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Karbala', 'description': 'Sacred city with Imam Hussein Shrine', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Erbil Citadel', 'description': 'Ancient fortified settlement and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Palestine Hotel Baghdad', 'location': 'Baghdad', 'rating': 4.2, 'price': 120, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Erbil Rotana Hotel', 'location': 'Erbil', 'rating': 4.4, 'price': 150, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Karbala Meridien Hotel', 'location': 'Karbala', 'rating': 4.1, 'price': 100, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Baghdad Historical Tour', 'duration': '4 hours', 'price': 35, 'rating': 4.3, 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mesopotamia Ancient Sites Tour', 'duration': '8 hours', 'price': 75, 'rating': 4.5, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kurdish Cultural Experience', 'duration': '6 hours', 'price': 55, 'rating': 4.4, 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        },
+        'yemen': {
+            'name': 'Yemen',
+            'description': 'Ancient land of spices, towering mountains, and rich cultural heritage.',
+            'long_description': 'Yemen, the land of the Queen of Sheba, offers an extraordinary journey through ancient history and stunning landscapes. From the towering mud-brick skyscrapers of Sana\'a to the pristine Socotra islands, Yemen represents a unique blend of Arabian culture, ancient architecture, and natural wonders.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 45,
+            'tours_count': 23,
+            'attractions': [
+                {'name': 'Sana\'a', 'description': 'Ancient capital with unique mud-brick architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Socotra Island', 'description': 'Unique island with dragon\'s blood trees and biodiversity', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Zabid', 'description': 'Historic city and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Shibam', 'description': 'Manhattan of the desert with mud skyscrapers', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aden', 'description': 'Port city with volcanic crater and British colonial history', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'accommodations': [
+                {'name': 'Moevenpick Hotel Sana\'a', 'location': 'Sana\'a', 'rating': 4.3, 'price': 140, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Hilton Aden Resort', 'location': 'Aden', 'rating': 4.2, 'price': 120, 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Socotra Hotel', 'location': 'Socotra', 'rating': 3.8, 'price': 80, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ],
+            'tours': [
+                {'name': 'Sana\'a Old City Walking Tour', 'duration': '3 hours', 'price': 25, 'rating': 4.2, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Socotra Island Adventure', 'duration': '5 days', 'price': 450, 'rating': 4.6, 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Wadi Hadramaut Exploration', 'duration': '4 hours', 'price': 45, 'rating': 4.1, 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+            ]
+        }
+    }
+    
+    country_data = countries_data.get(country.lower())
+    if not country_data:
+        # If country not found, redirect to countries list
+        return redirect('countries')
+    
+    context = {
+        'country': country_data,
+    }
+    return render(request, 'core/country_detail.html', context)
+
+
+# Bulk Actions for Host Dashboard
+@login_required
+@require_POST
+def bulk_activate_listings(request):
+    """Activate multiple listings (accommodations or tours)"""
+    try:
+        listing_ids = request.POST.getlist('listing_ids[]')
+        listing_type = request.POST.get('listing_type')  # 'accommodation' or 'tour'
+
+        if not listing_ids:
+            return JsonResponse({'success': False, 'error': 'No listings selected'}, status=400)
+
+        if listing_type == 'accommodation':
+            updated = Accommodation.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_active=True)
+        elif listing_type == 'tour':
+            updated = Tour.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_active=True)
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid listing type'}, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{updated} listing(s) activated successfully',
+            'count': updated
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+@require_POST
+def bulk_deactivate_listings(request):
+    """Deactivate multiple listings (accommodations or tours)"""
+    try:
+        listing_ids = request.POST.getlist('listing_ids[]')
+        listing_type = request.POST.get('listing_type')  # 'accommodation' or 'tour'
+
+        if not listing_ids:
+            return JsonResponse({'success': False, 'error': 'No listings selected'}, status=400)
+
+        if listing_type == 'accommodation':
+            updated = Accommodation.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_active=False)
+        elif listing_type == 'tour':
+            updated = Tour.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_active=False)
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid listing type'}, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{updated} listing(s) deactivated successfully',
+            'count': updated
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+@require_POST
+def bulk_delete_listings(request):
+    """Delete multiple listings (accommodations or tours)"""
+    try:
+        listing_ids = request.POST.getlist('listing_ids[]')
+        listing_type = request.POST.get('listing_type')  # 'accommodation' or 'tour'
+
+        if not listing_ids:
+            return JsonResponse({'success': False, 'error': 'No listings selected'}, status=400)
+
+        if listing_type == 'accommodation':
+            listings = Accommodation.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            )
+            count = listings.count()
+            listings.delete()
+        elif listing_type == 'tour':
+            listings = Tour.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            )
+            count = listings.count()
+            listings.delete()
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid listing type'}, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{count} listing(s) deleted successfully',
+            'count': count
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+@require_POST
+def bulk_publish_listings(request):
+    """Publish multiple listings (accommodations or tours) - makes them visible on public site"""
+    try:
+        listing_ids = request.POST.getlist('listing_ids[]')
+        listing_type = request.POST.get('listing_type')  # 'accommodation' or 'tour'
+
+        if not listing_ids:
+            return JsonResponse({'success': False, 'error': 'No listings selected'}, status=400)
+
+        if listing_type == 'accommodation':
+            updated = Accommodation.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_published=True, is_active=True)
+        elif listing_type == 'tour':
+            updated = Tour.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_published=True, is_active=True)
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid listing type'}, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{updated} listing(s) published successfully and are now visible on the public site!',
+            'count': updated
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@login_required
+@require_POST
+def bulk_unpublish_listings(request):
+    """Unpublish multiple listings - returns them to draft mode"""
+    try:
+        listing_ids = request.POST.getlist('listing_ids[]')
+        listing_type = request.POST.get('listing_type')  # 'accommodation' or 'tour'
+
+        if not listing_ids:
+            return JsonResponse({'success': False, 'error': 'No listings selected'}, status=400)
+
+        if listing_type == 'accommodation':
+            updated = Accommodation.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_published=False)
+        elif listing_type == 'tour':
+            updated = Tour.objects.filter(
+                id__in=listing_ids,
+                host=request.user
+            ).update(is_published=False)
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid listing type'}, status=400)
+
+        return JsonResponse({
+            'success': True,
+            'message': f'{updated} listing(s) unpublished and returned to draft mode',
+            'count': updated
+        })
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+# Individual listing view functions
+@login_required
+def view_accommodation(request, listing_id):
+    """View detailed information about a specific accommodation listing"""
+    try:
+        accommodation = get_object_or_404(Accommodation, id=listing_id, host=request.user)
+
+        # Get primary photo
+        primary_photo = accommodation.photos.filter(is_primary=True).first()
+        if not primary_photo:
+            primary_photo = accommodation.photos.first()
+
+        context = {
+            'listing': accommodation,
+            'listing_type': 'accommodation',
+            'primary_photo': primary_photo,
+            'photos': accommodation.photos.all(),
+            'amenities_list': accommodation.amenities.split(',') if accommodation.amenities else [],
+            'features_list': accommodation.property_features.split(',') if accommodation.property_features else [],
+            'landmarks_list': accommodation.nearby_landmarks.split(',') if accommodation.nearby_landmarks else [],
+        }
+
+        return render(request, 'core/listing_detail.html', context)
+
+    except Exception as e:
+        messages.error(request, f'Error viewing accommodation: {str(e)}')
+        return redirect('hostdashboard')
+
+
+@login_required
+def view_tour(request, listing_id):
+    """View detailed information about a specific tour listing"""
+    try:
+        tour = get_object_or_404(Tour, id=listing_id, host=request.user)
+
+        # Get primary photo
+        primary_photo = tour.photos.filter(is_primary=True).first()
+        if not primary_photo:
+            primary_photo = tour.photos.first()
+
+        context = {
+            'listing': tour,
+            'listing_type': 'tour',
+            'primary_photo': primary_photo,
+            'photos': tour.photos.all(),
+            'languages_list': tour.languages.split(',') if tour.languages else [],
+            'inclusions_list': tour.inclusions.split(',') if tour.inclusions else [],
+            'highlights_list': tour.highlights.split(',') if tour.highlights else [],
+        }
+
+        return render(request, 'core/listing_detail.html', context)
+
+    except Exception as e:
+        messages.error(request, f'Error viewing tour: {str(e)}')
+        return redirect('hostdashboard')
+
+
+@login_required
+def edit_accommodation(request, listing_id):
+    """Edit a specific accommodation listing"""
+    try:
+        accommodation = get_object_or_404(Accommodation, id=listing_id, host=request.user)
+
+        if request.method == 'POST':
+            # Update accommodation with form data
+            accommodation.property_name = request.POST.get('property_name', accommodation.property_name)
+            accommodation.property_type = request.POST.get('property_type', accommodation.property_type)
+            accommodation.country = request.POST.get('country', accommodation.country)
+            accommodation.city = request.POST.get('city', accommodation.city)
+            accommodation.street_address = request.POST.get('street_address', accommodation.street_address)
+            accommodation.num_rooms = int(request.POST.get('num_rooms', accommodation.num_rooms))
+            accommodation.beds_per_room = int(request.POST.get('beds_per_room', accommodation.beds_per_room))
+            accommodation.bed_type = request.POST.get('bed_type', accommodation.bed_type)
+            accommodation.num_bathrooms = int(request.POST.get('num_bathrooms', accommodation.num_bathrooms))
+            accommodation.max_guests = int(request.POST.get('max_guests', accommodation.max_guests))
+            accommodation.tagline = request.POST.get('tagline', accommodation.tagline)
+            accommodation.full_description = request.POST.get('full_description', accommodation.full_description)
+            accommodation.base_price = float(request.POST.get('base_price', accommodation.base_price))
+            accommodation.cleaning_fee = request.POST.get('cleaning_fee')
+            if accommodation.cleaning_fee:
+                accommodation.cleaning_fee = float(accommodation.cleaning_fee)
+            accommodation.cancellation_policy = request.POST.get('cancellation_policy', accommodation.cancellation_policy)
+            accommodation.house_rules = request.POST.get('house_rules', accommodation.house_rules)
+
+            # Handle amenities
+            amenities = request.POST.getlist('amenities')
+            if amenities:
+                accommodation.amenities = ','.join(amenities)
+
+            accommodation.save()
+
+            messages.success(request, 'Accommodation updated successfully!')
+            return redirect('view_accommodation', listing_id=listing_id)
+
+        # GET request - show edit form
+        context = {
+            'listing': accommodation,
+            'listing_type': 'accommodation',
+            'amenities_list': accommodation.amenities.split(',') if accommodation.amenities else [],
+            'edit_mode': True,
+        }
+
+        return render(request, 'core/listing_detail.html', context)
+
+    except Exception as e:
+        messages.error(request, f'Error editing accommodation: {str(e)}')
+        return redirect('hostdashboard')
+
+
+@login_required
+def edit_tour(request, listing_id):
+    """Edit a specific tour listing"""
+    try:
+        tour = get_object_or_404(Tour, id=listing_id, host=request.user)
+
+        if request.method == 'POST':
+            # Update tour with form data
+            tour.tour_name = request.POST.get('tour_name', tour.tour_name)
+            tour.tour_category = request.POST.get('tour_category', tour.tour_category)
+            tour.duration = request.POST.get('duration', tour.duration)
+            tour.country = request.POST.get('country', tour.country)
+            tour.city = request.POST.get('city', tour.city)
+            tour.min_participants = int(request.POST.get('min_participants', tour.min_participants))
+            tour.max_participants = int(request.POST.get('max_participants', tour.max_participants))
+            tour.age_restrictions = request.POST.get('age_restrictions', tour.age_restrictions)
+            tour.tagline = request.POST.get('tagline', tour.tagline)
+            tour.full_description = request.POST.get('full_description', tour.full_description)
+            tour.itinerary = request.POST.get('itinerary', tour.itinerary)
+            tour.price_per_person = float(request.POST.get('price_per_person', tour.price_per_person))
+            tour.fitness_level = request.POST.get('fitness_level', tour.fitness_level)
+            tour.cancellation_policy = request.POST.get('cancellation_policy', tour.cancellation_policy)
+
+            # Handle languages
+            languages = request.POST.getlist('languages')
+            if languages:
+                tour.languages = ','.join(languages)
+
+            # Handle inclusions
+            inclusions = request.POST.getlist('inclusions')
+            if inclusions:
+                tour.inclusions = ','.join(inclusions)
+
+            tour.save()
+
+            messages.success(request, 'Tour updated successfully!')
+            return redirect('view_tour', listing_id=listing_id)
+
+        # GET request - show edit form
+        context = {
+            'listing': tour,
+            'listing_type': 'tour',
+            'languages_list': tour.languages.split(',') if tour.languages else [],
+            'inclusions_list': tour.inclusions.split(',') if tour.inclusions else [],
+            'edit_mode': True,
+        }
+
+        return render(request, 'core/listing_detail.html', context)
+
+    except Exception as e:
+        messages.error(request, f'Error editing tour: {str(e)}')
+        return redirect('hostdashboard')
+
+
+@login_required
+def update_accommodation(request, listing_id):
+    """Update accommodation status and refresh data"""
+    try:
+        accommodation = get_object_or_404(Accommodation, id=listing_id, host=request.user)
+
+        # This could include updating pricing, availability, or refreshing from external sources
+        accommodation.updated_at = timezone.now()
+        accommodation.save()
+
+        messages.success(request, f'"{accommodation.property_name}" has been updated and refreshed!')
+        return redirect('view_accommodation', listing_id=listing_id)
+
+    except Exception as e:
+        messages.error(request, f'Error updating accommodation: {str(e)}')
+        return redirect('hostdashboard')
+
+
+@login_required
+def update_tour(request, listing_id):
+    """Update tour status and refresh data"""
+    try:
+        tour = get_object_or_404(Tour, id=listing_id, host=request.user)
+
+        # This could include updating pricing, availability, or refreshing from external sources
+        tour.updated_at = timezone.now()
+        tour.save()
+
+        messages.success(request, f'"{tour.tour_name}" has been updated and refreshed!')
+        return redirect('view_tour', listing_id=listing_id)
+
+    except Exception as e:
+        messages.error(request, f'Error updating tour: {str(e)}')
+        return redirect('hostdashboard')
