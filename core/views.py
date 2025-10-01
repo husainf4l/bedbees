@@ -2347,6 +2347,344 @@ def countries(request):
     return render(request, 'core/countries.html', context)
 
 
+def destinations(request):
+    """Destinations page view - shows available destinations with tour and accommodation counts"""
+    # Demo destinations data (same as countries for now, but can be customized)
+    demo_destinations = [
+        {
+            'name': 'Jordan',
+            'code': 'jordan',
+            'description': 'Explore the ancient wonders of Jordan, from the rose-red city of Petra to the salty shores of the Dead Sea.',
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'accommodations_count': 245,
+            'tours_count': 89,
+            'attractions': ['Petra', 'Dead Sea', 'Wadi Rum', 'Jerash', 'Amman Citadel']
+        },
+        {
+            'name': 'Cyprus',
+            'code': 'cyprus',
+            'description': 'Discover the Mediterranean paradise of Cyprus with its stunning beaches, ancient history, and vibrant culture.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 312,
+            'tours_count': 156,
+            'attractions': ['Nicosia', 'Limassol', 'Paphos', 'Troodos Mountains', 'Famagusta']
+        },
+        {
+            'name': 'Greece',
+            'code': 'greece',
+            'description': 'Experience the birthplace of Western civilization with its iconic islands, ancient ruins, and delicious cuisine.',
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 567,
+            'tours_count': 234,
+            'attractions': ['Athens', 'Santorini', 'Mykonos', 'Crete', 'Olympia']
+        },
+        {
+            'name': 'Turkey',
+            'code': 'turkey',
+            'description': 'Bridge between Europe and Asia, offering rich history, stunning landscapes, and warm hospitality.',
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 423,
+            'tours_count': 198,
+            'attractions': ['Istanbul', 'Cappadocia', 'Pamukkale', 'Ephesus', 'Antalya']
+        },
+        {
+            'name': 'Egypt',
+            'code': 'egypt',
+            'description': 'Home to the ancient pyramids and pharaohs, with a rich history spanning thousands of years.',
+            'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 389,
+            'tours_count': 167,
+            'attractions': ['Pyramids of Giza', 'Luxor', 'Aswan', 'Cairo', 'Red Sea']
+        },
+        {
+            'name': 'Morocco',
+            'code': 'morocco',
+            'description': 'A land of contrasts with bustling souks, stunning deserts, and the majestic Atlas Mountains.',
+            'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 278,
+            'tours_count': 145,
+            'attractions': ['Marrakech', 'Sahara Desert', 'Chefchaouen', 'Atlas Mountains', 'Fes']
+        },
+        {
+            'name': 'United Arab Emirates',
+            'code': 'uae',
+            'description': 'A modern oasis of luxury and innovation, blending traditional Arabian culture with cutting-edge architecture.',
+            'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 892,
+            'tours_count': 345,
+            'attractions': ['Burj Khalifa', 'Palm Jumeirah', 'Dubai Mall', 'Sheikh Zayed Grand Mosque', 'Dubai Desert Safari']
+        },
+        {
+            'name': 'Lebanon',
+            'code': 'lebanon',
+            'description': 'A Mediterranean jewel known for its ancient history, vibrant culture, and stunning coastal beauty.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 234,
+            'tours_count': 156,
+            'attractions': ['Beirut', 'Baalbek', 'Byblos', 'Jeita Grotto', 'Cedars of God']
+        },
+        {
+            'name': 'Qatar',
+            'code': 'qatar',
+            'description': 'A modern Arabian nation blending rich heritage with world-class luxury and sporting excellence.',
+            'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 167,
+            'tours_count': 89,
+            'attractions': ['Doha', 'Museum of Islamic Art', 'Souq Waqif', 'Katara Cultural Village', 'Al Zubarah Fort']
+        },
+        {
+            'name': 'Saudi Arabia',
+            'code': 'saudi-arabia',
+            'description': 'The heart of Islam with ancient deserts, modern cities, and sacred pilgrimage sites.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 445,
+            'tours_count': 234,
+            'attractions': ['Mecca', 'Medina', 'Riyadh', 'AlUla', 'Red Sea Coast']
+        },
+        {
+            'name': 'Kuwait',
+            'code': 'kuwait',
+            'description': 'A modern Gulf state with rich cultural heritage, stunning desert landscapes, and warm hospitality.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 123,
+            'tours_count': 67,
+            'attractions': ['Kuwait City', 'Kuwait Towers', 'Liberation Tower', 'Tareq Rajab Museum', 'Al Shaheed Park']
+        },
+        {
+            'name': 'Bahrain',
+            'code': 'bahrain',
+            'description': 'An island kingdom blending ancient Dilmun civilization with modern Arabian Gulf culture.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': ['Manama', 'Bahrain Fort', 'Al Fateh Grand Mosque', 'Bahrain World Trade Center', 'Tree of Life']
+        },
+        {
+            'name': 'Oman',
+            'code': 'oman',
+            'description': 'An Arabian paradise of stunning deserts, turquoise coasts, and ancient fortresses.',
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 156,
+            'tours_count': 78,
+            'attractions': ['Muscat', 'Nizwa Fort', 'Wahiba Sands', 'Jebel Shams', 'Sur']
+        },
+        {
+            'name': 'Syria',
+            'code': 'syria',
+            'description': 'Ancient land of civilization with rich history, stunning architecture, and Mediterranean charm.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 89,
+            'tours_count': 45,
+            'attractions': ['Damascus', 'Aleppo', 'Palmyra', 'Krak des Chevaliers', 'Bosra']
+        },
+        {
+            'name': 'Iraq',
+            'code': 'iraq',
+            'description': 'Land of ancient Mesopotamia with rich history, archaeological treasures, and cultural heritage.',
+            'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 67,
+            'tours_count': 34,
+            'attractions': ['Baghdad', 'Babylon', 'Uruk', 'Karbala', 'Erbil Citadel']
+        },
+        {
+            'name': 'Yemen',
+            'code': 'yemen',
+            'description': 'Ancient land of spices, towering mountains, and rich cultural heritage.',
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'accommodations_count': 45,
+            'tours_count': 23,
+            'attractions': ['Sana\'a', 'Socotra Island', 'Zabid', 'Shibam', 'Aden']
+        }
+    ]
+    
+    # Handle search functionality
+    search_query = request.GET.get('q', '').strip()
+    destinations = demo_destinations
+    
+    if search_query:
+        # Filter destinations based on search query
+        filtered_destinations = []
+        query_lower = search_query.lower()
+        
+        for destination in demo_destinations:
+            # Search in destination name, description, and attractions
+            if (query_lower in destination['name'].lower() or 
+                query_lower in destination['description'].lower() or
+                any(query_lower in attraction.lower() for attraction in destination['attractions'])):
+                filtered_destinations.append(destination)
+        
+        destinations = filtered_destinations
+    
+    context = {
+        'destinations': destinations,
+        'search_query': search_query,
+    }
+    return render(request, 'core/destinations.html', context)
+
+
+def cart(request):
+    """Cart page view - shows user's selected accommodations and tours"""
+    # Demo cart data (in a real app, this would come from session or database)
+    demo_cart_items = [
+        {
+            'id': 1,
+            'type': 'accommodation',
+            'name': 'Petra Marriott\'s Wadi Rum Nabatean Resort',
+            'location': 'Wadi Rum, Jordan',
+            'check_in': '2024-02-15',
+            'check_out': '2024-02-18',
+            'guests': 2,
+            'nights': 3,
+            'price_per_night': 250,
+            'total_price': 750,
+            'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'rating': 4.8,
+            'amenities': ['WiFi', 'Pool', 'Breakfast', 'Spa']
+        },
+        {
+            'id': 2,
+            'type': 'tour',
+            'name': 'Petra Full Day Tour',
+            'location': 'Petra, Jordan',
+            'date': '2024-02-16',
+            'participants': 2,
+            'duration': '8 hours',
+            'price_per_person': 85,
+            'total_price': 170,
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'rating': 4.9,
+            'inclusions': ['Guide', 'Transport', 'Entry fees', 'Lunch']
+        },
+        {
+            'id': 3,
+            'type': 'accommodation',
+            'name': 'Mövenpick Resort Petra',
+            'location': 'Petra, Jordan',
+            'check_in': '2024-02-16',
+            'check_out': '2024-02-19',
+            'guests': 2,
+            'nights': 3,
+            'price_per_night': 180,
+            'total_price': 540,
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'rating': 4.6,
+            'amenities': ['WiFi', 'Restaurant', 'Bar', 'Fitness center']
+        }
+    ]
+    
+    # Calculate totals
+    subtotal = sum(item['total_price'] for item in demo_cart_items)
+    service_fee = round(subtotal * 0.08, 2)  # 8% service fee
+    taxes = round(subtotal * 0.10, 2)  # 10% taxes
+    total = subtotal + service_fee + taxes
+    
+    context = {
+        'cart_items': demo_cart_items,
+        'subtotal': subtotal,
+        'service_fee': service_fee,
+        'taxes': taxes,
+        'total': total,
+        'item_count': len(demo_cart_items),
+    }
+    return render(request, 'core/cart.html', context)
+
+
+def wishlist(request):
+    """Wishlist page view - shows user's saved accommodations and tours"""
+    # Demo wishlist data (in a real app, this would come from database)
+    demo_wishlist_items = [
+        {
+            'id': 1,
+            'type': 'accommodation',
+            'name': 'Burj Al Arab Jumeirah',
+            'location': 'Dubai, UAE',
+            'rating': 4.9,
+            'price': 1200,
+            'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'description': 'Iconic luxury hotel shaped like a sail, offering unparalleled luxury and service.',
+            'amenities': ['Private Beach', 'Spa', 'Fine Dining', 'Helipad'],
+            'added_date': '2024-01-15'
+        },
+        {
+            'id': 2,
+            'type': 'tour',
+            'name': 'Sahara Desert Camel Trek',
+            'location': 'Morocco',
+            'rating': 4.9,
+            'price': 220,
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'description': 'Experience the magic of the Sahara with traditional Bedouin camps and camel trekking.',
+            'duration': '2 days',
+            'inclusions': ['Camel Trek', 'Bedouin Camp', 'Traditional Dinner', 'Guide'],
+            'added_date': '2024-01-12'
+        },
+        {
+            'id': 3,
+            'type': 'accommodation',
+            'name': 'Canaves Oia Boutique Hotel',
+            'location': 'Santorini, Greece',
+            'rating': 4.9,
+            'price': 450,
+            'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80',
+            'description': 'Luxury boutique hotel with stunning caldera views and personalized service.',
+            'amenities': ['Caldera View', 'Infinity Pool', 'Spa', 'Restaurant'],
+            'added_date': '2024-01-10'
+        },
+        {
+            'id': 4,
+            'type': 'tour',
+            'name': 'Petra Full Day Tour',
+            'location': 'Petra, Jordan',
+            'rating': 4.9,
+            'price': 85,
+            'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'description': 'Explore the ancient rock-cut city of Petra, a UNESCO World Heritage Site.',
+            'duration': '8 hours',
+            'inclusions': ['Guide', 'Transport', 'Entry Fees', 'Lunch'],
+            'added_date': '2024-01-08'
+        },
+        {
+            'id': 5,
+            'type': 'accommodation',
+            'name': 'Ciragan Palace Kempinski Istanbul',
+            'location': 'Istanbul, Turkey',
+            'rating': 4.9,
+            'price': 420,
+            'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'description': 'Historic palace turned luxury hotel on the Bosphorus with Ottoman architecture.',
+            'amenities': ['Bosphorus View', 'Spa', 'Fine Dining', 'Historic Building'],
+            'added_date': '2024-01-05'
+        },
+        {
+            'id': 6,
+            'type': 'tour',
+            'name': 'Cappadocia Hot Air Balloon Tour',
+            'location': 'Cappadocia, Turkey',
+            'rating': 4.9,
+            'price': 180,
+            'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'description': 'Soar above the fairy chimneys in a hot air balloon at sunrise.',
+            'duration': '4 hours',
+            'inclusions': ['Hot Air Balloon', 'Transfer', 'Breakfast', 'Certificate'],
+            'added_date': '2024-01-03'
+        }
+    ]
+    
+    # Separate accommodations and tours
+    accommodations = [item for item in demo_wishlist_items if item['type'] == 'accommodation']
+    tours = [item for item in demo_wishlist_items if item['type'] == 'tour']
+    
+    context = {
+        'wishlist_items': demo_wishlist_items,
+        'accommodations': accommodations,
+        'tours': tours,
+        'total_items': len(demo_wishlist_items),
+        'accommodations_count': len(accommodations),
+        'tours_count': len(tours),
+    }
+    return render(request, 'core/wishlist.html', context)
+
+
 def country_detail(request, country):
     """Country detail page view"""
     # Demo country data

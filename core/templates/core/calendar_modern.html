@@ -1,0 +1,661 @@
+                <!-- Modern Calendar & Pricing Tab -->
+                <div id="content-calendar" class="tab-content hidden">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Rates & Availability Calendar</h2>
+                            <p class="text-gray-600">Booking.com-style calendar with per-room pricing control</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="bulkEditDates()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                Bulk Edit
+                            </button>
+                            <button onclick="exportToICal()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                                </svg>
+                                Export iCal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Property Selector -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Select Property</label>
+                                <select id="property-selector" onchange="loadPropertyCalendar(this.value)" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Choose a property...</option>
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Total Rooms</label>
+                                <div class="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <span id="total-rooms" class="text-gray-900 font-medium">0 rooms</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                                <div class="flex items-center gap-2 px-4 py-2.5 bg-green-50 border border-green-200 rounded-lg">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-green-700 font-medium">Published & Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <span class="text-sm font-semibold text-gray-700">Legend:</span>
+                            <div class="flex items-center gap-6">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 border-2 border-blue-500 rounded flex items-center justify-center">
+                                        <span class="text-xs font-bold text-gray-900">15</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Today</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-green-50 border border-green-200 rounded flex items-center justify-center">
+                                        <span class="text-xs text-green-700">$120</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Available</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-blue-50 border border-blue-300 rounded flex items-center justify-center">
+                                        <span class="text-xs text-blue-700">$150</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Booked</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-red-50 border border-red-300 rounded flex items-center justify-center">
+                                        <span class="text-xs text-red-700">✕</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Blocked</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-gray-100 border border-gray-300 rounded flex items-center justify-center">
+                                        <span class="text-xs text-gray-500">—</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">Closed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+                        <!-- Calendar Header -->
+                        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <button onclick="previousMonth()" class="p-2 hover:bg-blue-500 rounded-lg transition-colors">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <h3 id="calendar-month-year" class="text-xl font-bold text-white">October 2025</h3>
+                                <button onclick="nextMonth()" class="p-2 hover:bg-blue-500 rounded-lg transition-colors">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-center gap-4 mt-3">
+                                <button onclick="goToToday()" class="px-4 py-1.5 bg-blue-500 hover:bg-blue-400 text-white text-sm font-medium rounded-lg transition-colors">
+                                    Today
+                                </button>
+                                <span class="text-sm text-blue-100">Click any date to edit rates & availability</span>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Body -->
+                        <div class="p-6">
+                            <!-- Day Headers -->
+                            <div class="grid grid-cols-7 gap-2 mb-2">
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Sun</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Mon</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Tue</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Wed</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Thu</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Fri</div>
+                                <div class="text-center font-semibold text-sm text-gray-600 py-2">Sat</div>
+                            </div>
+
+                            <!-- Calendar Grid -->
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-2">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-3 bg-green-50 rounded-lg">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Available Days</p>
+                                    <p class="text-2xl font-bold text-gray-900">23</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-3 bg-blue-50 rounded-lg">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Booked Days</p>
+                                    <p class="text-2xl font-bold text-gray-900">7</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-3 bg-purple-50 rounded-lg">
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Avg. Price</p>
+                                    <p class="text-2xl font-bold text-gray-900">$135</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-3 bg-yellow-50 rounded-lg">
+                                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Occupancy</p>
+                                    <p class="text-2xl font-bold text-gray-900">68%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Date Modal - Redesigned for Easy Rate Editing -->
+                <div id="edit-date-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                        <!-- Modal Header -->
+                        <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-2xl z-10">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Quick Rate Editor</h3>
+                                    <p class="text-blue-100 text-sm mt-1" id="modal-date-display">October 15, 2025</p>
+                                </div>
+                                <button onclick="closeEditModal()" class="p-2 hover:bg-blue-500 rounded-lg transition-colors">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="p-6">
+                            <!-- Quick Actions Bar -->
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-6 border border-blue-200">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                        <span class="font-semibold text-gray-900">Quick Actions</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <button onclick="applyToAllRooms('price', prompt('Enter price for all rooms:'))" class="px-3 py-1.5 bg-white border border-blue-300 text-blue-700 text-sm rounded-lg hover:bg-blue-50 transition-colors">
+                                            Set Same Price
+                                        </button>
+                                        <button onclick="increaseAllPrices(10)" class="px-3 py-1.5 bg-white border border-green-300 text-green-700 text-sm rounded-lg hover:bg-green-50 transition-colors">
+                                            +10% All
+                                        </button>
+                                        <button onclick="blockAllRooms()" class="px-3 py-1.5 bg-white border border-red-300 text-red-700 text-sm rounded-lg hover:bg-red-50 transition-colors">
+                                            Block All
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Overall Availability Toggle -->
+                            <div class="bg-white rounded-xl border-2 border-gray-200 p-4 mb-5 hover:border-blue-300 transition-colors">
+                                <label class="flex items-center justify-between cursor-pointer">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold text-gray-900 block">Property Available</span>
+                                            <p class="text-xs text-gray-500">Toggle off to close for this date</p>
+                                        </div>
+                                    </div>
+                                    <input type="checkbox" id="date-open" checked class="w-14 h-7 rounded-full appearance-none bg-gray-300 checked:bg-green-500 relative cursor-pointer transition-colors shadow-inner">
+                                </label>
+                            </div>
+
+                            <!-- Room Type Cards - Streamlined -->
+                            <div class="space-y-4" id="room-settings">
+                                <!-- Room Type 1 -->
+                                <div class="bg-white border-2 border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all">
+                                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-5 py-3 border-b border-gray-200">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-bold text-base text-gray-900">Deluxe Ocean View</h4>
+                                                <p class="text-xs text-gray-600">Max 2 guests • 3 total units</p>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" class="room-available sr-only peer" checked onchange="toggleRoomAvailability(this)">
+                                                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                                <span class="ml-2 text-sm font-medium text-gray-700">Open</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-5">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <!-- Price Input - Prominent -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Rate per Night</label>
+                                                <div class="relative">
+                                                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                                        <span class="text-gray-500 font-bold text-lg">$</span>
+                                                    </div>
+                                                    <input type="number" value="120" min="0" step="5" class="w-full pl-10 pr-4 py-3 text-lg font-bold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors bg-yellow-50">
+                                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                        <div class="flex flex-col">
+                                                            <button type="button" onclick="incrementValue(this, 5)" class="text-gray-400 hover:text-blue-600 -mb-1">
+                                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" transform="rotate(180 10 10)"></path>
+                                                                </svg>
+                                                            </button>
+                                                            <button type="button" onclick="decrementValue(this, 5)" class="text-gray-400 hover:text-blue-600">
+                                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Available Rooms -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Units Available</label>
+                                                <input type="number" value="3" min="0" max="10" class="w-full px-4 py-3 text-lg font-semibold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors">
+                                            </div>
+
+                                            <!-- Min Stay -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Min Nights</label>
+                                                <select class="w-full px-4 py-3 text-lg font-semibold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors">
+                                                    <option value="1">1 night</option>
+                                                    <option value="2">2 nights</option>
+                                                    <option value="3">3 nights</option>
+                                                    <option value="7">1 week</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Room Type 2 -->
+                                <div class="bg-white border-2 border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all">
+                                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-5 py-3 border-b border-gray-200">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <h4 class="font-bold text-base text-gray-900">Garden Suite</h4>
+                                                <p class="text-xs text-gray-600">Max 4 guests • 2 total units</p>
+                                            </div>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" class="room-available sr-only peer" checked onchange="toggleRoomAvailability(this)">
+                                                <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                                <span class="ml-2 text-sm font-medium text-gray-700">Open</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-5">
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <!-- Price Input - Prominent -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Rate per Night</label>
+                                                <div class="relative">
+                                                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                                        <span class="text-gray-500 font-bold text-lg">$</span>
+                                                    </div>
+                                                    <input type="number" value="180" min="0" step="5" class="w-full pl-10 pr-4 py-3 text-lg font-bold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors bg-yellow-50">
+                                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                        <div class="flex flex-col">
+                                                            <button type="button" onclick="incrementValue(this, 5)" class="text-gray-400 hover:text-blue-600 -mb-1">
+                                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" transform="rotate(180 10 10)"></path>
+                                                                </svg>
+                                                            </button>
+                                                            <button type="button" onclick="decrementValue(this, 5)" class="text-gray-400 hover:text-blue-600">
+                                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Available Rooms -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Units Available</label>
+                                                <input type="number" value="2" min="0" max="10" class="w-full px-4 py-3 text-lg font-semibold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors">
+                                            </div>
+
+                                            <!-- Min Stay -->
+                                            <div class="col-span-3 sm:col-span-1">
+                                                <label class="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wide">Min Nights</label>
+                                                <select class="w-full px-4 py-3 text-lg font-semibold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-colors">
+                                                    <option value="1">1 night</option>
+                                                    <option value="2" selected>2 nights</option>
+                                                    <option value="3">3 nights</option>
+                                                    <option value="7">1 week</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer - Sticky -->
+                        <div class="sticky bottom-0 bg-white px-6 py-4 rounded-b-2xl border-t-2 border-gray-200 shadow-lg">
+                            <div class="flex items-center justify-between gap-3">
+                                <button onclick="closeEditModal()" class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                                    Cancel
+                                </button>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="saveAndNext()" class="px-4 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2">
+                                        Save & Next Day
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                    <button onclick="saveDateSettings()" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                // Calendar State
+                let currentDate = new Date();
+                let selectedPropertyId = null;
+                let calendarData = {};
+
+                // Initialize Calendar
+                function initializeCalendar() {
+                    loadProperties();
+                    renderCalendar();
+                }
+
+                // Load properties for selector
+                function loadProperties() {
+                    // This would fetch from backend in production
+                    const selector = document.getElementById('property-selector');
+                    selector.innerHTML = `
+                        <option value="">Choose a property...</option>
+                        <option value="1">Beachfront Paradise Villa - 5 rooms</option>
+                        <option value="2">Mountain Retreat Cabin - 3 rooms</option>
+                        <option value="3">City Center Apartment - 2 rooms</option>
+                    `;
+                }
+
+                // Render calendar grid
+                function renderCalendar() {
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth();
+
+                    // Update header
+                    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
+                    document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+
+                    // Get first day of month and number of days
+                    const firstDay = new Date(year, month, 1).getDay();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    const today = new Date();
+
+                    // Build calendar grid
+                    const grid = document.getElementById('calendar-grid');
+                    grid.innerHTML = '';
+
+                    // Empty cells for days before month starts
+                    for (let i = 0; i < firstDay; i++) {
+                        grid.innerHTML += `<div class="h-24"></div>`;
+                    }
+
+                    // Days of the month
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const date = new Date(year, month, day);
+                        const isToday = date.toDateString() === today.toDateString();
+                        const isPast = date < today && !isToday;
+
+                        // Demo data - would come from backend
+                        const status = day % 7 === 0 ? 'blocked' : day % 5 === 0 ? 'booked' : 'available';
+                        const price = status === 'available' ? 120 + (day % 3) * 15 : status === 'booked' ? 135 : null;
+
+                        let bgClass = '';
+                        let borderClass = 'border border-gray-200';
+                        let textClass = 'text-gray-900';
+                        let priceDisplay = '';
+
+                        if (isToday) {
+                            borderClass = 'border-2 border-blue-500 ring-2 ring-blue-200';
+                        }
+
+                        if (isPast) {
+                            bgClass = 'bg-gray-50';
+                            textClass = 'text-gray-400';
+                        } else if (status === 'available') {
+                            bgClass = 'bg-green-50 hover:bg-green-100';
+                            priceDisplay = `<span class="text-xs font-semibold text-green-700">$${price}</span>`;
+                        } else if (status === 'booked') {
+                            bgClass = 'bg-blue-50';
+                            priceDisplay = `<span class="text-xs font-semibold text-blue-700">$${price}</span>`;
+                        } else if (status === 'blocked') {
+                            bgClass = 'bg-red-50';
+                            priceDisplay = `<span class="text-xs font-bold text-red-700">✕</span>`;
+                        }
+
+                        const tooltip = status === 'available' ? '2 rooms available • Click to edit' :
+                                      status === 'booked' ? '1 room booked • 1 available' :
+                                      'Blocked - not available';
+
+                        grid.innerHTML += `
+                            <div class="${bgClass} ${borderClass} rounded-lg p-2 h-24 cursor-pointer transition-all hover:shadow-md relative group"
+                                 onclick="${!isPast ? `openEditModal('${year}-${month+1}-${day}')` : ''}"
+                                 title="${tooltip}">
+                                <div class="flex flex-col h-full">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-sm font-bold ${textClass}">${day}</span>
+                                        ${status === 'available' ? '<span class="text-xs px-1.5 py-0.5 bg-green-100 text-green-700 rounded">Open</span>' : ''}
+                                    </div>
+                                    <div class="flex-1 flex items-center justify-center">
+                                        ${priceDisplay}
+                                    </div>
+                                    ${status === 'booked' ? '<div class="text-xs text-blue-600 text-center">Booked</div>' : ''}
+                                </div>
+                                <!-- Tooltip on hover -->
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                                    ${tooltip}
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Navigation
+                function previousMonth() {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderCalendar();
+                }
+
+                function nextMonth() {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar();
+                }
+
+                function goToToday() {
+                    currentDate = new Date();
+                    renderCalendar();
+                }
+
+                // Modal functions
+                function openEditModal(dateStr) {
+                    const modal = document.getElementById('edit-date-modal');
+                    const date = new Date(dateStr);
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    document.getElementById('modal-date-display').textContent = date.toLocaleDateString('en-US', options);
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
+
+                function closeEditModal() {
+                    const modal = document.getElementById('edit-date-modal');
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+
+                function saveDateSettings() {
+                    // Here you would save to backend via AJAX
+                    alert('Settings saved! (This would save to backend in production)');
+                    closeEditModal();
+                    renderCalendar();
+                }
+
+                function loadPropertyCalendar(propertyId) {
+                    selectedPropertyId = propertyId;
+                    if (propertyId) {
+                        // Load property-specific data
+                        document.getElementById('total-rooms').textContent = propertyId === '1' ? '5 rooms' : propertyId === '2' ? '3 rooms' : '2 rooms';
+                        renderCalendar();
+                    }
+                }
+
+                // Utility functions
+                function bulkEditDates() {
+                    alert('Bulk edit functionality - select date range to edit multiple dates at once');
+                }
+
+                function exportToICal() {
+                    alert('Export to iCal format for syncing with other platforms');
+                }
+
+                // Quick Actions for Modal
+                function incrementValue(button, step) {
+                    const input = button.closest('.relative').querySelector('input[type="number"]');
+                    input.value = parseInt(input.value || 0) + step;
+                }
+
+                function decrementValue(button, step) {
+                    const input = button.closest('.relative').querySelector('input[type="number"]');
+                    const newValue = parseInt(input.value || 0) - step;
+                    input.value = newValue >= 0 ? newValue : 0;
+                }
+
+                function toggleRoomAvailability(checkbox) {
+                    const card = checkbox.closest('.border-2');
+                    const inputs = card.querySelectorAll('input[type="number"], select');
+                    inputs.forEach(input => {
+                        input.disabled = !checkbox.checked;
+                        input.style.opacity = checkbox.checked ? '1' : '0.5';
+                    });
+                }
+
+                function applyToAllRooms(field, value) {
+                    if (!value) return;
+                    const priceInputs = document.querySelectorAll('#room-settings input[type="number"]');
+                    priceInputs.forEach((input, index) => {
+                        // Only update price inputs (every 2nd input in the pattern)
+                        if (index % 2 === 0) {
+                            input.value = value;
+                        }
+                    });
+                }
+
+                function increaseAllPrices(percentage) {
+                    const priceInputs = document.querySelectorAll('#room-settings .bg-yellow-50');
+                    priceInputs.forEach(input => {
+                        const currentValue = parseInt(input.value || 0);
+                        input.value = Math.round(currentValue * (1 + percentage / 100));
+                    });
+                }
+
+                function blockAllRooms() {
+                    if (confirm('Block all rooms for this date?')) {
+                        document.getElementById('date-open').checked = false;
+                        const checkboxes = document.querySelectorAll('.room-available');
+                        checkboxes.forEach(cb => {
+                            cb.checked = false;
+                            toggleRoomAvailability(cb);
+                        });
+                    }
+                }
+
+                function saveAndNext() {
+                    // Save current settings
+                    saveDateSettings();
+                    // Move to next day
+                    const currentDateStr = document.getElementById('modal-date-display').textContent;
+                    const date = new Date(currentDateStr);
+                    date.setDate(date.getDate() + 1);
+                    const nextDateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+                    openEditModal(nextDateStr);
+                }
+
+                // Initialize on load
+                if (document.getElementById('calendar-grid')) {
+                    initializeCalendar();
+                }
+                </script>
+
+                <style>
+                /* Toggle switch styling */
+                input[type="checkbox"]#date-open {
+                    position: relative;
+                }
+                input[type="checkbox"]#date-open::after {
+                    content: '';
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    background: white;
+                    border-radius: 50%;
+                    transition: transform 0.2s;
+                }
+                input[type="checkbox"]#date-open:checked::after {
+                    transform: translateX(24px);
+                }
+                </style>

@@ -1,8 +1,14 @@
-from django.urls import path
-from django.contrib.auth import views as auth_views
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views, api_views
+
+# API Router
+router = DefaultRouter()
+router.register(r'calendar', api_views.CalendarViewSet, basename='calendar')
 
 urlpatterns = [
+    # API URLs
+    path('api/', include(router.urls)),
     path('', views.home, name='home'),
     path('tours/', views.tours, name='tours'),
     path('tours/<str:category>/', views.tours, name='tours_category'),
@@ -23,6 +29,9 @@ urlpatterns = [
     path('create-tour/', views.create_tour, name='create_tour'),
     path('countries/', views.countries, name='countries'),
     path('countries/<str:country>/', views.country_detail, name='country_detail'),
+    path('destinations/', views.destinations, name='destinations'),
+    path('cart/', views.cart, name='cart'),
+    path('wishlist/', views.wishlist, name='wishlist'),
 
     # Bulk actions for host dashboard
     path('bulk-activate-listings/', views.bulk_activate_listings, name='bulk_activate_listings'),

@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+import pytz
 
 # Create your models here.
 
@@ -78,7 +81,7 @@ class UserProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username} - {'Host' if self.is_host else 'Traveler'}"
+        return f"{self.name} ({self.rule_type})"
     
     def get_full_name(self):
         return f"{self.user.first_name} {self.user.last_name}".strip() or self.user.username
@@ -1016,3 +1019,224 @@ class RecurringRule(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.rule_type})"
+
+
+# Multi-Room Type Calendar Models
+
+class Listing(models.Model):
+    """Generic listing model for accommodations and tours with multi-room support"""
+    LISTING_TYPES = [
+        ('accommodation', 'Accommodation'),
+        ('tour', 'Tour'),
+    ]
+
+    CURRENCIES = [
+        ('USD', 'US Dollar'),
+        ('EUR', 'Euro'),
+        ('GBP', 'British Pound'),
+        ('JPY', 'Japanese Yen'),
+        ('CAD', 'Canadian Dollar'),
+        ('AUD', 'Australian Dollar'),
+        ('CHF', 'Swiss Franc'),
+        ('CNY', 'Chinese Yuan'),
+        ('SEK', 'Swedish Krona'),
+        ('NZD', 'New Zealand Dollar'),
+        ('MXN', 'Mexican Peso'),
+        ('SGD', 'Singapore Dollar'),
+        ('HKD', 'Hong Kong Dollar'),
+        ('NOK', 'Norwegian Krone'),
+        ('KRW', 'South Korean Won'),
+        ('TRY', 'Turkish Lira'),
+        ('RUB', 'Russian Ruble'),
+        ('INR', 'Indian Rupee'),
+        ('BRL', 'Brazilian Real'),
+        ('ZAR', 'South African Rand'),
+    ]
+
+    # Basic Info
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings')
+    name = models.CharField(max_length=200)
+    listing_type = models.CharField(max_length=20, choices=LISTING_TYPES)
+
+    # Location & Timezone
+    timezone = models.CharField(max_length=50, default='UTC')
+    country = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+
+    # Currency & Default Pricing
+    currency = models.CharField(max_length=3, choices=CURRENCIES, default='USD')
+    default_price = models.DecimalField(max_digits=10, decimal_places=2)
+    default_min_stay = models.IntegerField(default=1)
+
+    # Status
+    is_active = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=False)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} ({self.listing_type})"
+
+    def get_timezone_obj(self):
+        """Get pytz timezone object"""
+        try:
+            return pytz.timezone(self.timezone)
+        except pytz.exceptions.UnknownTimeZoneError:
+            return pytz.UTC
+
+
+class RoomType(models.Model):
+    """Room types within a listing (e.g., Standard Room, Deluxe Suite)"""
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='room_types')
+    name = models.CharField(max_length=100)
+    base_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_units = models.IntegerField(help_text="How many physical units exist of this room type")
+
+    # Status
+    is_active = models.BooleanField(default=True)
+
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['listing', 'name']
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.listing.name} - {self.name}"
+
+    def clean(self):
+        if self.total_units < 1:
+            raise ValidationError("Total units must be at least 1")
+
+
+class AvailabilityDay(models.Model):
+    """Per-listing per-date availability and pricing overrides"""
+    STATUS_CHOICES = [
+        ('OPEN', 'Open'),
+        ('CLOSED', 'Closed'),
+        ('BLOCKED', 'Blocked'),
+    ]
+
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='availability_days')
+    date = models.DateField()
+
+    # Status
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='OPEN')
+
+    # Pricing overrides (optional)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True,
+                               help_text="Override default price for this day")
+    min_stay = models.IntegerField(blank=True, null=True,
+                                  help_text="Override default min stay for this day")
+
+    # Notes
+    notes = models.TextField(blank=True, null=True)
+
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['listing', 'date']
+        ordering = ['date']
+        indexes = [
+            models.Index(fields=['listing', 'date']),
+            models.Index(fields=['date', 'status']),
+        ]
+
+    def __str__(self):
+        return f"{self.listing.name} - {self.date} ({self.status})"
+
+    def get_effective_price(self):
+        """Get the effective price for this day"""
+        return self.price if self.price is not None else self.listing.default_price
+
+    def get_effective_min_stay(self):
+        """Get the effective minimum stay for this day"""
+        return self.min_stay if self.min_stay is not None else self.listing.default_min_stay
+
+
+class DayRoomInventory(models.Model):
+    """Per-listing per-room-type per-date inventory management"""
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    # Inventory
+    units_open = models.IntegerField(help_text="How many units are offered for sale that day")
+    units_booked = models.IntegerField(default=0, help_text="Units currently booked (read-only/derived)")
+
+    # Restrictions
+    stop_sell = models.BooleanField(default=False, help_text="True means do not accept bookings")
+    cta = models.BooleanField(default=False, help_text="Close-to-arrival restriction")
+    ctd = models.BooleanField(default=False, help_text="Close-to-departure restriction")
+
+    # Price override per room type
+    override_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    # Notes
+    note = models.TextField(blank=True, null=True)
+
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['listing', 'room_type', 'date']
+        ordering = ['date', 'room_type__name']
+        indexes = [
+            models.Index(fields=['listing', 'date']),
+            models.Index(fields=['room_type', 'date']),
+            models.Index(fields=['date', 'stop_sell']),
+        ]
+
+    def __str__(self):
+        return f"{self.listing.name} - {self.room_type.name} - {self.date}"
+
+    def clean(self):
+        """Validate inventory constraints"""
+        if self.units_open < 0:
+            raise ValidationError("Units open cannot be negative")
+
+        if self.units_open > self.room_type.total_units:
+            raise ValidationError(f"Units open ({self.units_open}) cannot exceed total units ({self.room_type.total_units})")
+
+        if self.units_booked < 0:
+            raise ValidationError("Units booked cannot be negative")
+
+        if self.units_booked > self.units_open:
+            raise ValidationError(f"Units booked ({self.units_booked}) cannot exceed units open ({self.units_open})")
+
+        if self.override_price is not None and self.override_price < 0:
+            raise ValidationError("Override price cannot be negative")
+
+    @property
+    def available(self):
+        """Calculate available units"""
+        if self.stop_sell:
+            return 0
+        return max(0, self.units_open - self.units_booked)
+
+    def get_effective_price(self):
+        """Get the effective price for this room type on this date"""
+        return self.override_price if self.override_price is not None else self.room_type.base_price
+
+    def is_bookable(self):
+        """Check if this room type is bookable on this date"""
+        # Check listing-level availability
+        try:
+            day_availability = AvailabilityDay.objects.get(listing=self.listing, date=self.date)
+            if day_availability.status in ['CLOSED', 'BLOCKED']:
+                return False
+        except AvailabilityDay.DoesNotExist:
+            pass  # Default to open
+
+        # Check room-level availability
+        return not self.stop_sell and self.available > 0
