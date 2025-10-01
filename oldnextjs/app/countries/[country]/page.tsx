@@ -814,8 +814,52 @@ export default function CountryPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Navigation Bar */}
+      <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-8">
+              <Link href="/destinations" className="text-gray-600 hover:text-orange-600 transition-colors">
+                ← Back to Destinations
+              </Link>
+              <div className="flex items-center space-x-6">
+                <button
+                  onClick={() => document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-gray-700 hover:text-orange-600 font-medium transition-colors"
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-gray-700 hover:text-orange-600 font-medium transition-colors"
+                >
+                  Destinations
+                </button>
+                <button
+                  onClick={() => document.getElementById('highlights')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-gray-700 hover:text-orange-600 font-medium transition-colors"
+                >
+                  Highlights
+                </button>
+                <button
+                  onClick={() => document.getElementById('tours')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-gray-700 hover:text-orange-600 font-medium transition-colors"
+                >
+                  Tours
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-2xl">{country.flag}</span>
+              <span className="font-semibold text-gray-900">{country.name}</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section
+        id="overview"
         className="relative bg-gradient-to-r from-orange-600 to-red-600 text-white py-24 min-h-[60vh] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url('${country.heroImage}')` }}
       >
@@ -878,8 +922,24 @@ export default function CountryPage() {
       </section>
 
       {/* Country Info Section */}
-      <section className="py-16 bg-gray-50">
+      <section id="highlights" className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-8">
+            <div className="relative h-64 rounded-2xl overflow-hidden mb-8">
+              <Image
+                src={country.heroImage}
+                alt={`${country.name} highlights`}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h2 className="text-4xl font-bold mb-2">Discover {country.name}</h2>
+                  <p className="text-xl opacity-90">Explore the highlights and hidden gems</p>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
@@ -952,8 +1012,25 @@ export default function CountryPage() {
       </section>
 
       {/* Destinations Section */}
-      <section className="py-16 bg-white">
+      <section id="destinations" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-8">
+            <div className="relative h-64 rounded-2xl overflow-hidden mb-8">
+              <Image
+                src={country.destinations[0]?.imageUrl || country.heroImage}
+                alt={`${country.name} destinations`}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h2 className="text-4xl font-bold mb-2">Explore Destinations</h2>
+                  <p className="text-xl opacity-90">Amazing places to visit in {country.name}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Explore {country.name}
@@ -1054,8 +1131,22 @@ export default function CountryPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-orange-600 to-red-600 text-white">
+      <section id="tours" className="py-16 bg-gradient-to-r from-orange-600 to-red-600 text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="relative h-64 rounded-2xl overflow-hidden mb-8">
+            <Image
+              src={country.heroImage}
+              alt={`${country.name} tours`}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <div className="text-center text-white">
+                <h2 className="text-4xl font-bold mb-2">Available Tours</h2>
+                <p className="text-xl opacity-90">Book your perfect experience in {country.name}</p>
+              </div>
+            </div>
+          </div>
           <h2 className="text-4xl font-bold mb-6">
             Ready to Explore {country.name}?
           </h2>

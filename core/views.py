@@ -484,6 +484,10 @@ def share_trip_tours(request):
 
 def signin(request):
     """Sign in page view with role-based redirects"""
+    # Clear any existing messages to prevent accumulation
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -504,7 +508,7 @@ def signin(request):
                         return redirect('dashboard')  # Traveler dashboard
                 except UserProfile.DoesNotExist:
                     # Create profile if it doesn't exist (fallback)
-                    UserProfile.objects.create(user=user, is_host=False)
+                    UserProfile.objects.create(user=request.user, is_host=False)
                     messages.success(request, f"Welcome back, {username}!")
                     return redirect('dashboard')
             else:
@@ -517,6 +521,10 @@ def signin(request):
 
 def signup(request):
     """Sign up page view for travelers"""
+    # Clear any existing messages to prevent accumulation
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -634,6 +642,10 @@ def accommodations(request):
 
 def hostregister(request):
     """Host registration page view"""
+    # Clear any existing messages to prevent accumulation
+    storage = messages.get_messages(request)
+    storage.used = True
+    
     if request.method == 'POST':
         form = HostRegistrationForm(request.POST)
         if form.is_valid():
@@ -772,6 +784,9 @@ def profile(request):
 def logout_view(request):
     """Custom logout view"""
     logout(request)
+    # Clear any existing messages to prevent accumulation
+    storage = messages.get_messages(request)
+    storage.used = True
     messages.success(request, "You have been logged out successfully.")
     return redirect('home')  # Always redirect to home after logout
 
