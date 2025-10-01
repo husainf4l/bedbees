@@ -81,7 +81,10 @@ WSGI_APPLICATION = 'bedbees.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -124,7 +127,16 @@ STATICFILES_DIRS = [
     BASE_DIR / "core" / "static",
 ]
 
+# Media files (User uploaded content)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login/Logout URLs
+LOGIN_URL = '/signin/'
+LOGIN_REDIRECT_URL = '/dashboard/'  # Default for travelers
+LOGOUT_REDIRECT_URL = '/'

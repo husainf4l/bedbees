@@ -1,0 +1,289 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Create Tour Listing - Bedbees{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Tour / Experience Listing</h1>
+            <p class="text-gray-600">Complete all sections to publish your tour</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-8">
+            {% csrf_token %}
+
+            <!-- Section 1: Host Info -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">1. Host / Guide Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Company or Guide Name *</label>
+                        <input type="text" name="host_name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                        <input type="email" name="contact_email" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone *</label>
+                        <input type="tel" name="contact_phone" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Guide Certifications</label>
+                        <input type="text" name="certifications" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="e.g., Licensed Tour Guide, First Aid">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Tour Basic Info -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">2. Tour Basic Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tour Name *</label>
+                        <input type="text" name="tour_name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tour Category *</label>
+                        <select name="tour_category" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select category</option>
+                            <option value="cultural">Cultural Tour</option>
+                            <option value="adventure">Adventure Tour</option>
+                            <option value="food">Food & Drink</option>
+                            <option value="nature">Nature & Wildlife</option>
+                            <option value="water">Water Activities</option>
+                            <option value="historical">Historical Sites</option>
+                            <option value="wellness">Wellness & Spa</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Duration *</label>
+                        <input type="text" name="duration" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="e.g., 3 hours, Full day">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Country *</label>
+                        <input type="text" name="country" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">City *</label>
+                        <input type="text" name="city" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Languages Offered *</label>
+                        <input type="text" name="languages" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="e.g., English, Arabic, French">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Capacity -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">3. Group Capacity</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Min Participants *</label>
+                        <input type="number" name="min_participants" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Max Participants *</label>
+                        <input type="number" name="max_participants" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Age Restrictions</label>
+                        <input type="text" name="age_restrictions" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="e.g., 18+, Family friendly">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Description & Itinerary -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">4. Description & Itinerary</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Short Tagline *</label>
+                        <input type="text" name="tagline" required maxlength="150" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Full Description *</label>
+                        <textarea name="full_description" required rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Detailed Itinerary *</label>
+                        <textarea name="itinerary" required rows="8" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="Hour-by-hour or day-by-day breakdown of the tour..."></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Meeting Point *</label>
+                            <input type="text" name="meeting_point" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">End Point</label>
+                            <input type="text" name="end_point" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tour Highlights</label>
+                        <textarea name="highlights" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="Key highlights, one per line"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Media -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">5. Photos & Media</h2>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <input type="file" name="photos" multiple accept="image/*" class="hidden" id="photo-upload">
+                    <label for="photo-upload" class="cursor-pointer">
+                        <span class="text-purple-600 hover:text-purple-700 font-medium">Upload photos</span>
+                        <span class="text-gray-600"> or drag and drop</span>
+                    </label>
+                    <p class="text-sm text-gray-500 mt-2">PNG, JPG, GIF up to 10MB each</p>
+                </div>
+            </div>
+
+            <!-- Section 6: Inclusions -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">6. What's Included / Excluded</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-4">Included</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="transport" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Transportation</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="meals" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Meals</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="guide" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Professional Guide</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="tickets" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Entrance Tickets</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="equipment" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Equipment</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="insurance" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Insurance</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-4">Not Included</h3>
+                        <textarea name="exclusions" rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="List what's not included (personal expenses, tips, etc.)"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 7: Safety & Policies -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">7. Safety Requirements & Policies</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Fitness Level Required *</label>
+                        <select name="fitness_level" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select level</option>
+                            <option value="easy">Easy - No fitness required</option>
+                            <option value="moderate">Moderate - Some fitness required</option>
+                            <option value="challenging">Challenging - Good fitness required</option>
+                            <option value="difficult">Difficult - Excellent fitness required</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Safety Equipment/Gear Needed</label>
+                        <textarea name="safety_gear" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="e.g., Hiking boots, sunscreen, water bottle"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Cancellation Policy *</label>
+                        <select name="cancellation_policy" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select policy</option>
+                            <option value="flexible">Flexible - Free cancellation 24 hours before</option>
+                            <option value="moderate">Moderate - Free cancellation 48 hours before</option>
+                            <option value="strict">Strict - 50% refund up to 7 days before</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8: Pricing -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">8. Pricing</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Price per Person (USD) *</label>
+                        <input type="number" name="price_per_person" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Group Price (USD)</label>
+                        <input type="number" name="group_price" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" placeholder="Optional flat rate for groups">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Child Discount (%)</label>
+                        <input type="number" name="child_discount" min="0" max="100" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Currency</label>
+                        <select name="currency" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="JOD">JOD</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 9: Availability Note -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">9. Availability</h2>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <div class="flex items-start gap-4">
+                        <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="font-semibold text-blue-900 mb-2">Calendar Setup</h3>
+                            <p class="text-blue-800 text-sm">After publishing, you'll be able to set up your calendar with available dates, time slots, and pricing overrides in your dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <input type="checkbox" name="agree_terms" required id="agree-terms" class="w-5 h-5 text-purple-600 rounded">
+                    <label for="agree-terms" class="text-sm text-gray-700">I agree to the <a href="#" class="text-purple-600 hover:underline">Terms of Service</a> and <a href="#" class="text-purple-600 hover:underline">Host Agreement</a></label>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <a href="{% url 'hostdashboard' %}" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl transition-colors flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Publish Tour
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

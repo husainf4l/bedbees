@@ -1,0 +1,1280 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Create Accommodation Listing - Bedbees{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Accommodation Listing</h1>
+            <p class="text-gray-600">Complete all sections to publish your property</p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-1" class="step-indicator active w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">1</div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Host Info</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-2" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">2</div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Basic Info</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-3" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">3</div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Capacity</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-4" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">4</div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Description</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-5" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">5</div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Photos</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-6" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">6</div>
+                        <div class="flex-1 h-1 bg-gray-200"></div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Calendar</p>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div id="step-indicator-7" class="step-indicator w-10 h-10 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center font-semibold">7</div>
+                    </div>
+                    <p class="text-xs mt-2 text-center">Publish</p>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="listingForm">
+            {% csrf_token %}
+
+            <!-- Step 1: Host/Business Info -->
+            <div id="step-1" class="form-step bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">1. Host / Business Information</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Host or Company Name *</label>
+                        <input type="text" name="host_name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Legal Entity Type *</label>
+                        <select name="entity_type" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select type</option>
+                            <option value="individual">Individual</option>
+                            <option value="company">Company</option>
+                            <option value="ngo">NGO</option>
+                            <option value="partnership">Partnership</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                        <input type="email" name="contact_email" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
+                        <input type="tel" name="contact_phone" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Business Address *</label>
+                        <textarea name="business_address" required rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tax ID / Registration Number</label>
+                        <input type="text" name="tax_id" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Bank Account for Payouts</label>
+                        <input type="text" name="bank_account" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Account Number">
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-8">
+                    <button type="button" onclick="nextStep(1)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Listing Basic Info -->
+            <div id="step-2" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">2. Listing / Product Basic Info</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Property Name *</label>
+                        <input type="text" name="property_name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., Luxury Beachfront Villa">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Property Type *</label>
+                        <select name="property_type" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select type</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="villa">Villa</option>
+                            <option value="resort">Resort</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="guesthouse">Guesthouse</option>
+                            <option value="boutique">Boutique Hotel</option>
+                            <option value="motel">Motel</option>
+                            <option value="bed_breakfast">Bed & Breakfast</option>
+                            <option value="cottage">Cottage</option>
+                            <option value="cabin">Cabin</option>
+                            <option value="chalet">Chalet</option>
+                            <option value="bungalow">Bungalow</option>
+                            <option value="penthouse">Penthouse</option>
+                            <option value="studio">Studio</option>
+                            <option value="loft">Loft</option>
+                            <option value="townhouse">Townhouse</option>
+                            <option value="farmhouse">Farmhouse</option>
+                            <option value="castle">Castle</option>
+                            <option value="palace">Palace</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Star Rating</label>
+                        <select name="star_rating" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select rating</option>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Country *</label>
+                        <input type="text" name="country" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">City *</label>
+                        <input type="text" name="city" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Street Address *</label>
+                        <input type="text" name="street_address" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Latitude (optional)</label>
+                        <input type="text" name="latitude" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., 25.2048">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Longitude (optional)</label>
+                        <input type="text" name="longitude" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., 55.2708">
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button type="button" onclick="prevStep(2)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="nextStep(2)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Capacity/Inventory -->
+            <div id="step-3" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">3. Capacity / Inventory</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Number of Rooms/Units *</label>
+                        <input type="number" name="num_rooms" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Beds per Room *</label>
+                        <input type="number" name="beds_per_room" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Bed Type *</label>
+                        <select name="bed_type" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select type</option>
+                            <option value="single">Single Bed</option>
+                            <option value="twin">Twin Bed</option>
+                            <option value="double">Double Bed</option>
+                            <option value="full">Full Bed</option>
+                            <option value="queen">Queen Bed</option>
+                            <option value="king">King Bed</option>
+                            <option value="california_king">California King</option>
+                            <option value="bunk">Bunk Bed</option>
+                            <option value="sofa_bed">Sofa Bed</option>
+                            <option value="futon">Futon</option>
+                            <option value="murphy">Murphy Bed</option>
+                            <option value="mixed">Mixed Types</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Bathrooms *</label>
+                        <input type="number" name="num_bathrooms" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Max Guest Capacity *</label>
+                        <input type="number" name="max_guests" required min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Property Size (sq m)</label>
+                        <input type="number" name="property_size" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button type="button" onclick="prevStep(3)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="nextStep(3)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Description -->
+            <div id="step-4" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">4. Description & Features</h2>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Short Summary / Tagline *</label>
+                        <input type="text" name="tagline" required maxlength="150" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Brief catchy description (max 150 characters)">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Full Description *</label>
+                        <textarea name="full_description" required rows="6" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Detailed description of your property..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">Property Features</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Ocean View" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Ocean View</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Mountain View" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Mountain View</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="City View" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">City View</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Garden View" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Garden View</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Balcony" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Balcony</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Terrace" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Terrace</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Private Entrance" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Private Entrance</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Soundproof" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Soundproof</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Wheelchair Accessible" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Wheelchair Accessible</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Family Rooms" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Family Rooms</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Non-Smoking Rooms" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Non-Smoking Rooms</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="property_features" value="Hardwood Floors" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Hardwood Floors</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">Nearby Landmarks</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Beach" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Beach</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Airport" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Airport</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Train Station" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Train Station</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Bus Station" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Bus Station</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Shopping Mall" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Shopping Mall</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Restaurant Area" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Restaurant Area</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="City Center" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">City Center</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Museum" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Museum</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Park" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Park</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Hospital" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Hospital</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="Pharmacy" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Pharmacy</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" name="nearby_landmarks" value="ATM" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">ATM</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in Time *</label>
+                            <input type="time" name="checkin_time" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out Time *</label>
+                            <input type="time" name="checkout_time" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button type="button" onclick="prevStep(4)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="nextStep(4)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Media, Amenities & Pricing Combined -->
+            <div id="step-5" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">5. Photos, Amenities & Pricing</h2>
+
+                <!-- Photos -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Property Photos</h3>
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <input type="file" name="photos" multiple accept="image/*" class="hidden" id="photo-upload">
+                        <label for="photo-upload" class="cursor-pointer">
+                            <span class="text-blue-600 hover:text-blue-700 font-medium">Upload photos</span>
+                            <span class="text-gray-600"> or drag and drop</span>
+                        </label>
+                        <p class="text-sm text-gray-500 mt-2">PNG, JPG, GIF up to 10MB each</p>
+                    </div>
+                </div>
+
+                <!-- Amenities -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Amenities</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Free WiFi" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Free WiFi</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Free Parking" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Free Parking</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Swimming Pool" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Swimming Pool</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Air Conditioning" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Air Conditioning</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Kitchen" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Kitchen</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Gym/Fitness Center" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Gym/Fitness Center</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Spa" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Spa</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Restaurant" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Restaurant</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Pet Friendly" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Pet Friendly</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Room Service" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Room Service</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="24/7 Front Desk" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">24/7 Front Desk</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Breakfast Included" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Breakfast Included</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Laundry Service" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Laundry Service</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Elevator" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Elevator</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Concierge Service" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Concierge Service</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Airport Shuttle" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Airport Shuttle</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Safe Deposit Box" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Safe Deposit Box</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="BBQ Facilities" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">BBQ Facilities</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Mini Bar" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Mini Bar</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Coffee Maker" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Coffee Maker</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="TV" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">TV</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Hair Dryer" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Hair Dryer</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Iron/Ironing Board" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Iron/Ironing Board</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="amenities" value="Hot Tub/Jacuzzi" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Hot Tub/Jacuzzi</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Languages Spoken -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Languages Spoken by Staff</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="English" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">English</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Arabic" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Arabic</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Spanish" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Spanish</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="French" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">French</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="German" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">German</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Italian" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Italian</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Chinese" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Chinese</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Japanese" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Japanese</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Russian" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Russian</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Portuguese" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Portuguese</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Hindi" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Hindi</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Turkish" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Turkish</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Korean" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Korean</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Dutch" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Dutch</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Hebrew" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Hebrew</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors">
+                            <input type="checkbox" name="languages" value="Greek" class="w-4 h-4 text-blue-600 rounded">
+                            <span class="text-sm text-gray-700">Greek</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Pricing & Rates</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Base Nightly Rate (USD) *</label>
+                            <input type="number" name="base_price" required min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Cleaning Fee (USD)</label>
+                            <input type="number" name="cleaning_fee" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Extra Guest Fee (USD)</label>
+                            <input type="number" name="extra_guest_fee" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Tax Rate (%)</label>
+                            <input type="number" name="tax_rate" min="0" max="100" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policies -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Policies & Rules</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Cancellation Policy *</label>
+                            <select name="cancellation_policy" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">Select policy</option>
+                                <option value="flexible">Flexible - Free cancellation 24 hours before</option>
+                                <option value="moderate">Moderate - Free cancellation 5 days before</option>
+                                <option value="strict">Strict - 50% refund up to 7 days before</option>
+                                <option value="no-refund">Non-refundable</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">House Rules</label>
+                            <textarea name="house_rules" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., No smoking, No parties, Quiet hours 10pm-8am"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button type="button" onclick="prevStep(5)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="nextStep(5)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Next: Calendar →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 6: Rates & Availability Calendar -->
+            <div id="step-6" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">6. Rates & Availability Calendar</h2>
+                <p class="text-gray-600 mb-6">Set your initial pricing and availability. You can update this anytime from your dashboard.</p>
+
+                <!-- Quick Setup Tools -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Base Nightly Rate *</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-700">$</span>
+                            <input type="number" id="creation-base-price" name="initial_price" required min="0" step="1" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="100">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">This will be your default price</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Min Stay (nights)</label>
+                        <input type="number" id="creation-min-stay" value="1" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Minimum booking length</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Max Stay (nights)</label>
+                        <input type="number" id="creation-max-stay" value="30" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Maximum booking length</p>
+                    </div>
+                </div>
+
+                <!-- Calendar Preview -->
+                <div class="bg-white rounded-xl border-2 border-gray-200 overflow-hidden mb-6">
+                    <!-- Calendar Header -->
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <button type="button" onclick="changeCreationMonth(-1)" class="p-2 hover:bg-blue-500 rounded-lg transition-colors">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h3 id="creation-calendar-month-year" class="text-xl font-bold text-white"></h3>
+                            <button type="button" onclick="changeCreationMonth(1)" class="p-2 hover:bg-blue-500 rounded-lg transition-colors">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-center text-blue-100 text-sm mt-2">Click dates to edit price and room availability</p>
+                    </div>
+
+                    <!-- Calendar Grid -->
+                    <div class="p-6">
+                        <!-- Day Headers -->
+                        <div class="grid grid-cols-7 gap-2 mb-2">
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Sun</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Mon</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Tue</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Wed</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Thu</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Fri</div>
+                            <div class="text-center font-semibold text-gray-700 text-sm py-2">Sat</div>
+                        </div>
+
+                        <!-- Calendar Days Grid -->
+                        <div id="creation-calendar-grid" class="grid grid-cols-7 gap-2">
+                            <!-- Calendar days will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="border-t border-gray-200 px-6 py-3 bg-gray-50">
+                        <div class="flex items-center justify-center gap-6 text-sm">
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-green-100 border border-green-300 rounded"></div>
+                                <span class="text-gray-700">Available</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-yellow-100 border border-yellow-300 rounded"></div>
+                                <span class="text-gray-700">Limited Rooms</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-red-100 border border-red-300 rounded"></div>
+                                <span class="text-gray-700">Sold Out / Blocked</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 bg-gray-100 border border-gray-200 rounded"></div>
+                                <span class="text-gray-700">Past</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Edit Modal -->
+                <div id="date-edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <!-- Modal Header -->
+                        <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-2xl">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-white" id="modal-date-title">Edit Date</h3>
+                                <button type="button" onclick="closeEditModal()" class="text-white hover:bg-blue-500 p-2 rounded-lg transition-colors">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="p-6 space-y-6">
+                            <!-- Price Section -->
+                            <div>
+                                <label class="block text-sm font-bold text-gray-900 mb-3">💰 Nightly Rate</label>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-2xl font-bold text-gray-700">$</span>
+                                    <input type="number" id="modal-price" class="flex-1 text-2xl font-bold px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="100" min="0" step="1">
+                                    <span class="text-gray-600">/night</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Set the price for this specific date</p>
+                            </div>
+
+                            <!-- Room Inventory Section -->
+                            <div class="border-t border-gray-200 pt-6">
+                                <label class="block text-sm font-bold text-gray-900 mb-3">🛏️ Room Availability</label>
+                                <p class="text-sm text-gray-600 mb-4">Manage room-by-room inventory for this date</p>
+
+                                <div id="room-inventory-list" class="space-y-3">
+                                    <!-- Room inventory items will be populated here -->
+                                </div>
+
+                                <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div class="text-sm text-blue-800">
+                                            <p class="font-semibold">Room Types</p>
+                                            <p class="mt-1">Total rooms based on Step 3: <span id="total-rooms-display" class="font-bold">0</span> rooms</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Status Toggle -->
+                            <div class="border-t border-gray-200 pt-6">
+                                <label class="block text-sm font-bold text-gray-900 mb-3">📊 Availability Status</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button type="button" onclick="setModalStatus('available')" id="status-btn-available" class="status-btn px-4 py-3 border-2 border-green-300 bg-green-50 text-green-700 rounded-xl hover:bg-green-100 font-semibold transition-all">
+                                        ✓ Available
+                                    </button>
+                                    <button type="button" onclick="setModalStatus('blocked')" id="status-btn-blocked" class="status-btn px-4 py-3 border-2 border-gray-300 bg-white text-gray-700 rounded-xl hover:bg-gray-50 font-semibold transition-all">
+                                        ✗ Blocked
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Min/Max Stay -->
+                            <div class="border-t border-gray-200 pt-6">
+                                <label class="block text-sm font-bold text-gray-900 mb-3">📅 Stay Requirements</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs text-gray-600 mb-1">Minimum Stay</label>
+                                        <input type="number" id="modal-min-stay" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" value="1" min="1">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-600 mb-1">Maximum Stay</label>
+                                        <input type="number" id="modal-max-stay" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" value="30" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 rounded-b-2xl flex items-center justify-between">
+                            <button type="button" onclick="closeEditModal()" class="px-6 py-2 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 font-semibold transition-colors">
+                                Cancel
+                            </button>
+                            <button type="button" onclick="saveModalChanges()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Box -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-medium text-blue-900">Don't worry!</p>
+                            <p class="text-sm text-blue-700 mt-1">You can update your calendar, pricing, and availability anytime from your host dashboard after publishing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button type="button" onclick="prevStep(6)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="nextStep(6)" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                        Preview & Publish →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 7: Preview & Publish -->
+            <div id="step-7" class="form-step hidden bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">7. Preview & Publish</h2>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+                    <div class="flex items-start gap-4">
+                        <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="font-semibold text-blue-900 mb-2">Review Your Listing</h3>
+                            <p class="text-blue-800 text-sm">Please review all information before publishing. You can edit your listing anytime after publishing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6 mb-8">
+                    <div class="p-6 border border-gray-200 rounded-xl">
+                        <h3 class="font-semibold text-gray-900 mb-3">Listing Summary</h3>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Property Name:</span>
+                                <span class="font-medium text-gray-900 ml-2" id="preview-name">-</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Type:</span>
+                                <span class="font-medium text-gray-900 ml-2" id="preview-type">-</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Location:</span>
+                                <span class="font-medium text-gray-900 ml-2" id="preview-location">-</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Capacity:</span>
+                                <span class="font-medium text-gray-900 ml-2" id="preview-capacity">-</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Base Price:</span>
+                                <span class="font-medium text-gray-900 ml-2" id="preview-price">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-4 border border-gray-200 rounded-xl">
+                        <input type="checkbox" name="agree_terms" required id="agree-terms" class="w-5 h-5 text-blue-600 rounded">
+                        <label for="agree-terms" class="text-sm text-gray-700">I agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Host Agreement</a></label>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" onclick="prevStep(7)" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+                        ← Previous
+                    </button>
+                    <button type="submit" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Publish Listing
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+let currentStep = 1;
+
+function nextStep(step) {
+    if (validateStep(step)) {
+        document.getElementById('step-' + step).classList.add('hidden');
+        document.getElementById('step-' + (step + 1)).classList.remove('hidden');
+
+        // Update progress indicators
+        document.getElementById('step-indicator-' + (step + 1)).classList.add('active');
+        document.getElementById('step-indicator-' + (step + 1)).classList.remove('bg-gray-200', 'text-gray-600');
+        document.getElementById('step-indicator-' + (step + 1)).classList.add('bg-blue-600', 'text-white');
+
+        currentStep = step + 1;
+        window.scrollTo(0, 0);
+
+        // Initialize calendar if moving to step 6
+        if (step === 5) {
+            setTimeout(() => initCreationCalendar(), 100);
+        }
+
+        // Update preview if on last step
+        if (step === 6) {
+            updatePreview();
+        }
+    }
+}
+
+function prevStep(step) {
+    document.getElementById('step-' + step).classList.add('hidden');
+    document.getElementById('step-' + (step - 1)).classList.remove('hidden');
+    currentStep = step - 1;
+    window.scrollTo(0, 0);
+}
+
+function validateStep(step) {
+    const stepElement = document.getElementById('step-' + step);
+    const requiredFields = stepElement.querySelectorAll('[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value) {
+            field.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            field.classList.remove('border-red-500');
+        }
+    });
+
+    if (!isValid) {
+        alert('Please fill in all required fields');
+    }
+
+    return isValid;
+}
+
+function updatePreview() {
+    document.getElementById('preview-name').textContent = document.querySelector('[name="property_name"]').value || '-';
+    document.getElementById('preview-type').textContent = document.querySelector('[name="property_type"]').value || '-';
+    document.getElementById('preview-location').textContent = document.querySelector('[name="city"]').value + ', ' + document.querySelector('[name="country"]').value || '-';
+    document.getElementById('preview-capacity').textContent = document.querySelector('[name="max_guests"]').value + ' guests' || '-';
+    document.getElementById('preview-price').textContent = '$' + document.querySelector('[name="base_price"]').value + '/night' || '-';
+}
+
+// Creation Calendar Functions with Price & Room Management
+let creationCalendarDate = new Date();
+let calendarDateData = {}; // Stores {dateKey: {price, status, rooms, minStay, maxStay}}
+let currentEditingDate = null;
+let totalRooms = 0;
+
+function initCreationCalendar() {
+    // Get total rooms from Step 3
+    const numRoomsInput = document.querySelector('[name="num_rooms"]');
+    totalRooms = numRoomsInput ? parseInt(numRoomsInput.value) || 1 : 1;
+
+    // Get base price
+    const basePriceInput = document.getElementById('creation-base-price');
+    const basePrice = basePriceInput ? parseInt(basePriceInput.value) || 100 : 100;
+
+    // Initialize calendar data for current month with base price
+    const firstDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth(), 1);
+    const lastDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth() + 1, 0);
+    const daysInMonth = lastDay.getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = `${creationCalendarDate.getFullYear()}-${(creationCalendarDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        if (!calendarDateData[dateKey]) {
+            calendarDateData[dateKey] = {
+                price: basePrice,
+                status: 'available',
+                roomsAvailable: totalRooms,
+                minStay: 1,
+                maxStay: 30
+            };
+        }
+    }
+
+    updateCreationCalendarDisplay();
+}
+
+function updateCreationCalendarDisplay() {
+    const monthYearElement = document.getElementById('creation-calendar-month-year');
+    const calendarGrid = document.getElementById('creation-calendar-grid');
+
+    if (!monthYearElement || !calendarGrid) return;
+
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    monthYearElement.textContent = `${monthNames[creationCalendarDate.getMonth()]} ${creationCalendarDate.getFullYear()}`;
+    calendarGrid.innerHTML = '';
+
+    const firstDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth(), 1);
+    const lastDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth() + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const basePriceInput = document.getElementById('creation-base-price');
+    const basePrice = basePriceInput ? parseInt(basePriceInput.value) || 100 : 100;
+
+    // Add empty cells
+    for (let i = 0; i < startingDayOfWeek; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'h-20';
+        calendarGrid.appendChild(emptyDay);
+    }
+
+    // Add days
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayDate = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth(), day);
+        const dateKey = `${creationCalendarDate.getFullYear()}-${(creationCalendarDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+        // Initialize date data if not exists
+        if (!calendarDateData[dateKey]) {
+            calendarDateData[dateKey] = {
+                price: basePrice,
+                status: 'available',
+                roomsAvailable: totalRooms,
+                minStay: 1,
+                maxStay: 30
+            };
+        }
+
+        const dayData = calendarDateData[dateKey];
+        const dayElement = document.createElement('div');
+        const isPast = dayDate < today;
+
+        // Determine background color based on status and rooms
+        let bgClass = 'bg-green-50 border-green-300 hover:bg-green-100';
+        if (isPast) {
+            bgClass = 'bg-gray-50 border-gray-200 opacity-50 cursor-not-allowed';
+        } else if (dayData.status === 'blocked' || dayData.roomsAvailable === 0) {
+            bgClass = 'bg-red-50 border-red-300 hover:bg-red-100';
+        } else if (dayData.roomsAvailable < totalRooms / 2) {
+            bgClass = 'bg-yellow-50 border-yellow-300 hover:bg-yellow-100';
+        }
+
+        dayElement.className = `h-20 border-2 rounded-lg p-2 transition-all duration-200 ${bgClass} ${!isPast ? 'cursor-pointer hover:shadow-md' : ''}`;
+
+        // Day number
+        const dayNum = document.createElement('div');
+        dayNum.className = 'font-bold text-gray-900 text-sm';
+        dayNum.textContent = day;
+        dayElement.appendChild(dayNum);
+
+        if (!isPast) {
+            // Price display
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'text-xs font-bold text-blue-600 mt-1';
+            priceDiv.textContent = `$${dayData.price}`;
+            dayElement.appendChild(priceDiv);
+
+            // Rooms available
+            const roomsDiv = document.createElement('div');
+            roomsDiv.className = 'text-xs text-gray-600 mt-1';
+            roomsDiv.textContent = `${dayData.roomsAvailable}/${totalRooms} rooms`;
+            dayElement.appendChild(roomsDiv);
+
+            // Click handler to open modal
+            dayElement.addEventListener('click', () => openEditModal(dateKey, day));
+        }
+
+        calendarGrid.appendChild(dayElement);
+    }
+}
+
+function openEditModal(dateKey, dayNumber) {
+    currentEditingDate = dateKey;
+    const dateData = calendarDateData[dateKey];
+
+    // Set modal title
+    const dateParts = dateKey.split('-');
+    const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    document.getElementById('modal-date-title').textContent = `${monthNames[date.getMonth()]} ${dayNumber}, ${date.getFullYear()}`;
+
+    // Set price
+    document.getElementById('modal-price').value = dateData.price;
+
+    // Set min/max stay
+    document.getElementById('modal-min-stay').value = dateData.minStay;
+    document.getElementById('modal-max-stay').value = dateData.maxStay;
+
+    // Set status buttons
+    setModalStatus(dateData.status);
+
+    // Update room inventory display
+    updateRoomInventoryDisplay(dateData.roomsAvailable);
+
+    // Show total rooms
+    document.getElementById('total-rooms-display').textContent = totalRooms;
+
+    // Show modal
+    document.getElementById('date-edit-modal').classList.remove('hidden');
+}
+
+function updateRoomInventoryDisplay(roomsAvailable) {
+    const container = document.getElementById('room-inventory-list');
+    container.innerHTML = '';
+
+    for (let i = 1; i <= totalRooms; i++) {
+        const roomItem = document.createElement('div');
+        roomItem.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200';
+
+        const isAvailable = i <= roomsAvailable;
+
+        roomItem.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg ${isAvailable ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} flex items-center justify-center font-bold">
+                    ${i}
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900">Room ${i}</p>
+                    <p class="text-xs text-gray-600">${isAvailable ? 'Available for booking' : 'Unavailable / Sold'}</p>
+                </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" ${isAvailable ? 'checked' : ''} onchange="toggleRoom(${i})">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+            </label>
+        `;
+
+        container.appendChild(roomItem);
+    }
+}
+
+function toggleRoom(roomNumber) {
+    if (!currentEditingDate) return;
+
+    const dateData = calendarDateData[currentEditingDate];
+    const checkboxes = document.querySelectorAll('#room-inventory-list input[type="checkbox"]');
+    let availableCount = 0;
+
+    checkboxes.forEach((cb, index) => {
+        if (cb.checked) availableCount++;
+    });
+
+    dateData.roomsAvailable = availableCount;
+    updateRoomInventoryDisplay(availableCount);
+}
+
+function setModalStatus(status) {
+    // Update button states
+    const availableBtn = document.getElementById('status-btn-available');
+    const blockedBtn = document.getElementById('status-btn-blocked');
+
+    if (status === 'available') {
+        availableBtn.className = 'status-btn px-4 py-3 border-2 border-green-400 bg-green-100 text-green-800 rounded-xl font-semibold shadow-sm';
+        blockedBtn.className = 'status-btn px-4 py-3 border-2 border-gray-300 bg-white text-gray-700 rounded-xl hover:bg-gray-50 font-semibold';
+    } else {
+        availableBtn.className = 'status-btn px-4 py-3 border-2 border-gray-300 bg-white text-gray-700 rounded-xl hover:bg-gray-50 font-semibold';
+        blockedBtn.className = 'status-btn px-4 py-3 border-2 border-red-400 bg-red-100 text-red-800 rounded-xl font-semibold shadow-sm';
+    }
+
+    if (currentEditingDate) {
+        calendarDateData[currentEditingDate].status = status;
+    }
+}
+
+function saveModalChanges() {
+    if (!currentEditingDate) return;
+
+    const dateData = calendarDateData[currentEditingDate];
+
+    // Save price
+    const priceInput = document.getElementById('modal-price');
+    dateData.price = parseInt(priceInput.value) || 100;
+
+    // Save stay requirements
+    dateData.minStay = parseInt(document.getElementById('modal-min-stay').value) || 1;
+    dateData.maxStay = parseInt(document.getElementById('modal-max-stay').value) || 30;
+
+    // Rooms already updated via toggleRoom
+
+    closeEditModal();
+    updateCreationCalendarDisplay();
+}
+
+function closeEditModal() {
+    document.getElementById('date-edit-modal').classList.add('hidden');
+    currentEditingDate = null;
+}
+
+function changeCreationMonth(delta) {
+    creationCalendarDate.setMonth(creationCalendarDate.getMonth() + delta);
+
+    // Initialize new month's data with base price
+    const basePriceInput = document.getElementById('creation-base-price');
+    const basePrice = basePriceInput ? parseInt(basePriceInput.value) || 100 : 100;
+
+    const firstDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth(), 1);
+    const lastDay = new Date(creationCalendarDate.getFullYear(), creationCalendarDate.getMonth() + 1, 0);
+    const daysInMonth = lastDay.getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = `${creationCalendarDate.getFullYear()}-${(creationCalendarDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        if (!calendarDateData[dateKey]) {
+            calendarDateData[dateKey] = {
+                price: basePrice,
+                status: 'available',
+                roomsAvailable: totalRooms,
+                minStay: 1,
+                maxStay: 30
+            };
+        }
+    }
+
+    updateCreationCalendarDisplay();
+}
+</script>
+{% endblock %}
