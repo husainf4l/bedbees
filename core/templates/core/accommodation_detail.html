@@ -3,10 +3,9 @@
 {% block title %}{{ accommodation.name }} - {{ accommodation.location }} - Bedbees{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero Section with Photo Gallery -->
 <section class="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16 mb-8">
     <div class="absolute inset-0 bg-black/40"></div>
-    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ accommodation.image }}');"></div>
     <div class="relative container mx-auto px-4">
         <div class="max-w-4xl">
             <!-- Breadcrumb -->
@@ -22,7 +21,7 @@
 
             <!-- Title and Rating -->
             <div class="mb-4">
-                <h1 class="text-4xl font-bold mb-2">{{ accommodation.name }}</h1>
+                <h1 class="text-2xl font-bold mb-2">{{ accommodation.name }}</h1>
                 <div class="flex items-center text-blue-100 mb-2">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -49,6 +48,11 @@
             </div>
         </div>
     </div>
+</section>
+
+<!-- Photo Gallery Section -->
+<section class="container mx-auto px-4 -mt-32 relative z-10 mb-8">
+    {% include 'core/photo_gallery.html' with gallery_id='accommodation-gallery' hero_photos=hero_photos all_photos=all_photos total_photos=total_photos %}
 </section>
 
 <div class="container mx-auto px-4 py-6">
@@ -166,6 +170,7 @@
         <!-- Sidebar -->
         <div class="lg:col-span-1">
             <!-- Booking Card -->
+            {% if not is_demo %}
             <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
                 <div class="text-center mb-6">
                     <div class="text-3xl font-bold text-gray-900 mb-1">${{ accommodation.price }}</div>
@@ -173,7 +178,7 @@
                 </div>
 
                 <!-- Booking Form -->
-                <form method="GET" action="/accommodations/" class="space-y-4">
+                <form method="GET" action="{% url 'book_accommodation' accommodation.id %}" class="space-y-4">
                     <input type="hidden" name="type" value="{{ accommodation.type }}">
 
                     <div>
@@ -252,6 +257,41 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+            <!-- Demo Contact Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6 sticky top-6">
+                <div class="text-center mb-6">
+                    <div class="text-3xl font-bold text-gray-900 mb-1">${{ accommodation.price }}</div>
+                    <div class="text-gray-600">per night</div>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-gray-600 mb-4">This is a demo listing. Real booking functionality will be available when the property is listed.</p>
+                    <button disabled class="w-full bg-gray-300 text-gray-500 font-semibold py-3 px-4 rounded-lg cursor-not-allowed">
+                        Coming Soon
+                    </button>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">Interested in this property?</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>support@bedbees.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 

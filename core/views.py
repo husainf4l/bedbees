@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from .forms import HostRegistrationForm, HostProfileForm, AccommodationForm, TourForm
-from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto
+from .forms import HostRegistrationForm, HostProfileForm, AccommodationForm, TourForm, TourGuideForm, RentalCarForm
+from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto, TourGuide, TourGuidePhoto, RentalCar, RentalCarPhoto
 
 def home(request):
     """Home page view with role-based access"""
@@ -25,6 +25,113 @@ def home(request):
             UserProfile.objects.create(user=request.user, is_host=False)
     
     return render(request, 'core/home.html')
+
+def search_results(request):
+    """Search results page with filters"""
+    # Get filter parameters from request
+    search_type = request.GET.get('type', 'hotels')  # hotels or tours
+    destination = request.GET.get('destination', '')
+    checkin = request.GET.get('checkin', '')
+    checkout = request.GET.get('checkout', '')
+    adults = request.GET.get('adults', '1')
+    children = request.GET.get('children', '0')
+    rooms = request.GET.get('rooms', '1')
+    min_price = request.GET.get('min_price', '0')
+    max_price = request.GET.get('max_price', '1000')
+
+    # Property/Tour type filters
+    property_types = request.GET.getlist('property_type')
+    tour_types = request.GET.getlist('tour_type')
+
+    # Star rating
+    star_ratings = request.GET.getlist('star_rating')
+
+    # Amenities
+    amenities = request.GET.getlist('amenities')
+
+    # Tour inclusions
+    tour_inclusions = request.GET.getlist('tour_inclusions')
+
+    # Review score
+    review_score = request.GET.get('review_score', '')
+
+    # Booking policies
+    free_cancellation = request.GET.get('free_cancellation', False)
+    no_prepayment = request.GET.get('no_prepayment', False)
+
+    # Accessibility
+    wheelchair = request.GET.get('wheelchair', False)
+    elevator = request.GET.get('elevator', False)
+
+    # Sorting
+    sort_by = request.GET.get('sort', 'popular')
+
+    # Query database based on search type
+    if search_type == 'tours':
+        results = Tour.objects.filter(
+            is_published=True,
+            is_active=True
+        ).select_related('host').prefetch_related('photos')
+
+        # Apply filters
+        if destination:
+            results = results.filter(city__icontains=destination)
+
+        if min_price and max_price:
+            results = results.filter(base_price__gte=min_price, base_price__lte=max_price)
+
+    else:  # hotels/accommodations
+        results = Accommodation.objects.filter(
+            is_published=True,
+            is_active=True
+        ).select_related('host').prefetch_related('photos')
+
+        # Apply filters
+        if destination:
+            results = results.filter(city__icontains=destination)
+
+        if min_price and max_price:
+            results = results.filter(base_price__gte=min_price, base_price__lte=max_price)
+
+        if property_types:
+            results = results.filter(property_type__in=property_types)
+
+    # Apply sorting
+    if sort_by == 'price_low':
+        results = results.order_by('base_price')
+    elif sort_by == 'price_high':
+        results = results.order_by('-base_price')
+    elif sort_by == 'newest':
+        results = results.order_by('-created_at')
+    else:
+        results = results.order_by('-created_at')  # Default
+
+    context = {
+        'results': results,
+        'search_type': search_type,
+        'destination': destination,
+        'checkin': checkin,
+        'checkout': checkout,
+        'adults': adults,
+        'children': children,
+        'rooms': rooms,
+        'min_price': min_price,
+        'max_price': max_price,
+        'property_types': property_types,
+        'tour_types': tour_types,
+        'star_ratings': star_ratings,
+        'amenities': amenities,
+        'tour_inclusions': tour_inclusions,
+        'review_score': review_score,
+        'free_cancellation': free_cancellation,
+        'no_prepayment': no_prepayment,
+        'wheelchair': wheelchair,
+        'elevator': elevator,
+        'sort_by': sort_by,
+        'results_count': results.count(),
+    }
+
+    return render(request, 'core/search_results.html', context)
 
 def tours(request, category=None):
     """Tours page view"""
@@ -390,6 +497,22 @@ def tours(request, category=None):
     }
 
     return render(request, 'core/tours.html', context)
+
+def experiences(request):
+    """Experiences page view - combining tours, activities, and unique local experiences"""
+
+    # Get all active and published tours (experiences)
+    real_experiences = Tour.objects.filter(
+        is_published=True,
+        is_active=True
+    ).select_related('host')
+
+    context = {
+        'experiences': real_experiences,
+        'total_experiences': real_experiences.count(),
+    }
+
+    return render(request, 'core/experiences.html', context)
 
 def share_trip_tours(request):
     """Share Trip Tours page view"""
@@ -815,7 +938,7 @@ def signup(request):
             UserProfile.objects.create(user=user, is_host=False)
             login(request, user)
             messages.success(request, f"Traveler account created successfully! Welcome, {user.username}! Start exploring amazing experiences.")
-            return redirect('dashboard')  # Redirect travelers to dashboard
+            return redirect('home')  # Redirect travelers to home page
         else:
             messages.error(request, "Please correct the errors below.")
     else:
@@ -845,7 +968,26 @@ def accommodations(request):
             'type': 'resort',
             'amenities': ['WiFi', 'Pool', 'Spa', 'Beach Access', 'Restaurant'],
             'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 2,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
             'bathrooms': 2,
             'max_guests': 4,
             'room_type': 'Villa with Ocean View',
@@ -866,7 +1008,26 @@ def accommodations(request):
             'type': 'hotel',
             'amenities': ['WiFi', 'Gym', 'Rooftop Bar', 'Concierge', 'Business Center'],
             'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Deluxe City View Room',
@@ -887,7 +1048,26 @@ def accommodations(request):
             'type': 'chalet',
             'amenities': ['WiFi', 'Fireplace', 'Hot Tub', 'Mountain Views', 'Ski Access'],
             'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 3,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
             'bathrooms': 2,
             'max_guests': 6,
             'room_type': 'Alpine Chalet',
@@ -908,7 +1088,26 @@ def accommodations(request):
             'type': 'riad',
             'amenities': ['WiFi', 'Courtyard', 'Traditional Decor', 'Rooftop Terrace', 'Hammam'],
             'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 4,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 4,
             'bathrooms': 3,
             'max_guests': 8,
             'room_type': 'Traditional Riad Suite',
@@ -929,7 +1128,26 @@ def accommodations(request):
             'type': 'bungalow',
             'amenities': ['WiFi', 'Private Deck', 'Lagoon Access', 'Butler Service', 'Snorkeling'],
             'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Overwater Bungalow',
@@ -950,7 +1168,26 @@ def accommodations(request):
             'type': 'apartment',
             'amenities': ['WiFi', 'Kitchen', 'City Views', 'Washing Machine', 'Near Subway'],
             'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 3,
             'room_type': 'Modern Loft',
@@ -971,7 +1208,26 @@ def accommodations(request):
             'type': 'camp',
             'amenities': ['Traditional Meals', 'Campfire', 'Desert Views', 'Guided Tours', 'Bedouin Hospitality'],
             'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Traditional Bedouin Tent',
@@ -992,7 +1248,26 @@ def accommodations(request):
             'type': 'villa',
             'amenities': ['WiFi', 'Private Garden', 'Lake Views', 'Swimming Pool', 'Boat Dock'],
             'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 4,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 4,
             'bathrooms': 3,
             'max_guests': 8,
             'room_type': 'Lakefront Villa',
@@ -1013,7 +1288,26 @@ def accommodations(request):
             'type': 'hotel',
             'amenities': ['WiFi', 'Caldera Views', 'Infinity Pool', 'Spa Services', 'Restaurant'],
             'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Cave Suite with Caldera View',
@@ -1034,7 +1328,26 @@ def accommodations(request):
             'type': 'lodge',
             'amenities': ['Eco-Friendly', 'Jungle Tours', 'Indigenous Guides', 'Sustainable Dining', 'Wildlife Viewing'],
             'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 2,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
             'bathrooms': 2,
             'max_guests': 4,
             'room_type': 'Jungle Bungalow',
@@ -1055,7 +1368,26 @@ def accommodations(request):
             'type': 'igloo',
             'amenities': ['Northern Lights Views', 'Glacier Access', 'Ice Cave Tours', 'Thermal Bath', 'Arctic Dining'],
             'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Glass Igloo Suite',
@@ -1076,7 +1408,26 @@ def accommodations(request):
             'type': 'apartment',
             'amenities': ['WiFi', 'Kitchen', 'Historic Architecture', 'Concierge', 'Laundry Service'],
             'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 2,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
             'bathrooms': 1,
             'max_guests': 4,
             'room_type': 'Haussmann Apartment',
@@ -1097,7 +1448,26 @@ def accommodations(request):
             'type': 'hotel',
             'amenities': ['WiFi', 'Sea Views', 'Spa', 'Multiple Restaurants', 'Business Center'],
             'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Sea View Deluxe Room',
@@ -1118,7 +1488,26 @@ def accommodations(request):
             'type': 'resort',
             'amenities': ['Reef Access', 'Marine Biology Center', 'Diving Center', 'Spa', 'Multiple Pools'],
             'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 2,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
             'bathrooms': 2,
             'max_guests': 4,
             'room_type': 'Reef View Suite',
@@ -1139,7 +1528,26 @@ def accommodations(request):
             'type': 'castle',
             'amenities': ['WiFi', 'Fireplace', 'Loch Views', 'Whisky Bar', 'Gardens'],
             'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 5,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 5,
             'bathrooms': 4,
             'max_guests': 10,
             'room_type': 'Castle Suite',
@@ -1160,7 +1568,26 @@ def accommodations(request):
             'type': 'lodge',
             'amenities': ['Glacier Views', 'Hiking Trails', 'Fireplace', 'Local Cuisine', 'Guide Services'],
             'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 3,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
             'bathrooms': 2,
             'max_guests': 6,
             'room_type': 'Glacier View Cabin',
@@ -1181,7 +1608,26 @@ def accommodations(request):
             'type': 'palace',
             'amenities': ['Canal Views', 'Private Boat', 'Historic Architecture', 'Spa', 'Fine Dining'],
             'image': 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 3,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
             'bathrooms': 3,
             'max_guests': 6,
             'room_type': 'Canal View Palace Suite',
@@ -1202,7 +1648,26 @@ def accommodations(request):
             'type': 'villa',
             'amenities': ['Rice Terrace Views', 'Private Pool', 'Spa', 'Traditional Architecture', 'Yoga Pavilion'],
             'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 3,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
             'bathrooms': 3,
             'max_guests': 6,
             'room_type': 'Rice Terrace Villa',
@@ -1223,7 +1688,26 @@ def accommodations(request):
             'type': 'penthouse',
             'amenities': ['Central Park Views', 'Private Terrace', 'Concierge', 'Spa Bathroom', 'Chef Service'],
             'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 3,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
             'bathrooms': 3,
             'max_guests': 6,
             'room_type': 'Central Park Penthouse',
@@ -1244,7 +1728,26 @@ def accommodations(request):
             'type': 'camp',
             'amenities': ['Wildlife Viewing', 'Private Decks', 'Guided Safaris', 'Butler Service', 'Luxury Camping'],
             'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'bedrooms': 1,
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
             'bathrooms': 1,
             'max_guests': 2,
             'room_type': 'Luxury Safari Tent',
@@ -1315,7 +1818,954 @@ def accommodations(request):
     return render(request, 'core/accommodations.html', context)
 
 def accommodation_detail(request, id):
-    """Individual accommodation detail page view"""
+    """Individual accommodation detail page view - handles both demo and database accommodations"""
+
+    # Demo accommodations data (IDs 1-20)
+    demo_accommodations_dict = {}
+    from datetime import datetime, timedelta
+
+    # Get booking parameters from request or set defaults
+    checkin = request.GET.get('checkin', '')
+    checkout = request.GET.get('checkout', '')
+    adults = request.GET.get('adults', '2')
+    kids = request.GET.get('kids', '0')
+    rooms = request.GET.get('rooms', '1')
+
+    # Set default values if not provided
+    if not checkin:
+        checkin = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+    if not checkout:
+        checkout = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+
+    # First check if this is a demo accommodation (string ID)
+    if str(id) in [str(i) for i in range(1, 21)]:
+        # This is a demo accommodation - get it from the demo data in accommodations view
+        # We'll import the demo data here
+        demo_accommodations = [
+        {
+            'id': '1',
+            'name': 'Luxury Beach Resort & Spa',
+            'location': 'Maldives',
+            'description': 'Experience paradise at our beachfront resort with private villas, world-class spa, and stunning ocean views.',
+            'price': 450,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 1250,
+            'type': 'resort',
+            'amenities': ['WiFi', 'Pool', 'Spa', 'Beach Access', 'Restaurant'],
+            'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Villa with Ocean View',
+            'cancellation_policy': 'Free cancellation up to 24 hours',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Private beach access', '24/7 concierge', 'Spa treatments included', 'Daily housekeeping']
+        },
+        {
+            'id': '2',
+            'name': 'Boutique City Hotel Downtown',
+            'location': 'Dubai, UAE',
+            'description': 'Charming boutique hotel in the heart of the city with modern design, rooftop bar, and easy access to attractions.',
+            'price': 250,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 890,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Gym', 'Rooftop Bar', 'Concierge', 'Business Center'],
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Deluxe City View Room',
+            'cancellation_policy': 'Free cancellation up to 48 hours',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Burj Khalifa views', 'Metro station nearby', 'Business center', 'Fitness center']
+        },
+        {
+            'id': '3',
+            'name': 'Mountain View Chalet',
+            'location': 'Swiss Alps, Switzerland',
+            'description': 'Rustic mountain chalet with stunning alpine views and modern amenities for the perfect mountain retreat.',
+            'price': 350,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 567,
+            'type': 'chalet',
+            'amenities': ['WiFi', 'Fireplace', 'Hot Tub', 'Mountain Views', 'Ski Access'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Alpine Chalet',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Ski-in/ski-out access', 'Wood-burning fireplace', 'Private hot tub', 'Mountain views']
+        },
+        {
+            'id': '4',
+            'name': 'Historic Riad Marrakech',
+            'location': 'Marrakech, Morocco',
+            'description': 'Traditional Moroccan riad in the heart of the medina with authentic architecture and modern comforts.',
+            'price': 180,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 745,
+            'type': 'riad',
+            'amenities': ['WiFi', 'Courtyard', 'Traditional Decor', 'Rooftop Terrace', 'Hammam'],
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Traditional Riad Suite',
+            'cancellation_policy': 'Free cancellation up to 3 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Medina location', 'Traditional Moroccan architecture', 'Rooftop terrace', 'Hammam spa']
+        },
+        {
+            'id': '5',
+            'name': 'Overwater Bungalow Paradise',
+            'location': 'Bora Bora, French Polynesia',
+            'description': 'Luxurious overwater bungalow with direct lagoon access and breathtaking sunset views.',
+            'price': 650,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 423,
+            'type': 'bungalow',
+            'amenities': ['WiFi', 'Private Deck', 'Lagoon Access', 'Butler Service', 'Snorkeling'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Overwater Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Crystal clear lagoon', 'Sunset views', 'Private butler service', 'Snorkeling equipment']
+        },
+        {
+            'id': '6',
+            'name': 'Urban Loft Apartment',
+            'location': 'Tokyo, Japan',
+            'description': 'Modern loft apartment in trendy Shibuya district with city views and contemporary design.',
+            'price': 120,
+            'currency': 'USD',
+            'rating': 4.5,
+            'reviews': 1100,
+            'type': 'apartment',
+            'amenities': ['WiFi', 'Kitchen', 'City Views', 'Washing Machine', 'Near Subway'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 3,
+            'room_type': 'Modern Loft',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Shibuya district', 'City skyline views', 'Fully equipped kitchen', 'Subway access']
+        },
+        {
+            'id': '7',
+            'name': 'Desert Oasis Camp',
+            'location': 'Sahara Desert, Morocco',
+            'description': 'Authentic Bedouin camp in the heart of the Sahara with traditional tents and star-filled skies.',
+            'price': 85,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 892,
+            'type': 'camp',
+            'amenities': ['Traditional Meals', 'Campfire', 'Desert Views', 'Guided Tours', 'Bedouin Hospitality'],
+            'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Traditional Bedouin Tent',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '16:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Starry night skies', 'Traditional Bedouin experience', 'Camel treks available', 'Authentic Moroccan cuisine']
+        },
+        {
+            'id': '8',
+            'name': 'Lake Como Villa',
+            'location': 'Lake Como, Italy',
+            'description': 'Elegant villa overlooking Lake Como with private gardens and stunning mountain views.',
+            'price': 420,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 634,
+            'type': 'villa',
+            'amenities': ['WiFi', 'Private Garden', 'Lake Views', 'Swimming Pool', 'Boat Dock'],
+            'image': 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 4,
+            'bathrooms': 3,
+            'max_guests': 8,
+            'room_type': 'Lakefront Villa',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '16:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Private lake access', 'Mountain views', 'Professional chef available', 'Boat included']
+        },
+        {
+            'id': '9',
+            'name': 'Santorini Cave Hotel',
+            'location': 'Santorini, Greece',
+            'description': 'Unique cave hotel carved into volcanic rock with caldera views and traditional Cycladic architecture.',
+            'price': 280,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 756,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Caldera Views', 'Infinity Pool', 'Spa Services', 'Restaurant'],
+            'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Cave Suite with Caldera View',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Volcanic cave architecture', 'Sunset caldera views', 'Infinity pool', 'Traditional Greek breakfast']
+        },
+        {
+            'id': '10',
+            'name': 'Amazon Rainforest Lodge',
+            'location': 'Amazon Rainforest, Brazil',
+            'description': 'Eco-lodge deep in the Amazon with guided jungle walks and authentic indigenous experiences.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.5,
+            'reviews': 423,
+            'type': 'lodge',
+            'amenities': ['Eco-Friendly', 'Jungle Tours', 'Indigenous Guides', 'Sustainable Dining', 'Wildlife Viewing'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Jungle Bungalow',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '12:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Sustainable tourism', 'Indigenous community support', 'Wildlife encounters', 'Eco-friendly practices']
+        },
+        {
+            'id': '11',
+            'name': 'Icelandic Glacier Retreat',
+            'location': 'Vatnajökull, Iceland',
+            'description': 'Glass-domed igloo on a glacier with northern lights views and ice cave explorations.',
+            'price': 380,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 345,
+            'type': 'igloo',
+            'amenities': ['Northern Lights Views', 'Glacier Access', 'Ice Cave Tours', 'Thermal Bath', 'Arctic Dining'],
+            'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Glass Igloo Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Glass dome ceiling', 'Northern lights viewing', 'Glacier hiking', 'Ice cave exploration']
+        },
+        {
+            'id': '12',
+            'name': 'Parisian Haussmann Apartment',
+            'location': 'Paris, France',
+            'description': 'Elegant 19th-century apartment in a Haussmann building with original moldings and modern updates.',
+            'price': 220,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 678,
+            'type': 'apartment',
+            'amenities': ['WiFi', 'Kitchen', 'Historic Architecture', 'Concierge', 'Laundry Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
+            'bathrooms': 1,
+            'max_guests': 4,
+            'room_type': 'Haussmann Apartment',
+            'cancellation_policy': 'Free cancellation up to 5 days',
+            'check_in_time': '15:00',
+            'check_out_time': '10:00',
+            'property_highlights': ['Historic 6th arrondissement', 'Walking distance to Louvre', 'Original architectural details', 'Concierge service']
+        },
+        {
+            'id': '13',
+            'name': 'Taj Mahal Palace Hotel',
+            'location': 'Mumbai, India',
+            'description': 'Iconic colonial-era hotel with opulent architecture, sea-facing rooms, and legendary hospitality.',
+            'price': 320,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 1234,
+            'type': 'hotel',
+            'amenities': ['WiFi', 'Sea Views', 'Spa', 'Multiple Restaurants', 'Business Center'],
+            'image': 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Sea View Deluxe Room',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Gateway of India views', 'Colonial architecture', 'Award-winning restaurants', 'Royal heritage']
+        },
+        {
+            'id': '14',
+            'name': 'Great Barrier Reef Resort',
+            'location': 'Cairns, Australia',
+            'description': 'Luxury resort with direct reef access, marine biology center, and underwater observatories.',
+            'price': 480,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 567,
+            'type': 'resort',
+            'amenities': ['Reef Access', 'Marine Biology Center', 'Diving Center', 'Spa', 'Multiple Pools'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 2,
+            'bathrooms': 2,
+            'max_guests': 4,
+            'room_type': 'Reef View Suite',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Direct reef access', 'Underwater observatory', 'Marine research center', 'Diving certification courses']
+        },
+        {
+            'id': '15',
+            'name': 'Scottish Highlands Castle',
+            'location': 'Scottish Highlands, Scotland',
+            'description': 'Historic castle in the Scottish Highlands with lochs, mountains, and traditional hospitality.',
+            'price': 395,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 456,
+            'type': 'castle',
+            'amenities': ['WiFi', 'Fireplace', 'Loch Views', 'Whisky Bar', 'Gardens'],
+            'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 5,
+            'bathrooms': 4,
+            'max_guests': 10,
+            'room_type': 'Castle Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '16:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Historic castle architecture', 'Loch and mountain views', 'Whisky tasting experiences', 'Private gardens']
+        },
+        {
+            'id': '16',
+            'name': 'Patagonia Glacier Lodge',
+            'location': 'Torres del Paine, Chile',
+            'description': 'Remote lodge in Patagonia with glacier views, hiking trails, and authentic Chilean hospitality.',
+            'price': 265,
+            'currency': 'USD',
+            'rating': 4.6,
+            'reviews': 389,
+            'type': 'lodge',
+            'amenities': ['Glacier Views', 'Hiking Trails', 'Fireplace', 'Local Cuisine', 'Guide Services'],
+            'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
+            'bathrooms': 2,
+            'max_guests': 6,
+            'room_type': 'Glacier View Cabin',
+            'cancellation_policy': 'Free cancellation up to 10 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Torres del Paine views', 'Guided hiking tours', 'Authentic Patagonian cuisine', 'Sustainable practices']
+        },
+        {
+            'id': '17',
+            'name': 'Venetian Canal Palace',
+            'location': 'Venice, Italy',
+            'description': 'Historic palace on the Grand Canal with Renaissance architecture and modern luxury amenities.',
+            'price': 550,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 723,
+            'type': 'palace',
+            'amenities': ['Canal Views', 'Private Boat', 'Historic Architecture', 'Spa', 'Fine Dining'],
+            'image': 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Canal View Palace Suite',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Grand Canal location', 'Renaissance architecture', 'Private boat service', 'Michelin-star dining']
+        },
+        {
+            'id': '18',
+            'name': 'Bali Rice Terrace Villa',
+            'location': 'Ubud, Bali, Indonesia',
+            'description': 'Luxurious villa nestled in rice terraces with traditional Balinese architecture and spa facilities.',
+            'price': 195,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 891,
+            'type': 'villa',
+            'amenities': ['Rice Terrace Views', 'Private Pool', 'Spa', 'Traditional Architecture', 'Yoga Pavilion'],
+            'image': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Rice Terrace Villa',
+            'cancellation_policy': 'Free cancellation up to 7 days',
+            'check_in_time': '14:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['UNESCO rice terraces', 'Traditional Balinese design', 'Daily yoga sessions', 'Organic farm-to-table dining']
+        },
+        {
+            'id': '19',
+            'name': 'New York Penthouse',
+            'location': 'Manhattan, New York, USA',
+            'description': 'Ultra-luxury penthouse with Central Park views, private terrace, and 24/7 concierge service.',
+            'price': 850,
+            'currency': 'USD',
+            'rating': 4.9,
+            'reviews': 234,
+            'type': 'penthouse',
+            'amenities': ['Central Park Views', 'Private Terrace', 'Concierge', 'Spa Bathroom', 'Chef Service'],
+            'image': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 3,
+            'bathrooms': 3,
+            'max_guests': 6,
+            'room_type': 'Central Park Penthouse',
+            'cancellation_policy': 'Free cancellation up to 14 days',
+            'check_in_time': '15:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Central Park views', 'Private rooftop terrace', '24/7 concierge', 'Personal chef service']
+        },
+        {
+            'id': '20',
+            'name': 'Safari Luxury Tent Camp',
+            'location': 'Serengeti, Tanzania',
+            'description': 'Luxury safari camp with canvas tents, private decks, and unparalleled wildlife viewing opportunities.',
+            'price': 425,
+            'currency': 'USD',
+            'rating': 4.8,
+            'reviews': 567,
+            'type': 'camp',
+            'amenities': ['Wildlife Viewing', 'Private Decks', 'Guided Safaris', 'Butler Service', 'Luxury Camping'],
+            'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+                        'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 2,
+            'room_type': 'Luxury Safari Tent',
+            'cancellation_policy': 'Free cancellation up to 21 days',
+            'check_in_time': '14:00',
+            'check_out_time': '11:00',
+            'property_highlights': ['Big Five wildlife viewing', 'Private viewing decks', 'Guided safari drives', 'Authentic Maasai cultural experiences']
+        }
+    ]
+
+        # Find the matching demo accommodation
+        accommodation = None
+        for demo_acc in demo_accommodations:
+            if demo_acc['id'] == str(id):
+                accommodation = demo_acc
+                break
+
+        if not accommodation:
+            return redirect('accommodations')
+
+        # For demo accommodations, create photo dictionaries from the photos array
+        photos_urls = accommodation.get('photos', [accommodation.get('image')])
+        hero_photos_json = []
+        all_photos_json = []
+
+        for idx, photo_url in enumerate(photos_urls):
+            photo_dict = {
+                'id': idx,
+                'image_url': photo_url,
+                'alt_text': f"{accommodation['name']} photo {idx+1}",
+                'title': f"{accommodation['name']} - Image {idx+1}",
+                'caption': '',
+                'display_order': idx,
+                'is_hero': idx < 6,
+                'media_type': 'image',
+            }
+            all_photos_json.append(photo_dict)
+            if idx < 6:
+                hero_photos_json.append(photo_dict)
+
+        total_photos = len(all_photos_json)
+
+        context = {
+            'accommodation': accommodation,
+            'is_demo': True,
+            'photos': photos_urls,
+            'hero_photos': hero_photos_json,
+            'all_photos': all_photos_json,
+            'total_photos': total_photos,
+            'checkin': checkin,
+            'checkout': checkout,
+            'adults': adults,
+            'kids': kids,
+            'rooms': rooms,
+        }
+
+        return render(request, 'core/accommodation_detail.html', context)
+
+    # Otherwise, try to get from database
+    try:
+        accommodation = Accommodation.objects.get(id=id, is_published=True, is_active=True)
+    except Accommodation.DoesNotExist:
+        # If accommodation not found, redirect to accommodations list
+        return redirect('accommodations')
+
+    # Get photos for this accommodation, ordered by display_order
+    photos = AccommodationPhoto.objects.filter(
+        accommodation=accommodation,
+        visibility__in=['public', 'hidden']
+    ).order_by('display_order', 'id')
+
+    # Separate hero photos (first few or marked as hero) and all photos
+    hero_photos_queryset = photos.filter(is_hero=True)[:6]  # Up to 6 hero photos
+    if not hero_photos_queryset.exists():
+        # If no hero photos marked, use first 6 photos
+        hero_photos_queryset = photos[:6]
+
+    # All photos for lightbox
+    all_photos_queryset = photos
+
+    # Pass the QuerySets directly to template for rendering
+    hero_photos = list(hero_photos_queryset)
+    all_photos = list(all_photos_queryset)
+    total_photos = len(all_photos)
+
+    # Create serializable dictionaries for JSON (used by JavaScript)
+    hero_photos_json = []
+    for photo in hero_photos:
+        hero_photos_json.append({
+            'id': photo.id,
+            'image_url': photo.get_image_url('large'),
+            'alt_text': photo.alt_text or photo.title or f"{accommodation.property_name} photo",
+            'title': photo.title,
+            'caption': photo.caption,
+            'display_order': photo.display_order,
+            'is_hero': photo.is_hero,
+            'media_type': photo.media_type,
+        })
+
+    all_photos_json = []
+    for photo in all_photos:
+        all_photos_json.append({
+            'id': photo.id,
+            'image_url': photo.get_image_url('large'),
+            'alt_text': photo.alt_text or photo.title or f"{accommodation.property_name} photo",
+            'title': photo.title,
+            'caption': photo.caption,
+            'display_order': photo.display_order,
+            'is_hero': photo.is_hero,
+            'media_type': photo.media_type,
+        })
+
+    context = {
+        'accommodation': accommodation,
+        'is_demo': False,
+        'photos': photos,
+        'hero_photos': hero_photos_json,  # Use JSON-serializable version
+        'all_photos': all_photos_json,    # Use JSON-serializable version
+        'hero_photos_objects': hero_photos,  # Keep objects for template rendering
+        'all_photos_objects': all_photos,    # Keep objects for template rendering
+        'total_photos': total_photos,
+        'checkin': checkin,
+        'checkout': checkout,
+        'adults': adults,
+        'kids': kids,
+        'rooms': rooms,
+    }
+
+    return render(request, 'core/accommodation_detail.html', context)
+
+def book_accommodation(request, id):
+    """Booking page for accommodation - collect traveler information"""
     # Demo accommodations data
     demo_accommodations = [
         {
@@ -1751,20 +3201,60 @@ def accommodation_detail(request, id):
         # If accommodation not found, redirect to accommodations list
         return redirect('accommodations')
 
-    # Get booking parameters from request or set defaults
+    # Get booking parameters from request
     checkin = request.GET.get('checkin', '')
     checkout = request.GET.get('checkout', '')
     adults = request.GET.get('adults', '2')
     kids = request.GET.get('kids', '0')
     rooms = request.GET.get('rooms', '1')
 
-    # Set default values if not provided
-    if not checkin:
-        from datetime import datetime, timedelta
-        checkin = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
-    if not checkout:
-        from datetime import datetime, timedelta
-        checkout = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
+    # Calculate number of nights and total price
+    from datetime import datetime
+    try:
+        checkin_date = datetime.strptime(checkin, '%Y-%m-%d')
+        checkout_date = datetime.strptime(checkout, '%Y-%m-%d')
+        nights = (checkout_date - checkin_date).days
+        total_guests = int(adults) + int(kids)
+        base_price = accommodation['price'] * nights
+        cleaning_fee = 50  # Fixed cleaning fee
+        service_fee = base_price * 0.08  # 8% service fee
+        taxes = base_price * 0.10  # 10% taxes
+        total_price = base_price + cleaning_fee + service_fee + taxes
+    except:
+        nights = 1
+        total_guests = int(adults) + int(kids)
+        base_price = accommodation['price'] * nights
+        cleaning_fee = 50
+        service_fee = base_price * 0.08
+        taxes = base_price * 0.10
+        total_price = base_price + cleaning_fee + service_fee + taxes
+
+    if request.method == 'POST':
+        # Process booking form
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        country = request.POST.get('country')
+        phone = request.POST.get('phone')
+        paperless = request.POST.get('paperless') == 'on'
+        booking_for = request.POST.get('booking_for')
+        traveling_for_work = request.POST.get('traveling_for_work')
+        airport_shuttle = request.POST.get('airport_shuttle') == 'on'
+        car_rental = request.POST.get('car_rental') == 'on'
+        taxi_shuttle = request.POST.get('taxi_shuttle') == 'on'
+        special_requests = request.POST.get('special_requests')
+        arrival_time = request.POST.get('arrival_time')
+        terms = request.POST.get('terms') == 'on'
+
+        # Basic validation
+        if not all([first_name, last_name, email, country, phone, terms]):
+            messages.error(request, 'Please fill in all required fields.')
+            return redirect('book_accommodation', id=id)
+
+        # Here you would normally save to database and process payment
+        # For now, we'll just redirect to a confirmation page
+        messages.success(request, f'Booking confirmed for {accommodation["name"]}! A confirmation email has been sent to {email}.')
+        return redirect('dashboard')
 
     context = {
         'accommodation': accommodation,
@@ -1773,9 +3263,20 @@ def accommodation_detail(request, id):
         'adults': adults,
         'kids': kids,
         'rooms': rooms,
+        'nights': nights,
+        'total_guests': total_guests,
+        'base_price': base_price,
+        'cleaning_fee': cleaning_fee,
+        'service_fee': service_fee,
+        'taxes': taxes,
+        'total_price': total_price,
     }
 
-    return render(request, 'core/accommodation_detail.html', context)
+    return render(request, 'core/book_accommodation.html', context)
+
+def dashboard(request):
+    """User dashboard page"""
+    return render(request, 'core/dashboard.html', {})
 
 def hostregister(request):
     """Host registration page view"""
@@ -1805,47 +3306,64 @@ def hostregister(request):
         form = HostRegistrationForm()
     return render(request, 'core/hostregister.html', {'form': form})
 
-def dashboard(request):
-    """Traveler dashboard page view"""
-    if not request.user.is_authenticated:
-        messages.warning(request, "Please sign in to access your dashboard.")
-        return redirect('signin')
-
-    # Check if user is a host trying to access traveler dashboard
+def tour_detail(request, id):
+    """Individual tour detail page view"""
     try:
-        profile = request.user.profile
-        if profile.is_host:
-            messages.info(request, "Welcome back! Redirecting to your host dashboard.")
-            return redirect('hostdashboard')
-    except UserProfile.DoesNotExist:
-        # Create profile for traveler if it doesn't exist
-        UserProfile.objects.create(user=request.user, is_host=False)
+        tour = Tour.objects.get(id=id, is_published=True, is_active=True)
+    except Tour.DoesNotExist:
+        # If tour not found, redirect to tours list
+        return redirect('tours')
 
-    # Mock dashboard data (in a real app, this would come from the database)
-    dashboard_data = {
-        'stats': {
-            'total_trips': 0,
-            'upcoming_trips': 0,
-            'total_spent': 0,
-            'favorite_destinations': 0,
-        },
-        'upcoming_bookings': [],
-        'recent_activity': [],
-        'favorite_destinations': [],
-        'profile': {
-            'name': request.user.first_name or request.user.username,
-            'email': request.user.email,
-            'joined_date': request.user.date_joined,
-            'total_trips': 0,
-            'reviews_given': 0,
-            'average_rating': 0,
-        },
-    }
+    # Get photos for this tour, ordered by display_order
+    photos = TourPhoto.objects.filter(
+        tour=tour,
+        visibility__in=['public', 'hidden']
+    ).order_by('display_order', 'id')
+
+    # Separate hero photos (first 6 or those marked as is_hero=True)
+    hero_photos_queryset = photos.filter(is_hero=True)[:6]
+    if not hero_photos_queryset:
+        hero_photos_queryset = photos[:6]
+    
+    # All photos for lightbox
+    all_photos_queryset = photos
+    
+    # Convert QuerySets to serializable lists for template
+    hero_photos = []
+    for photo in hero_photos_queryset:
+        hero_photos.append({
+            'id': photo.id,
+            'image_url': photo.get_image_url('large'),
+            'alt_text': photo.alt_text or photo.title or f"{tour.tour_name} photo",
+            'title': photo.title,
+            'caption': photo.caption,
+            'display_order': photo.display_order,
+            'is_hero': photo.is_hero,
+        })
+    
+    all_photos = []
+    for photo in all_photos_queryset:
+        all_photos.append({
+            'id': photo.id,
+            'image_url': photo.get_image_url('large'),
+            'alt_text': photo.alt_text or photo.title or f"{tour.tour_name} photo",
+            'title': photo.title,
+            'caption': photo.caption,
+            'display_order': photo.display_order,
+            'is_hero': photo.is_hero,
+        })
+    
+    # Total photos count
+    total_photos = len(all_photos)
 
     context = {
-        'dashboard_data': dashboard_data,
+        'tour': tour,
+        'hero_photos': hero_photos,
+        'all_photos': all_photos,
+        'total_photos': total_photos,
     }
-    return render(request, 'core/dashboard.html', context)
+
+    return render(request, 'core/tour_detail.html', context)
 
 @login_required
 def hostdashboard(request):
@@ -1873,10 +3391,16 @@ def hostdashboard(request):
     else:
         form = HostProfileForm(instance=profile, user=request.user)
     
+    # Get host's listings
+    accommodations = Accommodation.objects.filter(host=request.user).order_by('-created_at')
+    tours = Tour.objects.filter(host=request.user).order_by('-created_at')
+
     context = {
         'user': request.user,
         'profile': profile,
         'form': form,
+        'accommodations': accommodations,
+        'tours': tours,
     }
     return render(request, 'core/hostdashboard.html', context)
 
@@ -1959,6 +3483,12 @@ def create_accommodation(request):
             accommodation = form.save(commit=False)
             accommodation.host = request.user
             accommodation.is_published = True
+            
+            # Explicitly set cancellation_policy from POST data
+            cancellation_policy = request.POST.get('cancellation_policy')
+            if cancellation_policy:
+                accommodation.cancellation_policy = cancellation_policy
+            
             accommodation.save()
 
             # Handle photo uploads
@@ -1966,9 +3496,11 @@ def create_accommodation(request):
             for index, photo in enumerate(photos):
                 AccommodationPhoto.objects.create(
                     accommodation=accommodation,
-                    image=photo,
-                    is_primary=(index == 0),
-                    order=index
+                    original_file=photo,
+                    media_type='image',
+                    is_hero=(index == 0),
+                    display_order=index,
+                    visibility='public'
                 )
 
             messages.success(request, f'Accommodation "{accommodation.property_name}" created successfully!')
@@ -2694,7 +4226,7 @@ def country_detail(request, country):
             'description': 'Explore the ancient wonders of Jordan, from the rose-red city of Petra to the salty shores of the Dead Sea.',
             'long_description': 'Jordan, a country steeped in history and natural beauty, offers travelers an unforgettable journey through time. From the majestic rock-cut architecture of Petra to the therapeutic waters of the Dead Sea, every corner tells a story of ancient civilizations and breathtaking landscapes.',
             'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/ruined-ancient-building-made-large-towers-rocks-clear-sky.jpg',
             'accommodations_count': 245,
             'tours_count': 89,
             'attractions': [
@@ -2772,7 +4304,7 @@ def country_detail(request, country):
             'description': 'Bridge between Europe and Asia, offering rich history, stunning landscapes, and warm hospitality.',
             'long_description': 'Turkey, straddling two continents, offers a fascinating blend of Eastern and Western cultures. From the majestic Hagia Sophia in Istanbul to the surreal fairy chimneys of Cappadocia, Turkey provides an incredible diversity of experiences from ancient ruins to modern cities.',
             'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': 'https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
             'accommodations_count': 423,
             'tours_count': 198,
             'attractions': [
@@ -2798,7 +4330,7 @@ def country_detail(request, country):
             'description': 'Home to the ancient pyramids and pharaohs, with a rich history spanning thousands of years.',
             'long_description': 'Egypt, the land of the pharaohs, offers an unparalleled journey through one of the world\'s greatest ancient civilizations. From the majestic pyramids of Giza to the temples of Luxor, Egypt combines archaeological wonders with modern cities and the stunning Red Sea coastline.',
             'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/young-man-walking-towards-great-sphinx-giza.jpg',
             'accommodations_count': 389,
             'tours_count': 167,
             'attractions': [
@@ -2850,7 +4382,7 @@ def country_detail(request, country):
             'description': 'A modern oasis of luxury and innovation, blending traditional Arabian culture with cutting-edge architecture.',
             'long_description': 'The United Arab Emirates represents the pinnacle of modern luxury and cultural fusion. From the iconic Burj Khalifa in Dubai to the traditional souks of Abu Dhabi, the UAE offers an extraordinary blend of ancient Bedouin heritage and futuristic innovation.',
             'image': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/futuristic-dubai-landscape.jpg',
             'accommodations_count': 892,
             'tours_count': 345,
             'attractions': [
@@ -2876,7 +4408,7 @@ def country_detail(request, country):
             'description': 'A Mediterranean jewel known for its ancient history, vibrant culture, and stunning coastal beauty.',
             'long_description': 'Lebanon, often called the "Paris of the Middle East," offers a fascinating blend of ancient Phoenician heritage and modern Mediterranean charm. From the historic ruins of Baalbek to the vibrant streets of Beirut, Lebanon provides an unforgettable journey through time and culture.',
             'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/beautiful-view-pigeon-rocks-promenade-center-beirut-lebanon.jpg',
             'accommodations_count': 234,
             'tours_count': 156,
             'attractions': [
@@ -2902,7 +4434,7 @@ def country_detail(request, country):
             'description': 'A modern Arabian nation blending rich heritage with world-class luxury and sporting excellence.',
             'long_description': 'Qatar, a peninsula nation in the Arabian Gulf, represents the perfect fusion of ancient Bedouin traditions and modern architectural marvels. From the stunning Museum of Islamic Art in Doha to the spectacular venues that hosted the FIFA World Cup, Qatar offers an extraordinary cultural and sporting experience.',
             'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/skyline-doha-city-center-qatar-middle-east.jpg',
             'accommodations_count': 167,
             'tours_count': 89,
             'attractions': [
@@ -2928,7 +4460,7 @@ def country_detail(request, country):
             'description': 'The heart of Islam with ancient deserts, modern cities, and sacred pilgrimage sites.',
             'long_description': 'Saudi Arabia, the birthplace of Islam and home to its holiest sites, offers a profound journey through ancient deserts and ultramodern cities. From the sacred mosques of Mecca and Medina to the futuristic developments of Riyadh and NEOM, Saudi Arabia represents the perfect blend of spiritual heritage and visionary innovation.',
             'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'hero_image': '/static/core/images/view-buildings-against-cloudy-sky.jpg',
             'accommodations_count': 445,
             'tours_count': 234,
             'attractions': [
@@ -2954,7 +4486,7 @@ def country_detail(request, country):
             'description': 'A modern Gulf state with rich cultural heritage, stunning desert landscapes, and warm hospitality.',
             'long_description': 'Kuwait, a small but vibrant Gulf nation, offers a perfect blend of traditional Arabian culture and modern urban sophistication. From the magnificent Kuwait Towers to the pristine beaches along the Arabian Gulf, Kuwait provides an authentic Arabian experience with world-class museums and cultural sites.',
             'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'hero_image': '/static/core/images/drone-photo-kuwait-city-kuwait-tower-from-sky.jpg',
             'accommodations_count': 123,
             'tours_count': 67,
             'attractions': [
@@ -2980,7 +4512,7 @@ def country_detail(request, country):
             'description': 'An island kingdom blending ancient Dilmun civilization with modern Arabian Gulf culture.',
             'long_description': 'Bahrain, the smallest Arab country, offers a fascinating journey through 5,000 years of civilization. From the ancient Bahrain Fort to the modern Bahrain World Trade Center, this island kingdom provides an authentic Arabian experience with pristine beaches, rich cultural heritage, and warm hospitality.',
             'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+            'hero_image': '/static/core/images/reflection-illuminated-buildings-water-against-bahrain-skyline.jpg',
             'accommodations_count': 89,
             'tours_count': 45,
             'attractions': [
@@ -3006,7 +4538,7 @@ def country_detail(request, country):
             'description': 'An Arabian paradise of stunning deserts, turquoise coasts, and ancient fortresses.',
             'long_description': 'Oman, a land of dramatic landscapes and rich maritime heritage, offers an extraordinary Arabian experience. From the rugged Hajar Mountains to the pristine beaches of the Arabian Sea, Oman combines ancient forts and traditional souks with modern luxury resorts and warm Omani hospitality.',
             'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/historical-casbah-taourirt-ouarzazate-morocco-with-white.jpg',
             'accommodations_count': 156,
             'tours_count': 78,
             'attractions': [
@@ -3032,7 +4564,7 @@ def country_detail(request, country):
             'description': 'Ancient land of civilization with rich history, stunning architecture, and Mediterranean charm.',
             'long_description': 'Syria, the cradle of civilization, offers an extraordinary journey through thousands of years of human history. From the ancient city of Damascus to the stunning Crusader castles, Syria represents the perfect blend of Mediterranean culture, Islamic architecture, and archaeological wonders.',
             'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/building-with-clock-front-cloudy-sky-background.jpg',
             'accommodations_count': 89,
             'tours_count': 45,
             'attractions': [
@@ -3058,7 +4590,7 @@ def country_detail(request, country):
             'description': 'Land of ancient Mesopotamia with rich history, archaeological treasures, and cultural heritage.',
             'long_description': 'Iraq, the birthplace of civilization, offers an unparalleled journey through the cradle of human history. From the ancient ziggurats of Mesopotamia to the magnificent mosques of Baghdad, Iraq represents thousands of years of cultural and scientific achievements that shaped the modern world.',
             'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'hero_image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'hero_image': '/static/core/images/vertical-historical-al-rabi-tower-against-blue-cloudy-sky-united-arab-emirates.jpg',
             'accommodations_count': 67,
             'tours_count': 34,
             'attractions': [
@@ -3111,11 +4643,493 @@ def country_detail(request, country):
     if not country_data:
         # If country not found, redirect to countries list
         return redirect('countries')
-    
+
+    # Query real accommodations from database for this country
+    real_accommodations = Accommodation.objects.filter(
+        country__iexact=country_data['name'],
+        is_published=True,
+        is_active=True
+    ).select_related('host').prefetch_related('photos')
+
+    # Convert real accommodations to dict format for template
+    real_accommodation_list = []
+    for acc in real_accommodations:
+        primary_photo = acc.photos.filter(is_hero=True).first()
+        if not primary_photo:
+            primary_photo = acc.photos.first()
+
+        real_accommodation_list.append({
+            'id': acc.id,
+            'name': acc.property_name,
+            'location': acc.city,
+            'price': float(acc.base_price),
+            'image': primary_photo.get_image_url() if primary_photo else 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'rating': 4.5,  # Placeholder until review system is implemented
+        })
+
+    # Query real tours from database for this country
+    real_tours = Tour.objects.filter(
+        country__iexact=country_data['name'],
+        is_published=True,
+        is_active=True
+    ).select_related('host').prefetch_related('photos')
+
+    # Convert real tours to dict format for template
+    real_tour_list = []
+    for tour in real_tours:
+        primary_photo = tour.photos.filter(is_hero=True).first()
+        if not primary_photo:
+            primary_photo = tour.photos.first()
+
+        real_tour_list.append({
+            'id': tour.id,
+            'name': tour.tour_name,
+            'duration': tour.duration,
+            'price': float(tour.price_per_person),
+            'image': primary_photo.get_image_url() if primary_photo else 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'rating': 4.5,  # Placeholder until review system is implemented
+        })
+
+    # Update counts with real data
+    country_data['accommodations_count'] = real_accommodations.count()
+    country_data['tours_count'] = real_tours.count()
+
+    # Merge real data with demo data (real data first)
+    if real_accommodation_list:
+        country_data['accommodations'] = real_accommodation_list + country_data.get('accommodations', [])
+
+    if real_tour_list:
+        country_data['tours'] = real_tour_list + country_data.get('tours', [])
+
     context = {
         'country': country_data,
     }
     return render(request, 'core/country_detail.html', context)
+
+
+def demo_accommodation_detail(request, country, slug):
+    """Demo accommodation detail page view"""
+    # Demo accommodation data by country and slug
+    demo_accommodations = {
+        'jordan': {
+            'petra-marriotts-wadi-rum-nabatean-resort': {
+                'id': 'petra-marriott-wadi-rum',
+                'name': 'Petra Marriott\'s Wadi Rum Nabatean Resort',
+                'location': 'Wadi Rum, Jordan',
+                'description': 'Experience the magic of Wadi Rum at this luxurious desert resort. Nestled among the stunning red sand dunes and ancient rock formations, this Marriott property offers world-class accommodations with authentic Bedouin hospitality.',
+                'long_description': 'Petra Marriott\'s Wadi Rum Nabatean Resort is a luxurious oasis in the heart of the Jordanian desert. This award-winning resort combines modern luxury with traditional Bedouin culture, offering guests an unforgettable desert experience. The resort features elegantly designed rooms and suites with panoramic views of the dramatic Wadi Rum landscape, a world-class spa, multiple dining options, and guided desert excursions.',
+                'price': 250,
+                'currency': 'USD',
+                'rating': 4.8,
+                'reviews': 1247,
+                'type': 'resort',
+                'amenities': ['WiFi', 'Pool', 'Spa', 'Restaurant', 'Desert Tours', 'Fitness Center', 'Concierge'],
+                'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'bedrooms': 2,
+                'bathrooms': 2,
+                'max_guests': 4,
+                'room_type': 'Desert View Suite',
+                'cancellation_policy': 'Free cancellation up to 24 hours',
+                'check_in_time': '14:00',
+                'check_out_time': '12:00',
+                'property_highlights': ['Stunning desert views', 'Authentic Bedouin experience', 'Guided desert safaris', 'World-class spa facilities']
+            },
+            'movenpick-resort-petra': {
+                'id': 'movenpick-resort-petra',
+                'name': 'Mövenpick Resort Petra',
+                'location': 'Petra, Jordan',
+                'description': 'Located just steps from the ancient city of Petra, this resort offers modern luxury with breathtaking views of the rose-red rock formations and easy access to one of the world\'s greatest archaeological wonders.',
+                'long_description': 'Mövenpick Resort Petra provides the perfect base for exploring the ancient Nabatean city. This contemporary resort features spacious rooms with private balconies overlooking the Petra mountains, multiple restaurants serving international and local cuisine, a large swimming pool, and a fitness center. The resort\'s convenient location allows guests to walk to the Petra entrance, making it ideal for visitors wanting to maximize their time exploring this UNESCO World Heritage Site.',
+                'price': 180,
+                'currency': 'USD',
+                'rating': 4.6,
+                'reviews': 892,
+                'type': 'resort',
+                'amenities': ['WiFi', 'Pool', 'Restaurant', 'Fitness Center', 'Concierge', 'Petra Views', 'Room Service'],
+                'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'bedrooms': 1,
+                'bathrooms': 1,
+                'max_guests': 2,
+                'room_type': 'Petra View Room',
+                'cancellation_policy': 'Free cancellation up to 48 hours',
+                'check_in_time': '15:00',
+                'check_out_time': '11:00',
+                'property_highlights': ['Walking distance to Petra', 'Mountain views', 'Multiple dining options', 'Petra expert guides available']
+            },
+            'kempinski-hotel-ishtar-dead-sea': {
+                'id': 'kempinski-hotel-ishtar-dead-sea',
+                'name': 'Kempinski Hotel Ishtar Dead Sea',
+                'location': 'Dead Sea, Jordan',
+                'description': 'Luxury resort on the shores of the Dead Sea offering mineral-rich mud treatments, floating experiences in the buoyant waters, and stunning views of the desert landscape.',
+                'long_description': 'Kempinski Hotel Ishtar Dead Sea is a luxurious beachfront resort offering the ultimate Dead Sea experience. This five-star property features spacious rooms and suites with private balconies, a private beach area with mineral-rich mud for therapeutic treatments, multiple swimming pools, a world-class spa, and panoramic views of the Jordan Valley. The resort provides the perfect setting for relaxation and rejuvenation in one of the world\'s most unique natural environments.',
+                'price': 220,
+                'currency': 'USD',
+                'rating': 4.7,
+                'reviews': 756,
+                'type': 'resort',
+                'amenities': ['WiFi', 'Pool', 'Spa', 'Private Beach', 'Restaurant', 'Fitness Center', 'Dead Sea Access'],
+                'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'bedrooms': 1,
+                'bathrooms': 1,
+                'max_guests': 2,
+                'room_type': 'Dead Sea View Room',
+                'cancellation_policy': 'Free cancellation up to 7 days',
+                'check_in_time': '14:00',
+                'check_out_time': '12:00',
+                'property_highlights': ['Private Dead Sea beach', 'Therapeutic mud treatments', 'Floating experiences', 'Desert valley views']
+            }
+        }
+    }
+
+    # Get the accommodation data
+    country_data = demo_accommodations.get(country.lower())
+    if not country_data:
+        return redirect('countries')
+
+    accommodation = country_data.get(slug)
+    if not accommodation:
+        return redirect('country_detail', country=country)
+
+    # Create photo dictionaries for the template
+    photos_urls = accommodation.get('photos', [accommodation.get('image')])
+    hero_photos_json = []
+    all_photos_json = []
+
+    for idx, photo_url in enumerate(photos_urls):
+        photo_dict = {
+            'id': idx,
+            'image_url': photo_url,
+            'alt_text': f"{accommodation['name']} photo {idx+1}",
+            'title': f"{accommodation['name']} - Image {idx+1}",
+            'caption': '',
+            'display_order': idx,
+            'is_hero': idx < 6,
+            'media_type': 'image',
+        }
+        all_photos_json.append(photo_dict)
+        if idx < 6:
+            hero_photos_json.append(photo_dict)
+
+    total_photos = len(all_photos_json)
+
+    context = {
+        'accommodation': accommodation,
+        'is_demo': True,
+        'photos': photos_urls,
+        'hero_photos': hero_photos_json,
+        'all_photos': all_photos_json,
+        'total_photos': total_photos,
+        'country': country,
+    }
+
+    return render(request, 'core/accommodation_detail.html', context)
+
+
+def demo_tour_detail(request, country, slug):
+    """Demo tour detail page view"""
+    # Demo tour data by country and slug
+    demo_tours = {
+        'jordan': {
+            'petra-full-day-tour': {
+                'id': 'petra-full-day-tour',
+                'name': 'Petra Full Day Tour',
+                'location': 'Petra, Jordan',
+                'description': 'Explore the ancient Nabatean city of Petra on a comprehensive full-day tour. Walk through the Siq canyon, marvel at the Treasury, and discover the hidden wonders of this UNESCO World Heritage Site.',
+                'long_description': 'Join our expert-guided full-day tour of Petra, one of the world\'s most spectacular archaeological sites. Your journey begins with a scenic drive from your hotel, followed by a walk through the narrow Siq canyon that leads to the magnificent Treasury building. Continue exploring the ancient city with visits to the Monastery, Royal Tombs, and other hidden treasures. Learn about the Nabatean civilization that carved this city from rose-red rock over 2,000 years ago. The tour includes entrance fees, professional guide, transportation, and lunch.',
+                'duration': '8 hours',
+                'price': 85,
+                'currency': 'USD',
+                'rating': 4.9,
+                'reviews': 1247,
+                'type': 'cultural',
+                'inclusions': ['Professional guide', 'Entrance fees', 'Transportation', 'Lunch', 'Bottled water', 'Hotel pickup'],
+                'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'max_participants': 15,
+                'min_participants': 2,
+                'age_restrictions': 'Suitable for all ages',
+                'difficulty': 'Moderate',
+                'highlights': ['Siq Canyon entrance', 'The Treasury (Al-Khazneh)', 'Monastery (Ad Deir)', 'Royal Tombs', 'Ancient water systems'],
+                'itinerary': '8:00 AM - Hotel pickup\n9:00 AM - Arrive at Petra\n9:30 AM - Enter through Siq Canyon\n10:30 AM - Explore Treasury and lower city\n12:00 PM - Lunch break\n1:00 PM - Visit Monastery and upper city\n3:00 PM - Free time for exploration\n4:30 PM - Return to hotel',
+                'cancellation_policy': 'Free cancellation up to 24 hours'
+            },
+            'wadi-rum-desert-safari': {
+                'id': 'wadi-rum-desert-safari',
+                'name': 'Wadi Rum Desert Safari',
+                'location': 'Wadi Rum, Jordan',
+                'description': 'Experience the stunning desert landscape of Wadi Rum on an exciting safari adventure. Drive through massive sand dunes, explore ancient rock formations, and enjoy traditional Bedouin hospitality.',
+                'long_description': 'Embark on an unforgettable desert safari through Wadi Rum, also known as the "Valley of the Moon." This protected area features towering sandstone mountains, red sand dunes, and rock formations that have been shaped by wind and water over millions of years. Your experienced Bedouin guide will take you on a 4x4 vehicle tour through the desert, stopping at key sites including Lawrence of Arabia\'s house, natural rock bridges, and ancient petroglyphs. Enjoy traditional Bedouin tea, learn about desert survival techniques, and witness a spectacular desert sunset.',
+                'duration': '6 hours',
+                'price': 65,
+                'currency': 'USD',
+                'rating': 4.8,
+                'reviews': 892,
+                'type': 'adventure',
+                'inclusions': ['4x4 vehicle tour', 'Bedouin guide', 'Traditional tea', 'Entrance fees', 'Hotel pickup/drop-off', 'Bottled water'],
+                'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'max_participants': 6,
+                'min_participants': 2,
+                'age_restrictions': 'Minimum age 8 years',
+                'difficulty': 'Easy to Moderate',
+                'highlights': ['Lawrence of Arabia house', 'Rock bridges and arches', 'Ancient petroglyphs', 'Sand dune exploration', 'Traditional Bedouin camp'],
+                'itinerary': '2:00 PM - Hotel pickup\n3:00 PM - Arrive at Wadi Rum\n3:30 PM - 4x4 desert tour begins\n4:30 PM - Visit Lawrence house and rock formations\n5:30 PM - Traditional Bedouin tea ceremony\n6:00 PM - Sand dune exploration\n7:00 PM - Sunset viewing\n8:00 PM - Return to hotel',
+                'cancellation_policy': 'Free cancellation up to 48 hours'
+            },
+            'dead-sea-experience': {
+                'id': 'dead-sea-experience',
+                'name': 'Dead Sea Experience',
+                'location': 'Dead Sea, Jordan',
+                'description': 'Relax and rejuvenate at the lowest point on Earth. Float in the mineral-rich waters, enjoy therapeutic mud treatments, and experience the unique buoyancy of the Dead Sea.',
+                'long_description': 'Discover the therapeutic wonders of the Dead Sea on this relaxing full-day experience. Located 400 meters below sea level, the Dead Sea is the lowest point on Earth and contains ten times more salt and minerals than ordinary seawater. Your day includes transportation to the Dead Sea, time to float in the buoyant waters, application of mineral-rich mud for skin therapy, and relaxation at a beach club. Learn about the historical and geological significance of this unique body of water while enjoying the health benefits of its mineral-rich environment.',
+                'duration': '4 hours',
+                'price': 45,
+                'currency': 'USD',
+                'rating': 4.7,
+                'reviews': 756,
+                'type': 'wellness',
+                'inclusions': ['Round-trip transportation', 'Beach access', 'Mud treatment', 'Towel and shower facilities', 'Bottled water', 'Hotel pickup'],
+                'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                ],
+                'max_participants': 20,
+                'min_participants': 2,
+                'age_restrictions': 'Suitable for all ages',
+                'difficulty': 'Easy',
+                'highlights': ['Floating in Dead Sea waters', 'Mineral mud therapy', 'Lowest point on Earth', 'Jordan Valley views', 'Relaxation facilities'],
+                'itinerary': '9:00 AM - Hotel pickup\n10:00 AM - Arrive at Dead Sea beach\n10:30 AM - Safety briefing and flotation demonstration\n11:00 AM - Free time for swimming and floating\n12:00 PM - Mud treatment application\n1:00 PM - Lunch and relaxation\n2:00 PM - Return to hotel',
+                'cancellation_policy': 'Free cancellation up to 24 hours'
+            }
+        }
+    }
+
+    # Get the tour data
+    country_data = demo_tours.get(country.lower())
+    if not country_data:
+        return redirect('countries')
+
+    tour = country_data.get(slug)
+    if not tour:
+        return redirect('country_detail', country=country)
+
+    # Create photo dictionaries for the template
+    photos_urls = tour.get('photos', [tour.get('image')])
+    hero_photos_json = []
+    all_photos_json = []
+
+    for idx, photo_url in enumerate(photos_urls):
+        photo_dict = {
+            'id': idx,
+            'image_url': photo_url,
+            'alt_text': f"{tour['name']} photo {idx+1}",
+            'title': f"{tour['name']} - Image {idx+1}",
+            'caption': '',
+            'display_order': idx,
+            'is_hero': idx < 6,
+            'media_type': 'image',
+        }
+        all_photos_json.append(photo_dict)
+        if idx < 6:
+            hero_photos_json.append(photo_dict)
+
+    total_photos = len(all_photos_json)
+
+    context = {
+        'tour': tour,
+        'is_demo': True,
+        'photos': photos_urls,
+        'hero_photos': hero_photos_json,
+        'all_photos': all_photos_json,
+        'total_photos': total_photos,
+        'country': country,
+    }
+
+    return render(request, 'core/tour_detail.html', context)
+
+
+def attraction_detail(request, country, slug):
+    """Attraction detail page view"""
+    # Demo attraction data by country and slug
+    demo_attractions = {
+        'jordan': {
+            'petra': {
+                'id': 'petra',
+                'name': 'Petra',
+                'location': 'Ma\'an Governorate, Jordan',
+                'description': 'Ancient rock-cut city and UNESCO World Heritage Site, famous for its stunning architecture carved into rose-red sandstone cliffs.',
+                'long_description': 'Petra, often called the "Rose City" due to the color of the stone from which it is carved, is one of the world\'s most famous archaeological sites and a UNESCO World Heritage Site. This ancient Nabataean city, hidden in the rugged mountains of southern Jordan, features spectacular rock-cut architecture and water conduit systems that are engineering marvels of the ancient world.',
+                'historical_significance': 'Petra was established as the capital of the Nabataean Kingdom around the 4th century BCE. The Nabataeans were Arab traders who controlled the spice routes between Arabia, Egypt, Syria, and the Mediterranean. They developed sophisticated water management systems and carved elaborate tombs and temples directly into the sandstone cliffs. The city flourished for centuries, reaching its peak in the 1st century CE with a population of around 20,000-30,000 people.',
+                'discovery': 'Petra remained largely unknown to the Western world until 1812 when it was rediscovered by Swiss explorer Johann Ludwig Burckhardt. He was told about the site by local Bedouins and entered the city disguised as an Arab pilgrim. The site became famous worldwide after being featured in films like "Indiana Jones and the Last Crusade."',
+                'architecture': 'Petra\'s most famous structure is the Treasury (Al-Khazneh), a magnificent facade carved into the rock that served as a tomb for Nabataean kings. Other notable sites include the Monastery (Ad Deir), the largest rock-cut monument in Petra; the Royal Tombs, elaborate burial chambers for the Nabataean elite; and the Great Temple, a complex of buildings that served as the city\'s main religious center.',
+                'water_system': 'One of Petra\'s most remarkable achievements was its sophisticated water management system. The Nabataeans built dams, cisterns, and channels to capture and store rainwater from the surrounding mountains. This allowed the city to thrive in the arid desert environment and support its large population.',
+                'cultural_impact': 'Petra has been designated a UNESCO World Heritage Site and is considered one of the New Seven Wonders of the World. It attracts over 1 million visitors annually and has been featured in numerous films, books, and works of art. The site continues to be an active area of archaeological research.',
+                'best_time_to_visit': 'The best time to visit Petra is during the cooler months from March to May or September to November. Summer temperatures can exceed 40°C (104°F), making exploration difficult. Winter months are mild but can be rainy.',
+                'how_to_get_there': 'Petra is located about 240 km (150 miles) south of Amman. Most visitors arrive by organized tour bus, taxi, or rental car. The journey takes about 3-4 hours by road. There are also domestic flights from Amman to Ma\'an Airport, about 120 km from Petra.',
+                'entrance_fees': 'Entrance fees for foreigners are approximately 50 JOD (about $70 USD) for a one-day pass, or 55 JOD for a two-day pass. Jordanian citizens and residents of Arab countries pay reduced rates. Children under 12 enter free.',
+                'opening_hours': 'Petra opens at 6:00 AM year-round. Closing times vary by season: 6:00 PM in summer (April 15-October 15) and 4:00 PM in winter (October 16-April 14).',
+                'what_to_wear': 'Comfortable walking shoes are essential as there is a lot of walking on uneven terrain. Wear light, breathable clothing in summer and layers in cooler months. Bring a hat, sunglasses, and sunscreen. Modest clothing is recommended when visiting religious sites.',
+                'health_safety': 'Stay hydrated, especially in summer. The site has medical facilities and first aid stations. Some areas involve climbing stairs or uneven terrain, so visitors with mobility issues should check accessibility. Horse and donkey rides are available but should be approached with caution.',
+                'guided_tours': 'Guided tours are highly recommended to fully appreciate Petra\'s history and significance. Official guides are available at the entrance and provide detailed explanations of the sites. Audio guides are also available in multiple languages.',
+                'nearby_attractions': 'Nearby attractions include Little Petra (Siq al-Barid), a smaller Nabataean site; Wadi Rum desert; and the Dead Sea. Many visitors combine Petra with these sites in multi-day tours.',
+                'conservation': 'Petra faces challenges from weathering, tourism, and development. UNESCO and the Jordanian government have implemented conservation programs to protect the site. Visitors are asked to stay on marked paths and not climb on the monuments.',
+                'facts': [
+                    'Petra is mentioned in the Bible as the place where Moses struck a rock to bring forth water',
+                    'The city was an important trading hub for frankincense, myrrh, and spices',
+                    'Petra\'s water system could supply the city for several months during dry periods',
+                    'The Treasury facade is 30 meters high and 25 meters wide',
+                    'Petra was occupied for over 1,000 years before being largely abandoned',
+                    'The site covers an area of about 264 square kilometers',
+                    'Petra receives over 1 million visitors annually',
+                    'The Monastery is located 800 steps up a mountain and offers panoramic views'
+                ],
+                'key_sites': [
+                    {
+                        'name': 'The Treasury (Al-Khazneh)',
+                        'description': 'The most famous monument in Petra, a magnificent rock-cut tomb with intricate carvings and a mysterious urn on top.',
+                        'significance': 'Built around 100 CE as a tomb for Nabataean kings. The urn was believed to contain treasure, hence the name "Treasury."'
+                    },
+                    {
+                        'name': 'The Monastery (Ad Deir)',
+                        'description': 'The largest rock-cut monument in Petra, measuring 50 meters wide and 45 meters high.',
+                        'significance': 'Located high on a mountain, it served as a religious center. The name "Monastery" was given by Bedouins who used it as a hermitage.'
+                    },
+                    {
+                        'name': 'The Royal Tombs',
+                        'description': 'Elaborate burial chambers carved into the cliffs, including the Urn Tomb, Silk Tomb, and Corinthian Tomb.',
+                        'significance': 'These tombs demonstrate the Nabataeans\' advanced architectural skills and their reverence for their rulers.'
+                    },
+                    {
+                        'name': 'The Great Temple',
+                        'description': 'A complex of buildings that served as Petra\'s main religious and civic center.',
+                        'significance': 'Features colonnaded courtyards, temples, and administrative buildings, showing the city\'s urban sophistication.'
+                    },
+                    {
+                        'name': 'The Siq',
+                        'description': 'A narrow canyon, 1.2 km long, that serves as the main entrance to Petra.',
+                        'significance': 'This natural gorge was enhanced by the Nabataeans with water channels and carvings. It creates dramatic anticipation before revealing the Treasury.'
+                    }
+                ],
+                'visitor_tips': [
+                    'Start early in the morning to avoid crowds and heat',
+                    'Bring plenty of water and snacks',
+                    'Consider a guided tour for deeper understanding',
+                    'Horse or donkey rides are available but walking is recommended for the full experience',
+                    'Allow at least 4-6 hours to explore the main sites',
+                    'Purchase tickets online in advance during peak season',
+                    'Respect the site by not climbing on monuments or removing artifacts'
+                ],
+                'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                'photos': [
+                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80',
+                    'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '30.3285° N, 35.4444° E',
+                'unesco_status': 'UNESCO World Heritage Site since 1985',
+                'area': '264 square kilometers',
+                'peak_population': '20,000-30,000 (1st century CE)',
+                'annual_visitors': 'Over 1 million',
+                'entrance_fee': '50 JOD (approx. $70 USD) for one day',
+                'best_time': 'March-May or September-November',
+                'climate': 'Desert climate with hot summers and mild winters'
+            }
+        }
+    }
+
+    # Get the attraction data
+    country_data = demo_attractions.get(country.lower())
+    if not country_data:
+        return redirect('countries')
+
+    attraction = country_data.get(slug)
+    if not attraction:
+        return redirect('country_detail', country=country)
+
+    # Create photo dictionaries for the template
+    photos_urls = attraction.get('photos', [attraction.get('image')])
+    hero_photos_json = []
+    all_photos_json = []
+
+    for idx, photo_url in enumerate(photos_urls):
+        photo_dict = {
+            'id': idx,
+            'image_url': photo_url,
+            'alt_text': f"{attraction['name']} photo {idx+1}",
+            'title': f"{attraction['name']} - Image {idx+1}",
+            'caption': '',
+            'display_order': idx,
+            'is_hero': idx < 6,
+            'media_type': 'image',
+        }
+        all_photos_json.append(photo_dict)
+        if idx < 6:
+            hero_photos_json.append(photo_dict)
+
+    total_photos = len(all_photos_json)
+
+    context = {
+        'attraction': attraction,
+        'is_demo': True,
+        'photos': photos_urls,
+        'hero_photos': hero_photos_json,
+        'all_photos': all_photos_json,
+        'total_photos': total_photos,
+        'country': country,
+    }
+
+    return render(request, 'core/attraction_detail.html', context)
 
 
 # Bulk Actions for Host Dashboard
@@ -3296,7 +5310,7 @@ def view_accommodation(request, listing_id):
         accommodation = get_object_or_404(Accommodation, id=listing_id, host=request.user)
 
         # Get primary photo
-        primary_photo = accommodation.photos.filter(is_primary=True).first()
+        primary_photo = accommodation.photos.filter(is_hero=True).first()
         if not primary_photo:
             primary_photo = accommodation.photos.first()
 
@@ -3324,7 +5338,7 @@ def view_tour(request, listing_id):
         tour = get_object_or_404(Tour, id=listing_id, host=request.user)
 
         # Get primary photo
-        primary_photo = tour.photos.filter(is_primary=True).first()
+        primary_photo = tour.photos.filter(is_hero=True).first()
         if not primary_photo:
             primary_photo = tour.photos.first()
 
@@ -3485,3 +5499,72 @@ def update_tour(request, listing_id):
     except Exception as e:
         messages.error(request, f'Error updating tour: {str(e)}')
         return redirect('hostdashboard')
+
+
+@login_required
+def create_tour_guide(request):
+    """Create tour guide profile page"""
+    if request.method == 'POST':
+        form = TourGuideForm(request.POST, request.FILES)
+        if form.is_valid():
+            tour_guide = form.save(commit=False)
+            tour_guide.host = request.user
+            tour_guide.is_published = True
+            tour_guide.save()
+
+            # Handle photo uploads
+            photos = request.FILES.getlist('photos')
+            for index, photo in enumerate(photos):
+                TourGuidePhoto.objects.create(
+                    tour_guide=tour_guide,
+                    original_file=photo,
+                    is_profile_photo=(index == 0),
+                    display_order=index
+                )
+
+            messages.success(request, f'Tour Guide profile "{tour_guide.guide_name}" created successfully!')
+            return redirect('hostdashboard')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = TourGuideForm()
+
+    return render(request, 'core/create_tour_guide.html', {'form': form})
+
+
+@login_required
+def create_rental_car(request):
+    if request.method == 'POST':
+        form = RentalCarForm(request.POST, request.FILES)
+        if form.is_valid():
+            rental_car = form.save(commit=False)
+            rental_car.host = request.user
+            rental_car.is_published = True
+            rental_car.save()
+
+            # Handle photo uploads
+            photos = request.FILES.getlist('photos')
+            for index, photo in enumerate(photos):
+                RentalCarPhoto.objects.create(
+                    rental_car=rental_car,
+                    original_file=photo,
+                    is_primary=(index == 0),
+                    display_order=index
+                )
+
+            messages.success(request, f'Rental Car "{rental_car.vehicle_name}" listed successfully!')
+            return redirect('hostdashboard')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = RentalCarForm()
+
+    return render(request, 'core/create_rental_car.html', {'form': form})
+
+def rental_cars(request):
+    """Rental cars listing page"""
+    return render(request, 'core/rental_cars.html')
+
+def taxi_service(request):
+    """Taxi service page"""
+    return render(request, 'core/taxi_service.html')

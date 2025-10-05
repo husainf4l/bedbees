@@ -51,6 +51,485 @@
 </section>
 
 <div class="bg-white">
+    <!-- Search & Filter Section -->
+    <section id="search-filters" class="py-12 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex gap-8">
+                <!-- Filter Sidebar (Desktop) -->
+                <aside id="filter-sidebar" class="hidden lg:block w-80 flex-shrink-0">
+                    <form id="filter-form" method="GET" action="{% url 'search_results' %}" class="sticky top-24 bg-white rounded-2xl shadow-lg p-6 border">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold text-gray-900">Filters</h3>
+                            <button type="button" id="clear-filters" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Clear All</button>
+                        </div>
+
+                        <!-- Hidden input for filter type -->
+                        <input type="hidden" name="type" id="filter-type-input" value="hotels">
+
+                        <!-- Filter Type Tabs -->
+                        <div class="flex gap-2 mb-6">
+                            <button type="button" class="filter-type-tab active flex-1 px-4 py-2 rounded-lg font-medium transition-colors" data-type="hotels">
+                                Hotels
+                            </button>
+                            <button type="button" class="filter-type-tab flex-1 px-4 py-2 rounded-lg font-medium transition-colors" data-type="tours">
+                                Tours
+                            </button>
+                        </div>
+
+                        <!-- Basic Search -->
+                        <div class="mb-6 pb-6 border-b">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Destination</label>
+                            <input type="text" name="destination" placeholder="Where are you going?" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 mt-4">Check-in / Check-out</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="date" name="checkin" class="px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                                <input type="date" name="checkout" class="px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                            </div>
+
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 mt-4">Guests & Rooms</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Adults</span>
+                                    <select name="adults" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4+</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Children</span>
+                                    <select name="children" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm">
+                                        <option>0</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3+</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">Rooms</span>
+                                    <select name="rooms" class="px-3 py-1.5 border border-gray-300 rounded-lg text-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-6 pb-6 border-b">
+                            <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                <span class="text-sm font-semibold text-gray-700">Price Range</span>
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="filter-content mt-4">
+                                <input type="range" min="0" max="1000" value="500" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                <div class="flex items-center justify-between mt-2">
+                                    <span class="text-sm text-gray-600">$0</span>
+                                    <span class="text-sm font-medium text-gray-900">$500</span>
+                                    <span class="text-sm text-gray-600">$1000+</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hotels Filters -->
+                        <div id="hotels-filters">
+                            <!-- Property Type -->
+                            <div class="mb-6 pb-6 border-b">
+                                <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                    <span class="text-sm font-semibold text-gray-700">Property Type</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="filter-content mt-3 space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="property_type" value="hotel" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Hotel</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="property_type" value="apartment" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Apartment</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="property_type" value="villa" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Villa</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="property_type" value="resort" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Resort</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" name="property_type" value="guesthouse" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Guest House</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Star Rating -->
+                            <div class="mb-6 pb-6 border-b">
+                                <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                    <span class="text-sm font-semibold text-gray-700">Star Rating</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="filter-content mt-3 space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">⭐⭐⭐⭐⭐ 5-star</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">⭐⭐⭐⭐ 4-star</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">⭐⭐⭐ 3-star</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Amenities -->
+                            <div class="mb-6 pb-6 border-b">
+                                <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                    <span class="text-sm font-semibold text-gray-700">Amenities</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="filter-content mt-3 space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Free WiFi</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Pool</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Free Parking</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Breakfast Included</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Air Conditioning</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Spa / Gym</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Pet-Friendly</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tours Filters -->
+                        <div id="tours-filters" class="hidden">
+                            <!-- Tour Type -->
+                            <div class="mb-6 pb-6 border-b">
+                                <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                    <span class="text-sm font-semibold text-gray-700">Tour Type</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="filter-content mt-3 space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Walking Tour</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Day Trip</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Adventure</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Cultural / Historical</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Food & Drink</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Private Tour</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Tour Inclusions -->
+                            <div class="mb-6 pb-6 border-b">
+                                <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                    <span class="text-sm font-semibold text-gray-700">Tour Inclusions</span>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="filter-content mt-3 space-y-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Tickets Included</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Transport Provided</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Meals Included</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Professional Guide</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                        <span class="ml-2 text-sm text-gray-700">Small Group</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Score -->
+                        <div class="mb-6 pb-6 border-b">
+                            <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                <span class="text-sm font-semibold text-gray-700">Review Score</span>
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="filter-content mt-3 space-y-2">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">9+ Wonderful</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">8+ Very Good</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">7+ Good</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">6+ Pleasant</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Booking Policies -->
+                        <div class="mb-6 pb-6 border-b">
+                            <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                <span class="text-sm font-semibold text-gray-700">Booking Policies</span>
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="filter-content mt-3 space-y-2">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Free Cancellation</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">No Prepayment</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Accessibility -->
+                        <div class="mb-6">
+                            <button class="filter-accordion w-full flex items-center justify-between text-left">
+                                <span class="text-sm font-semibold text-gray-700">Accessibility</span>
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="filter-content mt-3 space-y-2">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Wheelchair Accessible</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Elevator Available</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors mt-6">
+                            Apply Filters
+                        </button>
+                    </form>
+                </aside>
+
+                <!-- Mobile Filter Button -->
+                <button id="mobile-filter-btn" class="lg:hidden fixed bottom-6 right-6 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
+                    Filters
+                </button>
+
+                <!-- Main Content Area - Featured Listings -->
+                <div class="flex-1">
+                    <!-- Featured Accommodations -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Featured Accommodations</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Accommodation 1 -->
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                                <div class="relative h-48">
+                                    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Luxury Beach Resort" class="w-full h-full object-cover">
+                                    <div class="absolute top-4 right-4">
+                                        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>
+                                    </div>
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Luxury Beach Resort & Spa</h3>
+                                    <div class="flex items-center gap-2 text-gray-600 mb-3">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm">Dubai, UAE</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                            <span class="text-sm font-medium">4.8</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-2xl font-bold text-gray-900">$450</span>
+                                            <span class="text-sm text-gray-500">/night</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Accommodation 2 -->
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                                <div class="relative h-48">
+                                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Boutique City Hotel" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Boutique City Hotel Downtown</h3>
+                                    <div class="flex items-center gap-2 text-gray-600 mb-3">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm">Paris, France</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                            <span class="text-sm font-medium">4.6</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-2xl font-bold text-gray-900">$250</span>
+                                            <span class="text-sm text-gray-500">/night</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Accommodation 3 -->
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                                <div class="relative h-48">
+                                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mountain Chalet" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Mountain View Chalet</h3>
+                                    <div class="flex items-center gap-2 text-gray-600 mb-3">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm">Swiss Alps, Switzerland</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                            <span class="text-sm font-medium">4.9</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-2xl font-bold text-gray-900">$350</span>
+                                            <span class="text-sm text-gray-500">/night</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Accommodation 4 -->
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                                <div class="relative h-48">
+                                    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Modern Apartment" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Modern Downtown Apartment</h3>
+                                    <div class="flex items-center gap-2 text-gray-600 mb-3">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm">New York, USA</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                            <span class="text-sm font-medium">4.7</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-2xl font-bold text-gray-900">$180</span>
+                                            <span class="text-sm text-gray-500">/night</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-center text-white">
+                        <h3 class="text-2xl font-bold mb-3">Ready to Find Your Perfect Stay?</h3>
+                        <p class="text-blue-100 mb-6">Use the filters to search thousands of properties worldwide</p>
+                        <a href="{% url 'accommodations' %}" class="inline-block bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+                            View All Accommodations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Popular Destinations Section -->
     <section id="destinations" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6">
@@ -59,46 +538,46 @@
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">Discover amazing places around the world</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Dubai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                <a href="{% url 'country_detail' 'jordan' %}" class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="relative h-64 md:h-80">
+                        <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Jordan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
-                            <h5 class="text-xl font-bold mb-1">Dubai</h5>
-                            <p class="text-sm opacity-90">UAE</p>
+                            <h5 class="text-xl font-bold mb-1">Jordan</h5>
+                            <p class="text-sm opacity-90">Middle East</p>
                         </div>
                     </div>
-                </div>
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Paris" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </a>
+                <a href="{% url 'country_detail' 'yemen' %}" class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="relative h-64 md:h-80">
+                        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Yemen" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
-                            <h5 class="text-xl font-bold mb-1">Paris</h5>
-                            <p class="text-sm opacity-90">France</p>
+                            <h5 class="text-xl font-bold mb-1">Yemen</h5>
+                            <p class="text-sm opacity-90">Middle East</p>
                         </div>
                     </div>
-                </div>
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Tokyo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </a>
+                <a href="{% url 'country_detail' 'iraq' %}" class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="relative h-64 md:h-80">
+                        <img src="https://images.unsplash.com/photo-1542379959873-9e23f6733b83?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Iraq" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
-                            <h5 class="text-xl font-bold mb-1">Tokyo</h5>
-                            <p class="text-sm opacity-90">Japan</p>
+                            <h5 class="text-xl font-bold mb-1">Iraq</h5>
+                            <p class="text-sm opacity-90">Middle East</p>
                         </div>
                     </div>
-                </div>
-                <div class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                    <div class="relative h-48">
-                        <img src="https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Bali" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </a>
+                <a href="{% url 'country_detail' 'egypt' %}" class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="relative h-64 md:h-80">
+                        <img src="https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Egypt" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
-                            <h5 class="text-xl font-bold mb-1">Bali</h5>
-                            <p class="text-sm opacity-90">Indonesia</p>
+                            <h5 class="text-xl font-bold mb-1">Egypt</h5>
+                            <p class="text-sm opacity-90">North Africa</p>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -734,6 +1213,70 @@
     </section>
 </div>
 
+<style>
+/* Filter Styles */
+.filter-type-tab {
+    background: white;
+    color: #4B5563;
+    border: 1px solid #E5E7EB;
+}
+
+.filter-type-tab.active {
+    background: #2563EB;
+    color: white;
+    border-color: #2563EB;
+}
+
+.filter-accordion.collapsed svg {
+    transform: rotate(-90deg);
+}
+
+/* Mobile Filter Drawer */
+#mobile-filter-drawer {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+#mobile-filter-drawer.open {
+    transform: translateX(0);
+}
+
+/* Custom Range Slider */
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #2563EB;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #2563EB;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+</style>
+
+<!-- Mobile Filter Drawer -->
+<div id="mobile-filter-drawer" class="lg:hidden fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-gray-900">Filters</h3>
+            <button id="close-mobile-filter" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Copy of desktop filter content for mobile -->
+        <div class="mobile-filter-content"></div>
+    </div>
+</div>
+
 <script>
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -749,6 +1292,125 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Filter Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter Type Tabs (Hotels vs Tours)
+    const filterTypeTabs = document.querySelectorAll('.filter-type-tab');
+    const hotelsFilters = document.getElementById('hotels-filters');
+    const toursFilters = document.getElementById('tours-filters');
+    const filterTypeInput = document.getElementById('filter-type-input');
 
+    filterTypeTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active from all tabs
+            filterTypeTabs.forEach(t => t.classList.remove('active'));
+            // Add active to clicked tab
+            this.classList.add('active');
+
+            // Update hidden input value
+            if (filterTypeInput) {
+                filterTypeInput.value = this.dataset.type;
+            }
+
+            // Show/hide appropriate filters
+            if (this.dataset.type === 'hotels') {
+                hotelsFilters.classList.remove('hidden');
+                toursFilters.classList.add('hidden');
+            } else {
+                hotelsFilters.classList.add('hidden');
+                toursFilters.classList.remove('hidden');
+            }
+        });
+    });
+
+    // Filter Accordion Toggle
+    const accordions = document.querySelectorAll('.filter-accordion');
+    accordions.forEach(accordion => {
+        accordion.addEventListener('click', function() {
+            this.classList.toggle('collapsed');
+            const content = this.nextElementSibling;
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+            } else {
+                content.style.display = 'none';
+            }
+        });
+    });
+
+    // Clear All Filters
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', function() {
+            // Uncheck all checkboxes
+            document.querySelectorAll('#filter-sidebar input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            // Reset all text inputs
+            document.querySelectorAll('#filter-sidebar input[type="text"]').forEach(input => {
+                input.value = '';
+            });
+            // Reset all date inputs
+            document.querySelectorAll('#filter-sidebar input[type="date"]').forEach(input => {
+                input.value = '';
+            });
+            // Reset all selects to first option
+            document.querySelectorAll('#filter-sidebar select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+            // Reset range slider
+            const rangeInput = document.querySelector('#filter-sidebar input[type="range"]');
+            if (rangeInput) {
+                rangeInput.value = 500;
+            }
+        });
+    }
+
+    // Mobile Filter Drawer
+    const mobileFilterBtn = document.getElementById('mobile-filter-btn');
+    const mobileFilterDrawer = document.getElementById('mobile-filter-drawer');
+    const closeMobileFilter = document.getElementById('close-mobile-filter');
+    const mobileFilterContent = document.querySelector('.mobile-filter-content');
+    const desktopFilterContent = document.querySelector('#filter-sidebar > div');
+
+    if (mobileFilterBtn && mobileFilterDrawer) {
+        // Copy desktop filter content to mobile drawer
+        if (mobileFilterContent && desktopFilterContent) {
+            mobileFilterContent.innerHTML = desktopFilterContent.innerHTML;
+        }
+
+        // Open mobile filter drawer
+        mobileFilterBtn.addEventListener('click', function() {
+            mobileFilterDrawer.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close mobile filter drawer
+        if (closeMobileFilter) {
+            closeMobileFilter.addEventListener('click', function() {
+                mobileFilterDrawer.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+
+        // Close on backdrop click
+        mobileFilterDrawer.addEventListener('click', function(e) {
+            if (e.target === mobileFilterDrawer) {
+                mobileFilterDrawer.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Price Range Slider Update
+    const priceRange = document.querySelector('input[type="range"]');
+    if (priceRange) {
+        const priceDisplay = priceRange.parentElement.querySelector('.text-gray-900');
+        priceRange.addEventListener('input', function() {
+            if (priceDisplay) {
+                priceDisplay.textContent = '$' + this.value;
+            }
+        });
+    }
+});
 </script>
 {% endblock %}

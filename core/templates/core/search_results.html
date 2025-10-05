@@ -1,0 +1,204 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Search Results - Bedbees{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Search Header -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center gap-4">
+                <a href="{% url 'home' %}" class="text-gray-600 hover:text-gray-900">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </a>
+                <div class="flex-1">
+                    <form method="GET" action="{% url 'search_results' %}" class="flex items-center gap-4">
+                        <input type="hidden" name="type" value="{{ search_type }}">
+                        <div class="flex-1 relative">
+                            <input type="text" name="destination" value="{{ destination }}" placeholder="Where are you going?" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <input type="date" name="checkin" value="{{ checkin }}" class="px-4 py-2 border border-gray-300 rounded-lg">
+                        <input type="date" name="checkout" value="{{ checkout }}" class="px-4 py-2 border border-gray-300 rounded-lg">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                            Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex gap-8">
+            <!-- Filter Sidebar -->
+            <aside class="hidden lg:block w-80 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-2xl shadow-lg p-6 border">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-gray-900">Filters</h3>
+                        <a href="{% url 'search_results' %}?type={{ search_type }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Clear All</a>
+                    </div>
+
+                    <form method="GET" action="{% url 'search_results' %}" id="filter-form">
+                        <input type="hidden" name="type" value="{{ search_type }}">
+
+                        <!-- Filter Type Tabs -->
+                        <div class="flex gap-2 mb-6">
+                            <a href="?type=hotels" class="flex-1 px-4 py-2 rounded-lg font-medium text-center transition-colors {% if search_type == 'hotels' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %}">
+                                Hotels
+                            </a>
+                            <a href="?type=tours" class="flex-1 px-4 py-2 rounded-lg font-medium text-center transition-colors {% if search_type == 'tours' %}bg-blue-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %}">
+                                Tours
+                            </a>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-6 pb-6 border-b">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Price Range</label>
+                            <div class="flex gap-2">
+                                <input type="number" name="min_price" value="{{ min_price }}" placeholder="Min" class="w-1/2 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                                <input type="number" name="max_price" value="{{ max_price }}" placeholder="Max" class="w-1/2 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+
+                        {% if search_type == 'hotels' %}
+                        <!-- Property Type -->
+                        <div class="mb-6 pb-6 border-b">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Property Type</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" name="property_type" value="hotel" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Hotel</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" name="property_type" value="apartment" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Apartment</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" name="property_type" value="villa" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Villa</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer">
+                                    <input type="checkbox" name="property_type" value="resort" class="w-4 h-4 text-blue-600 border-gray-300 rounded">
+                                    <span class="ml-2 text-sm text-gray-700">Resort</span>
+                                </label>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Apply Button -->
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                            Apply Filters
+                        </button>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Results -->
+            <div class="flex-1">
+                <!-- Results Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">
+                            {% if destination %}{{ destination }}{% else %}All Destinations{% endif %}
+                        </h1>
+                        <p class="text-gray-600 mt-1">{{ results_count }} properties found</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <label class="text-sm text-gray-600">Sort by:</label>
+                        <select onchange="window.location.href='?type={{ search_type }}&destination={{ destination }}&sort=' + this.value" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="popular" {% if sort_by == 'popular' %}selected{% endif %}>Most Popular</option>
+                            <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                            <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="space-y-6">
+                    {% if results %}
+                        {% for result in results %}
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                            <div class="flex flex-col md:flex-row">
+                                <!-- Image -->
+                                <div class="md:w-80 h-64 md:h-auto flex-shrink-0">
+                                    {% if result.photos.all %}
+                                        {% with primary_photo=result.photos.filter|first %}
+                                        <img src="{{ primary_photo.image.url }}" alt="{{ result.property_name }}" class="w-full h-full object-cover">
+                                        {% endwith %}
+                                    {% else %}
+                                    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ result.property_name }}" class="w-full h-full object-cover">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Content -->
+                                <div class="flex-1 p-6">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                                {% if search_type == 'tours' %}
+                                                    {{ result.tour_name }}
+                                                {% else %}
+                                                    {{ result.property_name }}
+                                                {% endif %}
+                                            </h3>
+                                            <div class="flex items-center gap-2 text-gray-600 mb-3">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                                <span class="text-sm">{{ result.city }}, {{ result.country }}</span>
+                                            </div>
+                                            <p class="text-gray-600 mb-4">{{ result.description|truncatewords:20 }}</p>
+
+                                            <!-- Amenities/Features -->
+                                            <div class="flex flex-wrap gap-2 mb-4">
+                                                {% if result.max_guests %}
+                                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">{{ result.max_guests }} guests</span>
+                                                {% endif %}
+                                                {% if result.bedrooms %}
+                                                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">{{ result.bedrooms }} bedrooms</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <!-- Price & Book -->
+                                        <div class="ml-6 text-right">
+                                            <div class="text-3xl font-bold text-gray-900 mb-1">${{ result.base_price }}</div>
+                                            <div class="text-sm text-gray-500 mb-4">
+                                                {% if search_type == 'tours' %}per person{% else %}per night{% endif %}
+                                            </div>
+                                            {% if search_type == 'tours' %}
+                                            <a href="{% url 'tours' %}" class="block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-center">
+                                                View Details
+                                            </a>
+                                            {% else %}
+                                            <a href="{% url 'listing_detail' result.id %}" class="block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-center">
+                                                View Details
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="text-center py-12">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">No results found</h3>
+                        <p class="text-gray-600">Try adjusting your filters or search criteria</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

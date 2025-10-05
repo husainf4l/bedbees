@@ -1,0 +1,219 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Create Tour Guide Profile - Bedbees{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-indigo-50 py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-10">
+            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-slate-600 hover:text-slate-900 mb-6 group transition-all duration-200">
+                <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">Tour Guide Profile</h1>
+                    <p class="text-slate-600 text-lg">Share your expertise and connect with travelers</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data" class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+            {% csrf_token %}
+
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="bg-{% if message.tags == 'success' %}green{% else %}red{% endif %}-50 border border-{% if message.tags == 'success' %}green{% else %}red{% endif %}-200 text-{% if message.tags == 'success' %}green{% else %}red{% endif %}-800 px-4 py-3 rounded-xl mb-4">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Basic Information -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Basic Information</h2>
+                <div class="space-y-4">
+                    {{ form.guide_name.as_field_group }}
+                    {{ form.tagline.as_field_group }}
+                    {{ form.bio.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Professional Details -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Professional Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.is_licensed.as_field_group }}
+                    {{ form.license_number.as_field_group }}
+                    {{ form.years_experience.as_field_group }}
+                    {{ form.certifications.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Languages & Specializations -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Languages & Expertise</h2>
+                <div class="space-y-4">
+                    {{ form.languages.as_field_group }}
+                    {{ form.specializations.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Pricing</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {{ form.hourly_rate.as_field_group }}
+                    {{ form.half_day_rate.as_field_group }}
+                    {{ form.full_day_rate.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Location & Service Area -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Location & Service Area</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.country.as_field_group }}
+                    {{ form.city.as_field_group }}
+                </div>
+                <div class="mt-4">
+                    {{ form.service_area.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Availability & Services -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Availability & Services</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.available_days.as_field_group }}
+                    {{ form.minimum_booking_hours.as_field_group }}
+                    {{ form.max_group_size.as_field_group }}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    {{ form.transportation_provided.as_field_group }}
+                    {{ form.accommodation_assistance.as_field_group }}
+                    {{ form.custom_itineraries.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Contact Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.phone_number.as_field_group }}
+                    {{ form.email.as_field_group }}
+                    {{ form.website.as_field_group }}
+                    {{ form.emergency_contact.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Tour Details & Services -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Tour Details & Services</h2>
+                <div class="space-y-4">
+                    {{ form.tour_types_offered.as_field_group }}
+                    {{ form.equipment_provided.as_field_group }}
+                    {{ form.accessibility.as_field_group }}
+                    {{ form.covid_safety.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Policies -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Policies</h2>
+                <div class="space-y-4">
+                    {{ form.cancellation_policy.as_field_group }}
+                    {{ form.terms_and_conditions.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Photos -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Photos</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Profile Photo</label>
+                        {{ form.profile_photo }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Additional Photos (optional)</label>
+                        <input type="file" name="photos" multiple accept="image/*" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <p class="text-xs text-gray-500 mt-1">Upload photos of you guiding tours, landmarks you cover, certificates, etc.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'hostdashboard' %}" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                    Create Tour Guide Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Country-City Data for Tour Guides
+const guideCountryCityData = {
+    "Jordan": ["Amman", "Irbid", "Zarqa", "Aqaba", "Madaba", "Salt", "Jerash", "Ajloun", "Karak", "Tafilah", "Maan", "Petra"],
+    "UAE": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"],
+    "Egypt": ["Cairo", "Alexandria", "Giza", "Shubra El-Kheima", "Port Said", "Suez", "Luxor", "Aswan", "Hurghada", "Sharm El Sheikh"],
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Byblos", "Baalbek", "Jounieh"],
+    "Qatar": ["Doha", "Al Wakrah", "Al Khor", "Umm Salal", "Al Rayyan"],
+    "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Taif", "Tabuk", "Buraydah"],
+    "Kuwait": ["Kuwait City", "Hawalli", "Salmiya", "Al Ahmadi", "Fahaheel"],
+    "Bahrain": ["Manama", "Muharraq", "Riffa", "Hamad Town", "A'ali", "Isa Town"],
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri"],
+    "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya"],
+    "Syria": ["Damascus", "Aleppo", "Homs", "Hama", "Latakia", "Deir ez-Zor", "Raqqa"],
+    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Sulaymaniyah", "Najaf", "Karbala", "Kirkuk"],
+    "Yemen": ["Sana'a", "Aden", "Taiz", "Al Hudaydah", "Ibb", "Dhamar", "Al Mukalla"]
+};
+
+// Initialize tour guide country-city dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const guideCountrySelect = document.getElementById('guide-country-select');
+    const guideCitySelect = document.getElementById('guide-city-select');
+
+    if (guideCountrySelect && guideCitySelect) {
+        guideCountrySelect.addEventListener('change', function() {
+            const selectedCountry = this.value;
+            const cities = guideCountryCityData[selectedCountry] || [];
+
+            // Clear current city options
+            guideCitySelect.innerHTML = '<option value="">Select City</option>';
+
+            // Add new city options
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                guideCitySelect.appendChild(option);
+            });
+
+            // Enable/disable city select based on country selection
+            if (selectedCountry) {
+                guideCitySelect.disabled = false;
+            } else {
+                guideCitySelect.disabled = true;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,260 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Create Rental Car Listing - Bedbees{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-orange-50 to-amber-50 py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-10">
+            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-slate-600 hover:text-slate-900 mb-6 group transition-all duration-200">
+                <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Dashboard
+            </a>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">Rental Car Listing</h1>
+                    <p class="text-slate-600 text-lg">List your vehicle for rent to travelers</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data" class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+            {% csrf_token %}
+
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="bg-{% if message.tags == 'success' %}green{% else %}red{% endif %}-50 border border-{% if message.tags == 'success' %}green{% else %}red{% endif %}-200 text-{% if message.tags == 'success' %}green{% else %}red{% endif %}-800 px-4 py-3 rounded-xl mb-4">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Vehicle Information -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Vehicle Information</h2>
+                <div class="space-y-4">
+                    {{ form.vehicle_name.as_field_group }}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {{ form.brand.as_field_group }}
+                        {{ form.model.as_field_group }}
+                        {{ form.year.as_field_group }}
+                    </div>
+                    {{ form.vehicle_type.as_field_group }}
+                    {{ form.tagline.as_field_group }}
+                    {{ form.full_description.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Vehicle Specifications -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Vehicle Specifications</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.transmission.as_field_group }}
+                    {{ form.fuel_type.as_field_group }}
+                    {{ form.seating_capacity.as_field_group }}
+                    {{ form.doors.as_field_group }}
+                    {{ form.luggage_capacity.as_field_group }}
+                    {{ form.odometer_reading.as_field_group }}
+                    {{ form.condition.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Features & Amenities -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Features & Amenities</h2>
+                <div class="space-y-4">
+                    {{ form.features.as_field_group }}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {{ form.air_conditioning.as_field_group }}
+                        {{ form.gps_navigation.as_field_group }}
+                        {{ form.bluetooth.as_field_group }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Pricing</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.daily_rate.as_field_group }}
+                    {{ form.weekly_rate.as_field_group }}
+                    {{ form.monthly_rate.as_field_group }}
+                    {{ form.security_deposit.as_field_group }}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {{ form.insurance_included.as_field_group }}
+                    {{ form.insurance_cost_per_day.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Mileage & Usage -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Mileage & Usage</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.mileage_limit_per_day.as_field_group }}
+                    {{ form.extra_mileage_cost.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Location & Delivery -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Location & Delivery</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.country.as_field_group }}
+                    {{ form.city.as_field_group }}
+                </div>
+                <div class="mt-4">
+                    {{ form.pickup_location.as_field_group }}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    {{ form.airport_delivery.as_field_group }}
+                    {{ form.hotel_delivery.as_field_group }}
+                    {{ form.delivery_fee.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Vehicle Details -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Vehicle Details & Documentation</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.color.as_field_group }}
+                    {{ form.license_plate.as_field_group }}
+                    {{ form.registration_number.as_field_group }}
+                    {{ form.vin_number.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Extra Features & Equipment -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Extra Features & Equipment</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    {{ form.child_seat_available.as_field_group }}
+                    {{ form.ski_rack.as_field_group }}
+                    {{ form.bike_rack.as_field_group }}
+                    {{ form.roof_rack.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Owner Contact Information -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Owner Contact Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {{ form.owner_name.as_field_group }}
+                    {{ form.contact_phone.as_field_group }}
+                    {{ form.contact_email.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Additional Fees & Policies -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Additional Fees & Policies</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form.late_return_fee.as_field_group }}
+                    {{ form.cleaning_fee.as_field_group }}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    {{ form.smoking_allowed.as_field_group }}
+                    {{ form.pets_allowed.as_field_group }}
+                    {{ form.cross_border_allowed.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Requirements & Policies -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Requirements & Policies</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {{ form.minimum_age.as_field_group }}
+                    {{ form.minimum_license_years.as_field_group }}
+                    {{ form.minimum_rental_days.as_field_group }}
+                </div>
+                <div class="space-y-4 mt-4">
+                    {{ form.cancellation_policy.as_field_group }}
+                    {{ form.fuel_policy.as_field_group }}
+                    {{ form.terms_and_conditions.as_field_group }}
+                </div>
+            </div>
+
+            <!-- Photos -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Photos</h2>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Vehicle Photos *</label>
+                    <input type="file" name="photos" multiple accept="image/*" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <p class="text-xs text-gray-500 mt-1">Upload photos of the vehicle from multiple angles. The first photo will be the primary image.</p>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'hostdashboard' %}" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-xl transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors">
+                    Create Rental Car Listing
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Country-City Data for Rental Cars
+const carCountryCityData = {
+    "Jordan": ["Amman", "Irbid", "Zarqa", "Aqaba", "Madaba", "Salt", "Jerash", "Ajloun", "Karak", "Tafilah", "Maan", "Petra"],
+    "UAE": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"],
+    "Egypt": ["Cairo", "Alexandria", "Giza", "Shubra El-Kheima", "Port Said", "Suez", "Luxor", "Aswan", "Hurghada", "Sharm El Sheikh"],
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Byblos", "Baalbek", "Jounieh"],
+    "Qatar": ["Doha", "Al Wakrah", "Al Khor", "Umm Salal", "Al Rayyan"],
+    "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Taif", "Tabuk", "Buraydah"],
+    "Kuwait": ["Kuwait City", "Hawalli", "Salmiya", "Al Ahmadi", "Fahaheel"],
+    "Bahrain": ["Manama", "Muharraq", "Riffa", "Hamad Town", "A'ali", "Isa Town"],
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri"],
+    "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya"],
+    "Syria": ["Damascus", "Aleppo", "Homs", "Hama", "Latakia", "Deir ez-Zor", "Raqqa"],
+    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Sulaymaniyah", "Najaf", "Karbala", "Kirkuk"],
+    "Yemen": ["Sana'a", "Aden", "Taiz", "Al Hudaydah", "Ibb", "Dhamar", "Al Mukalla"]
+};
+
+// Initialize rental car country-city dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const carCountrySelect = document.getElementById('car-country-select');
+    const carCitySelect = document.getElementById('car-city-select');
+
+    if (carCountrySelect && carCitySelect) {
+        carCountrySelect.addEventListener('change', function() {
+            const selectedCountry = this.value;
+            const cities = carCountryCityData[selectedCountry] || [];
+
+            // Clear current city options
+            carCitySelect.innerHTML = '<option value="">Select City</option>';
+
+            // Add new city options
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                carCitySelect.appendChild(option);
+            });
+
+            // Enable/disable city select based on country selection
+            if (selectedCountry) {
+                carCitySelect.disabled = false;
+            } else {
+                carCitySelect.disabled = true;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

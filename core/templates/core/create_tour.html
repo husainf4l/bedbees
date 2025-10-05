@@ -3,26 +3,40 @@
 {% block title %}Create Tour Listing - Bedbees{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 py-8">
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50 py-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
-        <div class="mb-8">
-            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mb-10">
+            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center text-slate-600 hover:text-slate-900 mb-6 group transition-all duration-200">
+                <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
                 Back to Dashboard
             </a>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Tour / Experience Listing</h1>
-            <p class="text-gray-600">Complete all sections to publish your tour</p>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">Create Tour & Experience</h1>
+                    <p class="text-slate-600 text-lg">Complete all sections to publish your tour</p>
+                </div>
+            </div>
         </div>
 
         <form method="post" enctype="multipart/form-data" class="space-y-8">
             {% csrf_token %}
 
             <!-- Section 1: Host Info -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">1. Host / Guide Information</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">1</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Host / Guide Information</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Company or Guide Name *</label>
@@ -44,8 +58,13 @@
             </div>
 
             <!-- Section 2: Tour Basic Info -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">2. Tour Basic Information</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">2</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Tour Basic Information</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tour Name *</label>
@@ -62,6 +81,26 @@
                             <option value="water">Water Activities</option>
                             <option value="historical">Historical Sites</option>
                             <option value="wellness">Wellness & Spa</option>
+                            <option value="photography">Photography Tour</option>
+                            <option value="music-arts">Music & Arts</option>
+                            <option value="shopping">Shopping Tour</option>
+                            <option value="religious">Religious & Spiritual</option>
+                            <option value="educational">Educational Tour</option>
+                            <option value="luxury">Luxury Experience</option>
+                            <option value="family">Family Tour</option>
+                            <option value="solo">Solo Traveler Tour</option>
+                            <option value="business">Business & Corporate</option>
+                            <option value="volunteer">Volunteer Tour</option>
+                            <option value="festival">Festival & Events</option>
+                            <option value="sports">Sports & Recreation</option>
+                            <option value="architecture">Architecture Tour</option>
+                            <option value="cuisine">Cuisine & Cooking</option>
+                            <option value="wine-tasting">Wine Tasting</option>
+                            <option value="desert">Desert Safari</option>
+                            <option value="mountain">Mountain Trekking</option>
+                            <option value="beach">Beach & Coastal</option>
+                            <option value="city">City Exploration</option>
+                            <option value="countryside">Countryside & Rural</option>
                         </select>
                     </div>
                     <div>
@@ -70,11 +109,28 @@
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Country *</label>
-                        <input type="text" name="country" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                        <select name="country" id="tour-country-select" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select Country</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="UAE">United Arab Emirates</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Yemen">Yemen</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">City *</label>
-                        <input type="text" name="city" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500">
+                        <select name="city" id="tour-city-select" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500" disabled>
+                            <option value="">Select City</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Languages Offered *</label>
@@ -84,8 +140,13 @@
             </div>
 
             <!-- Section 3: Capacity -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">3. Group Capacity</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">3</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Group Capacity</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Min Participants *</label>
@@ -103,8 +164,13 @@
             </div>
 
             <!-- Section 4: Description & Itinerary -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">4. Description & Itinerary</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">4</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Description & Itinerary</h2>
+                </div>
                 <div class="space-y-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Short Tagline *</label>
@@ -136,24 +202,75 @@
             </div>
 
             <!-- Section 5: Media -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">5. Photos & Media</h2>
-                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
-                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <input type="file" name="photos" multiple accept="image/*" class="hidden" id="photo-upload">
-                    <label for="photo-upload" class="cursor-pointer">
-                        <span class="text-purple-600 hover:text-purple-700 font-medium">Upload photos</span>
-                        <span class="text-gray-600"> or drag and drop</span>
-                    </label>
-                    <p class="text-sm text-gray-500 mt-2">PNG, JPG, GIF up to 10MB each</p>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">5</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Photos & Media</h2>
+                </div>
+
+                <!-- Drag and Drop Upload Area -->
+                <div class="mb-6">
+                    <div id="photo-upload-area" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center transition-all duration-200 hover:border-purple-400 hover:bg-purple-50/50">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <div class="mb-4">
+                            <p class="text-lg font-medium text-gray-900 mb-2">Upload photos or drag and drop</p>
+                            <p class="text-gray-600">PNG, JPG, GIF up to 10MB each</p>
+                            <p class="text-sm text-gray-500 mt-1">You can upload up to 20 photos</p>
+                        </div>
+                        <input type="file" name="photos" multiple accept="image/*" class="hidden" id="photo-upload">
+                        <label for="photo-upload" class="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg cursor-pointer transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Choose Files
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Photo Preview Grid -->
+                <div id="photo-preview" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4 hidden">
+                    <!-- Photos will be added here dynamically -->
+                </div>
+
+                <!-- Upload Progress (hidden by default) -->
+                <div id="upload-progress" class="hidden mb-4">
+                    <div class="bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Uploading photos...</p>
+                </div>
+
+                <!-- Photo Guidelines -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <h4 class="font-medium text-blue-900 mb-1">Photo Guidelines</h4>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>• Upload high-quality photos (at least 1024x768px)</li>
+                                <li>• Include photos of the tour activity, locations, and your guide</li>
+                                <li>• First photo will be used as the main image</li>
+                                <li>• Avoid blurry or low-quality images</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Section 6: Inclusions -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">6. What's Included / Excluded</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">6</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">What's Included / Excluded</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <h3 class="font-semibold text-gray-900 mb-4">Included</h3>
@@ -182,6 +299,62 @@
                                 <input type="checkbox" name="inclusions" value="insurance" class="w-5 h-5 text-purple-600 rounded">
                                 <span class="text-gray-700">Insurance</span>
                             </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="accommodation" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Accommodation</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="beverages" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Beverages</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="snacks" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Snacks & Refreshments</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="souvenirs" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Souvenirs</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="photography" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Photography Services</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="wifi" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">WiFi Access</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="rest-stops" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Rest Stops</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="medical" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Medical Assistance</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="translation" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Translation Services</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="audio-guides" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Audio Guides</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="maps" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Maps & Navigation</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="safety-briefing" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Safety Briefing</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="certificates" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Completion Certificates</span>
+                            </label>
+                            <label class="flex items-center gap-3">
+                                <input type="checkbox" name="inclusions" value="parking" class="w-5 h-5 text-purple-600 rounded">
+                                <span class="text-gray-700">Parking</span>
+                            </label>
                         </div>
                     </div>
                     <div>
@@ -192,8 +365,13 @@
             </div>
 
             <!-- Section 7: Safety & Policies -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">7. Safety Requirements & Policies</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">7</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Safety Requirements & Policies</h2>
+                </div>
                 <div class="space-y-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Fitness Level Required *</label>
@@ -222,8 +400,13 @@
             </div>
 
             <!-- Section 8: Pricing -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">8. Pricing</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">8</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Pricing</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Price per Person (USD) *</label>
@@ -250,8 +433,13 @@
             </div>
 
             <!-- Section 9: Availability Note -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">9. Availability</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                        <span class="text-white font-bold text-xl">9</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Availability</h2>
+                </div>
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
                     <div class="flex items-start gap-4">
                         <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +454,7 @@
             </div>
 
             <!-- Submit -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-10">
                 <div class="flex items-center gap-3 mb-6">
                     <input type="checkbox" name="agree_terms" required id="agree-terms" class="w-5 h-5 text-purple-600 rounded">
                     <label for="agree-terms" class="text-sm text-gray-700">I agree to the <a href="#" class="text-purple-600 hover:underline">Terms of Service</a> and <a href="#" class="text-purple-600 hover:underline">Host Agreement</a></label>
@@ -275,7 +463,7 @@
                     <a href="{% url 'hostdashboard' %}" class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors">
                         Cancel
                     </a>
-                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl transition-colors flex items-center gap-2">
+                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-semibold rounded-xl transition-colors flex items-center gap-2 shadow-lg shadow-emerald-500/30">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
@@ -286,4 +474,229 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('photo-upload-area');
+    const fileInput = document.getElementById('photo-upload');
+    const previewGrid = document.getElementById('photo-preview');
+    const progressBar = document.getElementById('upload-progress');
+    const progressFill = progressBar.querySelector('div');
+    const progressText = progressBar.querySelector('p');
+
+    let uploadedFiles = [];
+    const maxFiles = 20;
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+    // Drag and drop event handlers
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        uploadArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        uploadArea.classList.add('border-purple-500', 'bg-purple-50');
+    }
+
+    function unhighlight(e) {
+        uploadArea.classList.remove('border-purple-500', 'bg-purple-50');
+    }
+
+    uploadArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    // File input change handler
+    fileInput.addEventListener('change', function(e) {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        [...files].forEach(file => {
+            if (uploadedFiles.length >= maxFiles) {
+                showError(`Maximum ${maxFiles} files allowed`);
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                showError('Only image files are allowed');
+                return;
+            }
+
+            if (file.size > maxFileSize) {
+                showError('File size must be less than 10MB');
+                return;
+            }
+
+            uploadedFiles.push(file);
+            previewFile(file);
+        });
+
+        if (uploadedFiles.length > 0) {
+            previewGrid.classList.remove('hidden');
+        }
+    }
+
+    function previewFile(file) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function() {
+            const previewItem = createPreviewItem(reader.result, file.name, file.size);
+            previewGrid.appendChild(previewItem);
+        };
+    }
+
+    function createPreviewItem(src, name, size) {
+        const item = document.createElement('div');
+        item.className = 'relative group bg-gray-50 rounded-lg overflow-hidden border border-gray-200';
+
+        const sizeText = size < 1024 * 1024 ?
+            (size / 1024).toFixed(1) + ' KB' :
+            (size / (1024 * 1024)).toFixed(1) + ' MB';
+
+        item.innerHTML = `
+            <div class="aspect-square relative">
+                <img src="${src}" alt="${name}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center">
+                    <button type="button" class="opacity-0 group-hover:opacity-100 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-all duration-200 transform scale-75 group-hover:scale-100 remove-photo-btn">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-2">
+                <p class="text-xs text-gray-600 truncate" title="${name}">${name}</p>
+                <p class="text-xs text-gray-500">${sizeText}</p>
+            </div>
+        `;
+
+        // Add remove functionality
+        const removeBtn = item.querySelector('.remove-photo-btn');
+        removeBtn.addEventListener('click', function() {
+            const index = uploadedFiles.findIndex(f => f.name === name && f.size === size);
+            if (index > -1) {
+                uploadedFiles.splice(index, 1);
+            }
+            item.remove();
+
+            if (uploadedFiles.length === 0) {
+                previewGrid.classList.add('hidden');
+            }
+        });
+
+        return item;
+    }
+
+    function showError(message) {
+        // Create error notification
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-bounce';
+        errorDiv.innerHTML = `
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                ${message}
+            </div>
+        `;
+
+        document.body.appendChild(errorDiv);
+
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 5000);
+    }
+
+    // Simulate upload progress when form is submitted
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        if (uploadedFiles.length > 0) {
+            progressBar.classList.remove('hidden');
+            let progress = 0;
+
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    progressText.textContent = 'Upload complete!';
+                    setTimeout(() => {
+                        progressBar.classList.add('hidden');
+                    }, 2000);
+                }
+
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Uploading photos... ${Math.round(progress)}%`;
+            }, 200);
+        }
+    });
+});
+
+// Country-City Data for Tours
+const tourCountryCityData = {
+    "Jordan": ["Amman", "Irbid", "Zarqa", "Aqaba", "Madaba", "Salt", "Jerash", "Ajloun", "Karak", "Tafilah", "Maan", "Petra"],
+    "UAE": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"],
+    "Egypt": ["Cairo", "Alexandria", "Giza", "Shubra El-Kheima", "Port Said", "Suez", "Luxor", "Aswan", "Hurghada", "Sharm El Sheikh"],
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Byblos", "Baalbek", "Jounieh"],
+    "Qatar": ["Doha", "Al Wakrah", "Al Khor", "Umm Salal", "Al Rayyan"],
+    "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Khobar", "Taif", "Tabuk", "Buraydah"],
+    "Kuwait": ["Kuwait City", "Hawalli", "Salmiya", "Al Ahmadi", "Fahaheel"],
+    "Bahrain": ["Manama", "Muharraq", "Riffa", "Hamad Town", "A'ali", "Isa Town"],
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri"],
+    "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya"],
+    "Syria": ["Damascus", "Aleppo", "Homs", "Hama", "Latakia", "Deir ez-Zor", "Raqqa"],
+    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Sulaymaniyah", "Najaf", "Karbala", "Kirkuk"],
+    "Yemen": ["Sana'a", "Aden", "Taiz", "Al Hudaydah", "Ibb", "Dhamar", "Al Mukalla"]
+};
+
+// Initialize tour country-city dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tourCountrySelect = document.getElementById('tour-country-select');
+    const tourCitySelect = document.getElementById('tour-city-select');
+
+    if (tourCountrySelect && tourCitySelect) {
+        tourCountrySelect.addEventListener('change', function() {
+            const selectedCountry = this.value;
+            const cities = tourCountryCityData[selectedCountry] || [];
+
+            // Clear current city options
+            tourCitySelect.innerHTML = '<option value="">Select City</option>';
+
+            // Add new city options
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                tourCitySelect.appendChild(option);
+            });
+
+            // Enable/disable city select based on country selection
+            if (selectedCountry) {
+                tourCitySelect.disabled = false;
+            } else {
+                tourCitySelect.disabled = true;
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

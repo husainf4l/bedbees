@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Accommodation, Tour
+from .models import UserProfile, Accommodation, Tour, TourGuide, RentalCar
 
 class HostRegistrationForm(forms.ModelForm):
     """Custom form for host registration"""
@@ -340,14 +340,6 @@ class AccommodationForm(forms.ModelForm):
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent',
                 'size': '8'
             }),
-            'property_features': forms.SelectMultiple(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'size': '8'
-            }),
-            'nearby_landmarks': forms.SelectMultiple(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'size': '8'
-            }),
             'base_price': forms.NumberInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent',
                 'step': '0.01'
@@ -377,6 +369,45 @@ class AccommodationForm(forms.ModelForm):
 class TourForm(forms.ModelForm):
     """Form for creating tour listings"""
 
+    # Country and City choices
+    COUNTRY_CHOICES = [
+        ('', 'Select Country'),
+        ('Jordan', 'Jordan'),
+        ('UAE', 'United Arab Emirates'),
+        ('Egypt', 'Egypt'),
+        ('Lebanon', 'Lebanon'),
+        ('Qatar', 'Qatar'),
+        ('Saudi Arabia', 'Saudi Arabia'),
+        ('Kuwait', 'Kuwait'),
+        ('Bahrain', 'Bahrain'),
+        ('Oman', 'Oman'),
+        ('Turkey', 'Turkey'),
+        ('Syria', 'Syria'),
+        ('Iraq', 'Iraq'),
+        ('Yemen', 'Yemen'),
+    ]
+
+    CITY_CHOICES = [
+        ('', 'Select City'),
+    ]
+
+    country = forms.ChoiceField(
+        choices=COUNTRY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+            'id': 'tour-country-select'
+        })
+    )
+
+    city = forms.ChoiceField(
+        choices=CITY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+            'id': 'tour-city-select',
+            'disabled': True
+        })
+    )
+
     class Meta:
         model = Tour
         fields = ['host_name', 'contact_email', 'contact_phone', 'certifications', 'tour_name', 'tour_category', 'duration', 'country', 'city', 'languages', 'min_participants', 'max_participants', 'age_restrictions', 'tagline', 'full_description', 'itinerary', 'meeting_point', 'end_point', 'highlights', 'inclusions', 'exclusions', 'fitness_level', 'safety_gear', 'cancellation_policy', 'price_per_person', 'group_price', 'child_discount', 'currency']
@@ -400,12 +431,6 @@ class TourForm(forms.ModelForm):
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
             }),
             'duration': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
-            }),
-            'country': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
-            }),
-            'city': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
             }),
             'languages': forms.SelectMultiple(attrs={
@@ -473,5 +498,365 @@ class TourForm(forms.ModelForm):
             }),
             'currency': forms.Select(attrs={
                 'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
+            }),
+        }
+
+
+class TourGuideForm(forms.ModelForm):
+    """Form for creating/editing tour guide profiles"""
+
+    # Country and City choices
+    COUNTRY_CHOICES = [
+        ('', 'Select Country'),
+        ('Jordan', 'Jordan'),
+        ('UAE', 'United Arab Emirates'),
+        ('Egypt', 'Egypt'),
+        ('Lebanon', 'Lebanon'),
+        ('Qatar', 'Qatar'),
+        ('Saudi Arabia', 'Saudi Arabia'),
+        ('Kuwait', 'Kuwait'),
+        ('Bahrain', 'Bahrain'),
+        ('Oman', 'Oman'),
+        ('Turkey', 'Turkey'),
+        ('Syria', 'Syria'),
+        ('Iraq', 'Iraq'),
+        ('Yemen', 'Yemen'),
+    ]
+
+    CITY_CHOICES = [
+        ('', 'Select City'),
+    ]
+
+    country = forms.ChoiceField(
+        choices=COUNTRY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+            'id': 'guide-country-select'
+        })
+    )
+
+    city = forms.ChoiceField(
+        choices=CITY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+            'id': 'guide-city-select',
+            'disabled': True
+        })
+    )
+
+    class Meta:
+        model = TourGuide
+        exclude = ['host', 'created_at', 'updated_at']
+        widgets = {
+            'guide_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'Full name'
+            }),
+            'tagline': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'e.g., Expert historian with 10 years experience'
+            }),
+            'bio': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 5,
+                'placeholder': 'Tell potential clients about your experience, expertise, and what makes you unique...'
+            }),
+            'license_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500'
+            }),
+            'certifications': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3,
+                'placeholder': 'List your certifications (comma-separated)'
+            }),
+            'years_experience': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'min': '0'
+            }),
+            'languages': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'e.g., English, Arabic, French'
+            }),
+            'specializations': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'e.g., Historical Sites, Cultural Tours, Adventure'
+            }),
+            'hourly_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'step': '0.01'
+            }),
+            'half_day_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'step': '0.01'
+            }),
+            'full_day_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'step': '0.01'
+            }),
+            'max_group_size': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'min': '1'
+            }),
+            'service_area': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3,
+                'placeholder': 'List areas/cities where you provide services'
+            }),
+            'minimum_booking_hours': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'min': '1'
+            }),
+            'cancellation_policy': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3
+            }),
+            'terms_and_conditions': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3
+            }),
+            'available_days': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'e.g., Monday, Tuesday, Wednesday'
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': '+1 234 567 8900'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'your@email.com'
+            }),
+            'website': forms.URLInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'https://yourwebsite.com'
+            }),
+            'emergency_contact': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'placeholder': 'Emergency contact name and phone'
+            }),
+            'tour_types_offered': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3,
+                'placeholder': 'e.g., Walking tours, Private tours, Group tours, Bus tours'
+            }),
+            'equipment_provided': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 3,
+                'placeholder': 'e.g., Audio guides, Maps, Water bottles, Snacks'
+            }),
+            'accessibility': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 2,
+                'placeholder': 'e.g., Wheelchair accessible, Family-friendly, Senior-friendly'
+            }),
+            'covid_safety': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500',
+                'rows': 2,
+                'placeholder': 'e.g., Masks provided, Small groups, Sanitized equipment'
+            }),
+        }
+
+
+class RentalCarForm(forms.ModelForm):
+    """Form for creating/editing rental car listings"""
+
+    # Country and City choices
+    COUNTRY_CHOICES = [
+        ('', 'Select Country'),
+        ('Jordan', 'Jordan'),
+        ('UAE', 'United Arab Emirates'),
+        ('Egypt', 'Egypt'),
+        ('Lebanon', 'Lebanon'),
+        ('Qatar', 'Qatar'),
+        ('Saudi Arabia', 'Saudi Arabia'),
+        ('Kuwait', 'Kuwait'),
+        ('Bahrain', 'Bahrain'),
+        ('Oman', 'Oman'),
+        ('Turkey', 'Turkey'),
+        ('Syria', 'Syria'),
+        ('Iraq', 'Iraq'),
+        ('Yemen', 'Yemen'),
+    ]
+
+    CITY_CHOICES = [
+        ('', 'Select City'),
+    ]
+
+    country = forms.ChoiceField(
+        choices=COUNTRY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+            'id': 'car-country-select'
+        })
+    )
+
+    city = forms.ChoiceField(
+        choices=CITY_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+            'id': 'car-city-select',
+            'disabled': True
+        })
+    )
+
+    class Meta:
+        model = RentalCar
+        exclude = ['host', 'created_at', 'updated_at']
+        widgets = {
+            'vehicle_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'e.g., Toyota Camry 2023'
+            }),
+            'brand': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Toyota'
+            }),
+            'model': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Camry'
+            }),
+            'year': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '1990',
+                'max': '2030'
+            }),
+            'vehicle_type': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500'
+            }),
+            'tagline': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Brief description of the vehicle'
+            }),
+            'full_description': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'rows': 5,
+                'placeholder': 'Describe the vehicle condition, features, and what makes it special...'
+            }),
+            'transmission': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500'
+            }),
+            'fuel_type': forms.Select(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500'
+            }),
+            'seating_capacity': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '2',
+                'max': '15'
+            }),
+            'doors': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '2',
+                'max': '6'
+            }),
+            'luggage_capacity': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '0'
+            }),
+            'features': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'e.g., GPS, AC, Bluetooth, USB, Backup Camera'
+            }),
+            'daily_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'weekly_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'monthly_rate': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'security_deposit': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'insurance_cost_per_day': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'mileage_limit_per_day': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '0'
+            }),
+            'extra_mileage_cost': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'pickup_location': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Address where customers can pick up the vehicle'
+            }),
+            'delivery_fee': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'minimum_age': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '18',
+                'max': '80'
+            }),
+            'minimum_license_years': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '0'
+            }),
+            'minimum_rental_days': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '1'
+            }),
+            'cancellation_policy': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'rows': 3
+            }),
+            'fuel_policy': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500'
+            }),
+            'odometer_reading': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'min': '0'
+            }),
+            'condition': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'e.g., Excellent, Very Good, Good'
+            }),
+            'terms_and_conditions': forms.Textarea(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'rows': 3
+            }),
+            'color': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'e.g., Black, White, Silver'
+            }),
+            'license_plate': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'ABC-1234'
+            }),
+            'vin_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': '17-character VIN'
+            }),
+            'registration_number': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500'
+            }),
+            'owner_name': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'Vehicle owner name'
+            }),
+            'contact_phone': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': '+1 234 567 8900'
+            }),
+            'contact_email': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'placeholder': 'contact@email.com'
+            }),
+            'late_return_fee': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
+            }),
+            'cleaning_fee': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500',
+                'step': '0.01'
             }),
         }

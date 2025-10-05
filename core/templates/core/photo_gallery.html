@@ -1,0 +1,727 @@
+{% load static %}
+<div class="photo-gallery" data-gallery-id="{{ gallery_id }}">
+    <!-- Hero Carousel -->
+    <div class="hero-carousel relative overflow-hidden rounded-xl shadow-lg bg-gray-100">
+        <!-- Main Image Container -->
+        <div class="hero-main relative aspect-[16/10] overflow-hidden">
+            {% for photo in hero_photos_objects %}
+            <div class="hero-slide absolute inset-0 transition-opacity duration-500 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
+                 data-slide="{{ forloop.counter0 }}"
+                 data-photo-id="{{ photo.id }}"
+                 data-media-type="{{ photo.media_type }}">
+
+                {% if photo.is_video %}
+                <video class="w-full h-full object-cover"
+                       poster="{{ photo.get_image_url }}"
+                       preload="metadata"
+                       muted
+                       playsinline>
+                    {% if photo.original_file %}
+                    <source src="{{ photo.original_file.url }}" type="{{ photo.mime_type|default:'video/mp4' }}">
+                    {% endif %}
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    {% if photo.original_file %}
+                    <button class="play-button bg-black/50 hover:bg-black/70 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110"
+                            data-video-src="{{ photo.original_file.url }}">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    {% else %}
+                    <div class="play-button bg-black/50 text-white rounded-full p-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 9v6m3-3H9"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                </div>
+                {% elif photo.is_360 %}
+                <div class="w-full h-full relative">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="w-full h-full object-cover"
+                         {% if photo.original_file %}data-360-image="{{ photo.original_file.url }}"{% endif %}>
+                    <div class="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                        360°
+                    </div>
+                </div>
+                {% else %}
+                <img src="{{ photo.get_image_url }}"
+                     alt="{{ photo.alt_text|default:photo.title }}"
+                     class="w-full h-full object-cover"
+                     srcset="{{ photo.get_srcset }}"
+                     sizes="{{ photo.get_sizes }}">
+                {% endif %}
+
+                <!-- Caption Overlay -->
+                {% if photo.caption %}
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <p class="text-white text-sm">{{ photo.caption }}</p>
+                    {% if photo.attribution %}
+                    <p class="text-white/70 text-xs mt-1">Photo: {{ photo.attribution }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Navigation Arrows -->
+        {% if hero_photos|length > 1 %}
+        <button class="hero-nav hero-prev absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-300 transform hover:scale-110 z-10"
+                data-direction="prev">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button class="hero-nav hero-next absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-3 shadow-lg transition-all duration-300 transform hover:scale-110 z-10"
+                data-direction="next">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+        {% endif %}
+
+        <!-- Thumbnails Row -->
+        {% if hero_photos|length > 1 %}
+        <div class="hero-thumbnails flex gap-2 p-4 bg-white/95 backdrop-blur-sm overflow-x-auto">
+            {% for photo in hero_photos_objects %}
+            <button class="thumbnail-btn flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 {% if forloop.first %}border-blue-500 shadow-lg{% else %}border-gray-200 hover:border-gray-400{% endif %}"
+                    data-slide="{{ forloop.counter0 }}"
+                    data-photo-id="{{ photo.id }}">
+                {% if photo.is_video %}
+                <div class="relative w-full h-full">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                {% elif photo.is_360 %}
+                <div class="relative w-full h-full">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="w-full h-full object-cover">
+                    <div class="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                        360°
+                    </div>
+                </div>
+                {% else %}
+                <img src="{{ photo.get_image_url }}"
+                     alt="{{ photo.alt_text|default:photo.title }}"
+                     class="w-full h-full object-cover">
+                {% endif %}
+            </button>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- View All Photos Button -->
+        <button class="view-all-btn absolute top-4 right-4 bg-white/90 hover:bg-white text-gray-800 px-4 py-2 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 z-10"
+                data-total-photos="{{ total_photos }}">
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            View all {{ total_photos }} photos
+        </button>
+
+        <!-- Image Counter -->
+        <div class="image-counter absolute bottom-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm z-10">
+            <span class="current">1</span> / {{ hero_photos|length }}
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="gallery-lightbox-{{ gallery_id }}" class="lightbox-modal fixed inset-0 bg-black/95 z-50 hidden opacity-0 transition-opacity duration-300">
+    <div class="lightbox-content relative w-full h-full flex items-center justify-center p-4">
+        <!-- Close Button -->
+        <button class="lightbox-close absolute top-4 right-4 text-white hover:text-gray-300 z-20">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <!-- Main Image/Video Container -->
+        <div class="lightbox-main relative max-w-5xl max-h-full flex items-center justify-center">
+            {% for photo in all_photos_objects %}
+            <div class="lightbox-slide absolute inset-0 transition-opacity duration-300 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
+                 data-slide="{{ forloop.counter0 }}"
+                 data-photo-id="{{ photo.id }}"
+                 data-media-type="{{ photo.media_type }}">
+
+                {% if photo.is_video and photo.original_file %}
+                <video class="lightbox-video max-w-full max-h-full object-contain"
+                       controls
+                       preload="metadata">
+                    <source src="{{ photo.original_file.url }}" type="{{ photo.mime_type|default:'video/mp4' }}">
+                    Your browser does not support the video tag.
+                </video>
+                {% elif photo.is_video %}
+                <div class="lightbox-video-placeholder max-w-full max-h-full flex items-center justify-center bg-gray-100">
+                    <div class="text-center">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <p class="text-gray-600">Video unavailable</p>
+                    </div>
+                </div>
+                {% elif photo.is_360 and photo.original_file %}
+                <div class="lightbox-360 max-w-full max-h-full">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="max-w-full max-h-full object-contain"
+                         data-360-viewer="{{ photo.original_file.url }}">
+                    <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                        360° - Drag to explore
+                    </div>
+                </div>
+                {% elif photo.is_360 %}
+                <div class="lightbox-360 max-w-full max-h-full">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="max-w-full max-h-full object-contain">
+                    <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                        360° - Preview only
+                    </div>
+                </div>
+                {% else %}
+                <img src="{{ photo.get_image_url }}"
+                     alt="{{ photo.alt_text|default:photo.title }}"
+                     class="lightbox-image max-w-full max-h-full object-contain select-none"
+                     data-zoomable="true">
+                {% endif %}
+
+                <!-- Caption -->
+                {% if photo.caption or photo.attribution %}
+                <div class="lightbox-caption absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                    {% if photo.title %}
+                    <h3 class="text-xl font-semibold mb-2">{{ photo.title }}</h3>
+                    {% endif %}
+                    {% if photo.caption %}
+                    <p class="text-lg mb-2">{{ photo.caption }}</p>
+                    {% endif %}
+                    {% if photo.attribution %}
+                    <p class="text-sm opacity-80">Photo: {{ photo.attribution }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Navigation Arrows -->
+        {% if all_photos|length > 1 %}
+        <button class="lightbox-nav lightbox-prev absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 z-10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button class="lightbox-nav lightbox-next absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 z-10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+        {% endif %}
+
+        <!-- Image Counter -->
+        <div class="lightbox-counter absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+            <span class="current">1</span> / {{ all_photos|length }}
+        </div>
+
+        <!-- Share Button -->
+        <button class="lightbox-share absolute bottom-4 right-4 bg-black/70 hover:bg-black text-white px-4 py-2 rounded-lg transition-colors duration-300">
+            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+            </svg>
+            Share
+        </button>
+
+        <!-- Thumbnails Strip (Mobile) -->
+        <div class="lightbox-thumbnails md:hidden absolute bottom-20 left-4 right-4 flex gap-2 overflow-x-auto bg-black/50 rounded-lg p-2">
+            {% for photo in all_photos_objects %}
+            <button class="lightbox-thumb flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-all duration-300 {% if forloop.first %}border-white{% else %}border-gray-500 hover:border-gray-300{% endif %}"
+                    data-slide="{{ forloop.counter0 }}">
+                {% if photo.is_video %}
+                <div class="relative w-full h-full">
+                    <img src="{{ photo.get_image_url }}"
+                         alt="{{ photo.alt_text|default:photo.title }}"
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                {% else %}
+                <img src="{{ photo.get_image_url }}"
+                     alt="{{ photo.alt_text|default:photo.title }}"
+                     class="w-full h-full object-cover">
+                {% endif %}
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Gallery Styles -->
+<style>
+/* Hero Carousel Styles */
+.hero-carousel {
+    position: relative;
+}
+
+.hero-slide {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.thumbnail-btn.active {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.play-button {
+    backdrop-filter: blur(4px);
+}
+
+/* Lightbox Styles */
+.lightbox-modal {
+    backdrop-filter: blur(2px);
+}
+
+.lightbox-image {
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+.lightbox-image.zoomed {
+    cursor: zoom-out;
+    transform-origin: center center;
+}
+
+.lightbox-video {
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.lightbox-360 {
+    position: relative;
+}
+
+/* Zoom and Pan */
+.lightbox-image.zoomed {
+    transform: scale(2);
+    cursor: grab;
+}
+
+.lightbox-image.zoomed:active {
+    cursor: grabbing;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-thumbnails {
+        display: none;
+    }
+
+    .lightbox-thumbnails {
+        display: flex;
+    }
+
+    .lightbox-counter {
+        bottom: 24px;
+    }
+
+    .lightbox-share {
+        bottom: 24px;
+        right: 16px;
+    }
+}
+
+@media (min-width: 769px) {
+    .lightbox-thumbnails {
+        display: none;
+    }
+}
+
+/* Accessibility */
+.hero-nav:focus,
+.thumbnail-btn:focus,
+.view-all-btn:focus,
+.lightbox-nav:focus,
+.lightbox-close:focus,
+.lightbox-share:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Loading states */
+.hero-slide img,
+.lightbox-image {
+    transition: opacity 0.3s ease;
+}
+
+.hero-slide img.loading,
+.lightbox-image.loading {
+    opacity: 0.5;
+}
+</style>
+
+<!-- Hidden JSON data for JavaScript -->
+{{ hero_photos|json_script:"hero-photos-data" }}
+{{ all_photos|json_script:"all-photos-data" }}
+
+<!-- Gallery JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const gallery = document.querySelector('.photo-gallery[data-gallery-id="{{ gallery_id }}"]');
+    if (!gallery) return;
+
+    // Gallery data from Django
+    const heroPhotosData = document.getElementById('hero-photos-data');
+    const allPhotosData = document.getElementById('all-photos-data');
+    const heroPhotos = heroPhotosData ? JSON.parse(heroPhotosData.textContent) : [];
+    const allPhotos = allPhotosData ? JSON.parse(allPhotosData.textContent) : [];
+
+    // Gallery state
+    let currentSlide = 0;
+    let totalSlides = heroPhotos.length;
+    let allPhotosCount = allPhotos.length;
+    let isLightboxOpen = false;
+    let lightboxCurrentSlide = 0;
+    let isZoomed = false;
+    let zoomOrigin = { x: 0, y: 0 };
+
+    // DOM elements
+    const heroSlides = gallery.querySelectorAll('.hero-slide');
+    const heroThumbnails = gallery.querySelectorAll('.thumbnail-btn');
+    const heroPrevBtn = gallery.querySelector('.hero-prev');
+    const heroNextBtn = gallery.querySelector('.hero-next');
+    const viewAllBtn = gallery.querySelector('.view-all-btn');
+    const imageCounter = gallery.querySelector('.image-counter .current');
+
+    const lightbox = document.getElementById('gallery-lightbox-{{ gallery_id }}');
+    const lightboxSlides = lightbox.querySelectorAll('.lightbox-slide');
+    const lightboxPrevBtn = lightbox.querySelector('.lightbox-prev');
+    const lightboxNextBtn = lightbox.querySelector('.lightbox-next');
+    const lightboxCloseBtn = lightbox.querySelector('.lightbox-close');
+    const lightboxCounter = lightbox.querySelector('.lightbox-counter .current');
+    const lightboxShareBtn = lightbox.querySelector('.lightbox-share');
+    const lightboxThumbs = lightbox.querySelectorAll('.lightbox-thumb');
+
+    // Hero carousel functions
+    function showHeroSlide(index) {
+        heroSlides.forEach((slide, i) => {
+            slide.classList.toggle('opacity-100', i === index);
+            slide.classList.toggle('opacity-0', i !== index);
+        });
+
+        heroThumbnails.forEach((thumb, i) => {
+            thumb.classList.toggle('border-blue-500', i === index);
+            thumb.classList.toggle('border-gray-200', i !== index);
+            thumb.classList.toggle('shadow-lg', i === index);
+        });
+
+        currentSlide = index;
+        if (imageCounter) {
+            imageCounter.textContent = index + 1;
+        }
+    }
+
+    function nextHeroSlide() {
+        const nextIndex = (currentSlide + 1) % totalSlides;
+        showHeroSlide(nextIndex);
+    }
+
+    function prevHeroSlide() {
+        const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+        showHeroSlide(prevIndex);
+    }
+
+    // Lightbox functions
+    function openLightbox(startIndex = 0) {
+        lightboxCurrentSlide = startIndex;
+        isLightboxOpen = true;
+        lightbox.classList.remove('hidden');
+        setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
+        document.body.style.overflow = 'hidden';
+        showLightboxSlide(startIndex);
+    }
+
+    function closeLightbox() {
+        isLightboxOpen = false;
+        lightbox.classList.add('opacity-0');
+        setTimeout(() => {
+            lightbox.classList.add('hidden');
+            document.body.style.overflow = '';
+        }, 300);
+        resetZoom();
+    }
+
+    function showLightboxSlide(index) {
+        lightboxSlides.forEach((slide, i) => {
+            slide.classList.toggle('opacity-100', i === index);
+            slide.classList.toggle('opacity-0', i !== index);
+        });
+
+        lightboxThumbs.forEach((thumb, i) => {
+            thumb.classList.toggle('border-white', i === index);
+            thumb.classList.toggle('border-gray-500', i !== index);
+        });
+
+        lightboxCurrentSlide = index;
+        if (lightboxCounter) {
+            lightboxCounter.textContent = index + 1;
+        }
+
+        resetZoom();
+        updateShareUrl();
+    }
+
+    function nextLightboxSlide() {
+        const nextIndex = (lightboxCurrentSlide + 1) % allPhotos;
+        showLightboxSlide(nextIndex);
+    }
+
+    function prevLightboxSlide() {
+        const prevIndex = (lightboxCurrentSlide - 1 + allPhotos) % allPhotos;
+        showLightboxSlide(prevIndex);
+    }
+
+    function resetZoom() {
+        const currentImage = lightbox.querySelector('.lightbox-image.opacity-100');
+        if (currentImage) {
+            currentImage.classList.remove('zoomed');
+            currentImage.style.transform = '';
+            currentImage.style.transformOrigin = '';
+        }
+        isZoomed = false;
+    }
+
+    function handleZoom(event) {
+        const image = event.target.closest('.lightbox-image');
+        if (!image) return;
+
+        if (!isZoomed) {
+            // Zoom in
+            const rect = image.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) * 100;
+            const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+            image.style.transformOrigin = `${x}% ${y}%`;
+            image.classList.add('zoomed');
+            isZoomed = true;
+        } else {
+            // Zoom out
+            resetZoom();
+        }
+    }
+
+    function updateShareUrl() {
+        // Update share URL with current image hash
+        const currentPhoto = allPhotos[lightboxCurrentSlide];
+        if (currentPhoto) {
+            const shareUrl = window.location.href.split('#')[0] + '#photo-' + currentPhoto.id;
+            if (lightboxShareBtn) {
+                lightboxShareBtn.onclick = () => {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        // Show temporary success message
+                        const originalText = lightboxShareBtn.innerHTML;
+                        lightboxShareBtn.innerHTML = '<svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Copied!';
+                        setTimeout(() => {
+                            lightboxShareBtn.innerHTML = originalText;
+                        }, 2000);
+                    });
+                };
+            }
+        }
+    }
+
+    // Event listeners
+    if (heroPrevBtn) heroPrevBtn.addEventListener('click', prevHeroSlide);
+    if (heroNextBtn) heroNextBtn.addEventListener('click', nextHeroSlide);
+
+    heroThumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => showHeroSlide(index));
+    });
+
+    if (viewAllBtn) {
+        viewAllBtn.addEventListener('click', () => openLightbox(currentSlide));
+    }
+
+    if (lightboxCloseBtn) {
+        lightboxCloseBtn.addEventListener('click', closeLightbox);
+    }
+
+    if (lightboxPrevBtn) {
+        lightboxPrevBtn.addEventListener('click', prevLightboxSlide);
+    }
+
+    if (lightboxNextBtn) {
+        lightboxNextBtn.addEventListener('click', nextLightboxSlide);
+    }
+
+    lightboxThumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => showLightboxSlide(index));
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (event) => {
+        if (!isLightboxOpen) return;
+
+        switch (event.key) {
+            case 'ArrowLeft':
+                event.preventDefault();
+                prevLightboxSlide();
+                break;
+            case 'ArrowRight':
+                event.preventDefault();
+                nextLightboxSlide();
+                break;
+            case 'Escape':
+                event.preventDefault();
+                closeLightbox();
+                break;
+        }
+    });
+
+    // Click outside to close lightbox
+    lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Image zoom on click
+    lightbox.addEventListener('click', (event) => {
+        if (event.target.classList.contains('lightbox-image')) {
+            handleZoom(event);
+        }
+    });
+
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    gallery.addEventListener('touchstart', (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+    });
+
+    gallery.addEventListener('touchend', (event) => {
+        if (!touchStartX || !touchStartY) return;
+
+        const touchEndX = event.changedTouches[0].clientX;
+        const touchEndY = event.changedTouches[0].clientY;
+        const deltaX = touchStartX - touchEndX;
+        const deltaY = touchStartY - touchEndY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+            if (deltaX > 0) {
+                nextHeroSlide();
+            } else {
+                prevHeroSlide();
+            }
+        }
+
+        touchStartX = 0;
+        touchStartY = 0;
+    });
+
+    // Lightbox touch/swipe
+    lightbox.addEventListener('touchstart', (event) => {
+        touchStartX = event.touches[0].clientX;
+    });
+
+    lightbox.addEventListener('touchend', (event) => {
+        if (!touchStartX) return;
+
+        const touchEndX = event.changedTouches[0].clientX;
+        const deltaX = touchStartX - touchEndX;
+
+        if (Math.abs(deltaX) > 50) {
+            if (deltaX > 0) {
+                nextLightboxSlide();
+            } else {
+                prevLightboxSlide();
+            }
+        }
+
+        touchStartX = 0;
+    });
+
+    // Auto-play for hero carousel (optional)
+    let autoplayInterval;
+    function startAutoplay() {
+        if (totalSlides > 1) {
+            autoplayInterval = setInterval(nextHeroSlide, 5000);
+        }
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+        }
+    }
+
+    // Pause autoplay on hover
+    gallery.addEventListener('mouseenter', stopAutoplay);
+    gallery.addEventListener('mouseleave', startAutoplay);
+
+    // Start autoplay
+    startAutoplay();
+
+    // Handle URL hash for direct image links
+    const hash = window.location.hash;
+    if (hash.startsWith('#photo-')) {
+        const photoId = hash.replace('#photo-', '');
+        const photoIndex = allPhotos.findIndex(photo => photo.id == photoId);
+        if (photoIndex !== -1) {
+            setTimeout(() => openLightbox(photoIndex), 1000);
+        }
+    }
+
+    // Lazy loading for images
+    const images = gallery.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('loading');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+
+    // Analytics events (optional)
+    function trackEvent(eventName, data) {
+        // Implement analytics tracking here
+        console.log('Gallery event:', eventName, data);
+    }
+
+    // Track gallery interactions
+    if (viewAllBtn) {
+        viewAllBtn.addEventListener('click', () => trackEvent('gallery_open', { total_photos: allPhotosCount }));
+    }
+
+    lightboxThumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => trackEvent('image_view', { image_index: index }));
+    });
+
+    if (lightboxPrevBtn) {
+        lightboxPrevBtn.addEventListener('click', () => trackEvent('lightbox_nav', { direction: 'prev' }));
+    }
+
+    if (lightboxNextBtn) {
+        lightboxNextBtn.addEventListener('click', () => trackEvent('lightbox_nav', { direction: 'next' }));
+    }
+});
+</script>
