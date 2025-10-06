@@ -42,6 +42,7 @@ urlpatterns = [
     path('countries/<str:country>/accommodation/<str:slug>/', views.demo_accommodation_detail, name='demo_accommodation_detail'),
     path('countries/<str:country>/tour/<str:slug>/', views.demo_tour_detail, name='demo_tour_detail'),
     path('countries/<str:country>/attraction/<str:slug>/', views.attraction_detail, name='attraction_detail'),
+    path('countries/uae/attractions/', views.uae_attractions, name='uae_attractions'),
     path('destinations/', views.destinations, name='destinations'),
     path('search/', views.search_results, name='search_results'),
     path('cart/', views.cart, name='cart'),
