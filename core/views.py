@@ -4317,11 +4317,24 @@ def country_detail(request, country):
             'accommodations_count': 312,
             'tours_count': 156,
             'attractions': [
-                {'name': 'Nicosia', 'description': 'Last divided capital in Europe with rich history', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Limassol', 'description': 'Vibrant coastal city with medieval castle', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Paphos', 'description': 'UNESCO site with ancient mosaics and beaches', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Troodos Mountains', 'description': 'Mountainous region with Byzantine churches', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Famagusta', 'description': 'Historic city with Venetian walls and Gothic cathedral', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Kato Paphos Archaeological Park', 'slug': 'kato-paphos-archaeological-park', 'description': 'UNESCO site with Roman mosaics', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tombs of the Kings', 'slug': 'tombs-of-the-kings', 'description': '4th century BC underground monuments', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aphrodite\'s Rock Petra tou Romiou', 'slug': 'aphrodites-rock-petra-tou-romiou', 'description': 'Legendary birthplace of Aphrodite', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Paphos Castle', 'slug': 'paphos-castle', 'description': 'Medieval fort and cultural venue', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kourion', 'slug': 'kourion', 'description': 'Ancient city on cliff with amphitheater', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kolossi Castle', 'slug': 'kolossi-castle', 'description': '15th century Knights Templar castle', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mount Olympus Troodos', 'slug': 'mount-olympus-troodos', 'description': 'Highest point 1,952m', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Akamas Peninsula', 'slug': 'akamas-peninsula', 'description': 'Blue Lagoon and Aphrodite\'s baths', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nissi Beach', 'slug': 'nissi-beach', 'description': '500m white sand beach', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ayia Napa', 'slug': 'ayia-napa', 'description': 'Party destination and beaches', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nicosia Old Town', 'slug': 'nicosia-old-town', 'description': 'Divided capital with Green Line', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Larnaca Salt Lake', 'slug': 'larnaca-salt-lake', 'description': 'Flamingo watching', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kykkos Monastery', 'slug': 'kykkos-monastery', 'description': 'Famous mountain monastery', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cape Greco', 'slug': 'cape-greco', 'description': 'National park with sea caves', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Limassol Castle', 'slug': 'limassol-castle', 'description': 'Medieval museum', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ancient Salamis', 'slug': 'ancient-salamis', 'description': 'Roman ruins near Famagusta', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bellapais Abbey', 'slug': 'bellapais-abbey', 'description': 'Gothic monastery ruins', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Protaras Fig Tree Bay', 'slug': 'protaras-fig-tree-bay', 'description': 'Family beach', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Amathus Beach Hotel Limassol', 'location': 'Limassol', 'rating': 4.7, 'price': 180, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4343,11 +4356,26 @@ def country_detail(request, country):
             'accommodations_count': 567,
             'tours_count': 234,
             'attractions': [
-                {'name': 'Athens', 'description': 'Ancient capital with Acropolis and Parthenon', 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
-                {'name': 'Santorini', 'description': 'Stunning volcanic island with white-washed buildings', 'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Mykonos', 'description': 'Cosmopolitan island known for nightlife and beaches', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Crete', 'description': 'Largest Greek island with palaces and gorges', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Olympia', 'description': 'Birthplace of the Olympic Games', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Acropolis of Athens', 'slug': 'acropolis-of-athens', 'description': 'UNESCO World Heritage with Parthenon', 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'Acropolis Museum', 'slug': 'acropolis-museum', 'description': '4,250+ ancient artifacts', 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'Santorini Oia & Fira', 'slug': 'santorini-oia-fira', 'description': 'Clifftop villages with blue domes', 'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mykonos', 'slug': 'mykonos', 'description': 'Glamorous island with Paradise Beach', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Crete & Balos Lagoon', 'slug': 'crete-balos-lagoon', 'description': 'Beaches and ancient ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ancient Delphi', 'slug': 'ancient-delphi', 'description': 'Oracle sanctuary UNESCO site', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Meteora Monasteries', 'slug': 'meteora-monasteries', 'description': 'Rock formations with Byzantine monasteries', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Rhodes Old Town', 'slug': 'rhodes-old-town', 'description': 'Medieval walled city', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Zakynthos Navagio Beach', 'slug': 'zakynthos-navagio-beach', 'description': 'Shipwreck beach', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Corfu Old Town', 'slug': 'corfu-old-town', 'description': 'Venetian architecture', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ancient Olympia', 'slug': 'ancient-olympia', 'description': 'Birthplace of Olympics', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Thessaloniki White Tower', 'slug': 'thessaloniki-white-tower', 'description': 'Byzantine monument', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Naxos', 'slug': 'naxos', 'description': 'Largest Cyclades island', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Akrotiri Santorini', 'slug': 'akrotiri-santorini', 'description': 'Bronze Age archaeological site', 'image': 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Plaka Athens', 'slug': 'plaka-athens', 'description': 'Oldest neighborhood', 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
+                {'name': 'Samaria Gorge Crete', 'slug': 'samaria-gorge-crete', 'description': '16km hiking trail', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Little Venice Mykonos', 'slug': 'little-venice-mykonos', 'description': 'Sunset viewing spot', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Knossos Palace Crete', 'slug': 'knossos-palace-crete', 'description': 'Minoan palace ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Paros', 'slug': 'paros', 'description': 'Island with marble quarries', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Lindos Acropolis Rhodes', 'slug': 'lindos-acropolis-rhodes', 'description': 'Ancient citadel', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Canaves Oia Boutique Hotel', 'location': 'Santorini', 'rating': 4.9, 'price': 450, 'image': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80'},
@@ -4369,11 +4397,26 @@ def country_detail(request, country):
             'accommodations_count': 423,
             'tours_count': 198,
             'attractions': [
-                {'name': 'Istanbul', 'description': 'City of two continents with Hagia Sophia and Blue Mosque', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Cappadocia', 'description': 'Surreal landscape with cave dwellings and hot air balloons', 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Pamukkale', 'description': 'Natural thermal pools and ancient Hierapolis', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Ephesus', 'description': 'Ancient Greek city with well-preserved ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Antalya', 'description': 'Mediterranean coastal city with ancient harbor', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Hagia Sophia Istanbul', 'slug': 'hagia-sophia-istanbul', 'description': 'Byzantine-Ottoman masterpiece', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Blue Mosque Istanbul', 'slug': 'blue-mosque-istanbul', 'description': 'Six minarets Ottoman mosque', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cappadocia Hot Air Balloons', 'slug': 'cappadocia-hot-air-balloons', 'description': 'Fairy chimneys landscape', 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Göreme Open Air Museum', 'slug': 'goreme-open-air-museum', 'description': 'Cave churches UNESCO site', 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ephesus', 'slug': 'ephesus', 'description': 'Best preserved ancient city Library of Celsus', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Pamukkale', 'slug': 'pamukkale', 'description': 'White travertine terraces Cotton Castle', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Topkapi Palace Istanbul', 'slug': 'topkapi-palace-istanbul', 'description': 'Ottoman palace museum', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Grand Bazaar Istanbul', 'slug': 'grand-bazaar-istanbul', 'description': 'Historic covered market', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cappadocia Underground Cities', 'slug': 'cappadocia-underground-cities', 'description': '18-storey ancient cities', 'image': 'https://images.unsplash.com/photo-1578271887552-5ac9e7c7b5d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aspendos Theater', 'slug': 'aspendos-theater', 'description': 'Roman theater near Antalya', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Antalya Old Town', 'slug': 'antalya-old-town', 'description': 'Mediterranean resort', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Troy Archaeological Site', 'slug': 'troy-archaeological-site', 'description': 'Legendary ancient city', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mount Nemrut', 'slug': 'mount-nemrut', 'description': 'Summit with giant stone heads', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sumela Monastery', 'slug': 'sumela-monastery', 'description': 'Cliffside monastery', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bodrum Castle', 'slug': 'bodrum-castle', 'description': 'Crusader castle and museum', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Pergamon', 'slug': 'pergamon', 'description': 'Ancient Greek city ruins', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Oludeniz Blue Lagoon', 'slug': 'oludeniz-blue-lagoon', 'description': 'Paragliding and beach', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ani Ruins', 'slug': 'ani-ruins', 'description': 'Medieval Armenian city', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Mevlana Museum Konya', 'slug': 'mevlana-museum-konya', 'description': 'Whirling dervishes', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Galata Tower Istanbul', 'slug': 'galata-tower-istanbul', 'description': 'Medieval stone tower', 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Ciragan Palace Kempinski Istanbul', 'location': 'Istanbul', 'rating': 4.9, 'price': 420, 'image': 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4395,11 +4438,26 @@ def country_detail(request, country):
             'accommodations_count': 389,
             'tours_count': 167,
             'attractions': [
-                {'name': 'Pyramids of Giza', 'description': 'Ancient wonders and last remaining Seven Wonders', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Luxor', 'description': 'City of temples with Karnak and Valley of the Kings', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Aswan', 'description': 'Southern city with temples and Nile River beauty', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Cairo', 'description': 'Vibrant capital with Egyptian Museum and Khan el-Khalili', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Red Sea', 'description': 'Crystal clear waters perfect for diving and snorkeling', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Pyramids of Giza & Sphinx', 'slug': 'pyramids-of-giza', 'description': 'Legendary pyramids and one of the Seven Wonders of the Ancient World', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Grand Egyptian Museum', 'slug': 'grand-egyptian-museum', 'description': 'World\'s largest archaeological museum housing Tutankhamun treasures', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Valley of the Kings', 'slug': 'valley-of-the-kings', 'description': 'Royal burial site with rock-cut tombs of pharaohs including Tutankhamun', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Karnak Temple Complex', 'slug': 'karnak-temple', 'description': 'One of the largest religious sites with towering columns and ancient ruins', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Luxor Temple', 'slug': 'luxor-temple', 'description': 'Ancient temple dedicated to Amun, stunning when illuminated at night', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Abu Simbel Temples', 'slug': 'abu-simbel', 'description': 'Rock-hewn temples of Ramses II and Queen Nefertari', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Philae Temple', 'slug': 'philae-temple', 'description': 'Island temple dedicated to goddess Isis with scenic boat access', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Egyptian Museum Cairo', 'slug': 'egyptian-museum', 'description': 'Tahrir Square museum with 120,000 artifacts and Tutankhamun gold mask', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Islamic Cairo', 'slug': 'islamic-cairo', 'description': 'Historic district with Sultan Hassan Mosque and Khan El Khalili bazaar', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Muhammad Ali Mosque', 'slug': 'muhammad-ali-mosque', 'description': 'Alabaster mosque atop Cairo Citadel with panoramic city views', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Hurghada', 'slug': 'hurghada', 'description': 'Premier Red Sea resort for SCUBA diving and snorkeling', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sharm El-Sheikh', 'slug': 'sharm-el-sheikh', 'description': 'Luxury Red Sea destination with world-class diving sites', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bibliotheca Alexandrina', 'slug': 'bibliotheca-alexandrina', 'description': 'Modern library honoring the ancient Library of Alexandria', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Citadel of Qaitbay', 'slug': 'citadel-qaitbay', 'description': 'Fortress built on ruins of the ancient Pharos Lighthouse', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aswan High Dam', 'slug': 'aswan-high-dam', 'description': 'Engineering marvel controlling Nile flooding with Lake Nasser views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Siwa Oasis', 'slug': 'siwa-oasis', 'description': 'Remote desert oasis with natural springs and Temple of Oracle of Amun', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Hatshepsut Temple', 'slug': 'hatshepsut-temple', 'description': 'Memorial temple of Egypt\'s female pharaoh carved into cliffsides', 'image': 'https://images.unsplash.com/photo-1464822759844-d150f38d609c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dahab', 'slug': 'dahab', 'description': 'Laid-back Red Sea town famous for diving at Blue Hole', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Marsa Alam', 'slug': 'marsa-alam', 'description': 'Pristine Red Sea destination for marine life and ocean activities', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Catacombs of Kom El Shoqafa', 'slug': 'catacombs-kom-el-shoqafa', 'description': 'Fascinating underground necropolis blending Egyptian and Roman art', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Cairo at Nile Plaza', 'location': 'Cairo', 'rating': 4.8, 'price': 320, 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4421,11 +4479,26 @@ def country_detail(request, country):
             'accommodations_count': 278,
             'tours_count': 145,
             'attractions': [
-                {'name': 'Marrakech', 'description': 'Imperial city with Bahia Palace and Saadian Tombs', 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Sahara Desert', 'description': 'Vast desert with sand dunes and Berber camps', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Chefchaouen', 'description': 'Blue-washed mountain town with stunning views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Atlas Mountains', 'description': 'Majestic mountain range with Berber villages', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Fes', 'description': 'Ancient medina and spiritual capital of Morocco', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Djemaa el-Fna Square Marrakech', 'slug': 'djemaa-el-fna-square-marrakech', 'description': 'Old medina center with markets', 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Koutoubia Mosque Marrakech', 'slug': 'koutoubia-mosque-marrakech', 'description': 'Iconic red city mosque', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Majorelle Gardens Marrakech', 'slug': 'majorelle-gardens-marrakech', 'description': 'Yves Saint Laurent gardens', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bahia Palace Marrakech', 'slug': 'bahia-palace-marrakech', 'description': '19th century palace', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Saadian Tombs Marrakech', 'slug': 'saadian-tombs-marrakech', 'description': 'Royal necropolis', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Fes el-Bali Medina', 'slug': 'fes-el-bali-medina', 'description': 'UNESCO maze of narrow streets', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'University of Al Quaraouiyine Fes', 'slug': 'university-of-al-quaraouiyine-fes', 'description': 'World\'s oldest university 859 AD', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Fes Tanneries', 'slug': 'fes-tanneries', 'description': 'Ancient leather processing', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Hassan II Mosque Casablanca', 'slug': 'hassan-ii-mosque-casablanca', 'description': 'World\'s biggest minaret Atlantic coast', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Casablanca Corniche', 'slug': 'casablanca-corniche', 'description': 'Seafront promenade', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Merzouga Sahara Desert', 'slug': 'merzouga-sahara-desert', 'description': 'Erg Chebbi dunes camel treks', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Chefchaouen', 'slug': 'chefchaouen', 'description': 'Blue-painted mountain town', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Essaouira', 'slug': 'essaouira', 'description': 'UNESCO coastal medina blue and white buildings', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Ait Benhaddou', 'slug': 'ait-benhaddou', 'description': 'UNESCO Kasbah from Game of Thrones', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Rabat Hassan Tower', 'slug': 'rabat-hassan-tower', 'description': 'Capital city minaret', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Meknes Bab Mansour Gate', 'slug': 'meknes-bab-mansour-gate', 'description': 'UNESCO 11th century', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Todra Gorge', 'slug': 'todra-gorge', 'description': 'Red-rock canyon for hiking', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Volubilis', 'slug': 'volubilis', 'description': 'Roman ruins UNESCO site', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Atlas Mountains', 'slug': 'atlas-mountains', 'description': 'Berber villages and hiking', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Agadir Beach', 'slug': 'agadir-beach', 'description': 'Atlantic resort town', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Nomad Palace Camp', 'location': 'Sahara Desert', 'rating': 4.8, 'price': 180, 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4492,11 +4565,24 @@ def country_detail(request, country):
             'accommodations_count': 234,
             'tours_count': 156,
             'attractions': [
-                {'name': 'Beirut', 'description': 'Vibrant capital city with historic and modern attractions', 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Baalbek', 'description': 'Ancient Roman temple complex and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Byblos', 'description': 'Oldest continuously inhabited city in the world', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Jeita Grotto', 'description': 'Spectacular limestone cave with underground river', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Cedars of God', 'description': 'Ancient cedar forest in the mountains', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Baalbek Temples', 'slug': 'baalbek-temples', 'description': 'City of the Sun Roman temples', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Byblos', 'slug': 'byblos', 'description': 'Oldest inhabited city ancient port', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jeita Grotto', 'slug': 'jeita-grotto', 'description': 'Limestone caves New 7 Wonders finalist', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Cedars of God', 'slug': 'cedars-of-god', 'description': 'UNESCO ancient cedar forest', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Qadisha Valley', 'slug': 'qadisha-valley', 'description': 'UNESCO monasteries and hiking', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Pigeon Rocks Raouché', 'slug': 'pigeon-rocks-raouche', 'description': 'Natural offshore rock formations', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Mohammad Al-Amin Mosque Beirut', 'slug': 'mohammad-al-amin-mosque-beirut', 'description': 'Blue Mosque Ottoman architecture', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Beirut Souks', 'slug': 'beirut-souks', 'description': '200+ shopping outlets', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'National Museum Beirut', 'slug': 'national-museum-beirut', 'description': '100,000 antiquities archaeology museum', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Our Lady of Lebanon Harissa', 'slug': 'our-lady-of-lebanon-harissa', 'description': 'Pilgrimage bronze sculpture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Beirut Corniche', 'slug': 'beirut-corniche', 'description': '5km shoreline boardwalk', 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tyre', 'slug': 'tyre', 'description': 'Historic Phoenician city Roman Hippodrome', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Anjar', 'slug': 'anjar', 'description': 'Umayyad-era Islamic city', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'MIM Mineral Museum Beirut', 'slug': 'mim-mineral-museum-beirut', 'description': '2000 minerals 450 species', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tripoli Citadel', 'slug': 'tripoli-citadel', 'description': 'Crusader castle old souks', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sidon Sea Castle', 'slug': 'sidon-sea-castle', 'description': 'Crusader fortress', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Tannourine Cedars Reserve', 'slug': 'tannourine-cedars-reserve', 'description': 'Protected cedar forest', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Batroun', 'slug': 'batroun', 'description': 'Phoenician seaside town', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Beirut', 'location': 'Beirut', 'rating': 4.8, 'price': 350, 'image': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4518,11 +4604,11 @@ def country_detail(request, country):
             'accommodations_count': 167,
             'tours_count': 89,
             'attractions': [
-                {'name': 'Doha', 'description': 'Modern capital with stunning Islamic architecture', 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Museum of Islamic Art', 'description': 'World-class museum showcasing Islamic art and culture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Souq Waqif', 'description': 'Traditional market with authentic Arabian atmosphere', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Katara Cultural Village', 'description': 'Cultural complex showcasing Qatari heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Al Zubarah Fort', 'description': '18th-century fort and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Doha', 'slug': 'doha', 'description': 'Modern capital with stunning Islamic architecture', 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Museum of Islamic Art', 'slug': 'museum-of-islamic-art', 'description': 'World-class museum showcasing Islamic art and culture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Souq Waqif', 'slug': 'souq-waqif', 'description': 'Traditional market with authentic Arabian atmosphere', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Katara Cultural Village', 'slug': 'katara-cultural-village', 'description': 'Cultural complex showcasing Qatari heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Zubarah Fort', 'slug': 'al-zubarah-fort', 'description': '18th-century fort and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Doha', 'location': 'Doha', 'rating': 4.9, 'price': 420, 'image': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4544,11 +4630,26 @@ def country_detail(request, country):
             'accommodations_count': 445,
             'tours_count': 234,
             'attractions': [
-                {'name': 'Mecca', 'description': 'Holiest city in Islam with the Kaaba and Grand Mosque', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Medina', 'description': 'Second holiest city with Prophet\'s Mosque', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
-                {'name': 'Riyadh', 'description': 'Modern capital with museums and cultural sites', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'AlUla', 'description': 'Ancient oasis city with Nabatean tombs', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Red Sea Coast', 'description': 'Stunning coastline with coral reefs and beaches', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'AlUla Hegra', 'slug': 'alula-hegra', 'description': 'UNESCO Nabataean tombs', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Masjid al-Haram Mecca', 'slug': 'masjid-al-haram-mecca', 'description': 'World\'s largest mosque with Kaaba', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Madinah Al-Masjid an-Nabawi', 'slug': 'madinah-al-masjid-an-nabawi', 'description': 'Second holiest site green dome', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Masmak Fortress Riyadh', 'slug': 'masmak-fortress-riyadh', 'description': 'Mud brick birthplace of kingdom', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kingdom Centre Tower Riyadh', 'slug': 'kingdom-centre-tower-riyadh', 'description': '99-floor skyscraper', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Edge of the World Riyadh', 'slug': 'edge-of-the-world-riyadh', 'description': 'Dramatic cliff escarpment', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Diriyah At-Turaif District', 'slug': 'diriyah-at-turaif-district', 'description': 'UNESCO first Saudi capital', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al-Balad Jeddah', 'slug': 'al-balad-jeddah', 'description': 'UNESCO historic coral-stone buildings', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jeddah Corniche', 'slug': 'jeddah-corniche', 'description': 'Red Sea palm-lined waterfront', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Ahsa Oasis', 'slug': 'al-ahsa-oasis', 'description': 'UNESCO world\'s largest oasis 30,000 acres', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Farasan Islands', 'slug': 'farasan-islands', 'description': 'Red Sea coral reefs diving', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Taif', 'slug': 'taif', 'description': 'Mountain city rose gardens', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jabal Ikmah AlUla', 'slug': 'jabal-ikmah-alula', 'description': 'Open library rock inscriptions', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nasseef House Jeddah', 'slug': 'nasseef-house-jeddah', 'description': '1872 museum cultural center', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Rijal Almaa', 'slug': 'rijal-almaa', 'description': 'Mountain village painted houses museum', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Dumat Al-Jandal', 'slug': 'dumat-al-jandal', 'description': 'Ancient fort and mosque', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Ushaiger Heritage Village', 'slug': 'ushaiger-heritage-village', 'description': 'Mud brick Najdi architecture', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Red Sea Project', 'slug': 'red-sea-project', 'description': 'Luxury coastal resort development', 'image': 'https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Abha', 'slug': 'abha', 'description': 'Asir region mountains and cable car', 'image': 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'National Museum Riyadh', 'slug': 'national-museum-riyadh', 'description': 'Saudi history culture heritage', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Riyadh', 'location': 'Riyadh', 'rating': 4.9, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4570,11 +4671,11 @@ def country_detail(request, country):
             'accommodations_count': 123,
             'tours_count': 67,
             'attractions': [
-                {'name': 'Kuwait City', 'description': 'Modern capital with traditional souks and contemporary architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Kuwait Towers', 'description': 'Iconic water towers symbolizing Kuwait\'s modernity', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
-                {'name': 'Liberation Tower', 'description': 'Tallest structure in Kuwait with panoramic views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Tareq Rajab Museum', 'description': 'Cultural museum showcasing Kuwaiti heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Al Shaheed Park', 'description': 'Beautiful coastal park with beaches and recreational facilities', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Kuwait City', 'slug': 'kuwait-city', 'description': 'Modern capital with traditional souks and contemporary architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Kuwait Towers', 'slug': 'kuwait-towers', 'description': 'Iconic water towers symbolizing Kuwait\'s modernity', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Liberation Tower', 'slug': 'liberation-tower', 'description': 'Tallest structure in Kuwait with panoramic views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tareq Rajab Museum', 'slug': 'tareq-rajab-museum', 'description': 'Cultural museum showcasing Kuwaiti heritage', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Al Shaheed Park', 'slug': 'al-shaheed-park', 'description': 'Beautiful coastal park with beaches and recreational facilities', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'The Regency Hotel Kuwait', 'location': 'Kuwait City', 'rating': 4.7, 'price': 220, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4596,11 +4697,11 @@ def country_detail(request, country):
             'accommodations_count': 89,
             'tours_count': 45,
             'attractions': [
-                {'name': 'Manama', 'description': 'Vibrant capital with modern skyscrapers and traditional souks', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Bahrain Fort', 'description': 'Ancient fort dating back to 2800 BC', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
-                {'name': 'Al Fateh Grand Mosque', 'description': 'Largest mosque in Bahrain with stunning architecture', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Bahrain World Trade Center', 'description': 'Iconic twin towers with integrated wind turbines', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Tree of Life', 'description': 'Ancient tree in the desert, a natural wonder', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Manama', 'slug': 'manama', 'description': 'Vibrant capital with modern skyscrapers and traditional souks', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bahrain Fort', 'slug': 'bahrain-fort', 'description': 'Ancient fort dating back to 2800 BC', 'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'},
+                {'name': 'Al Fateh Grand Mosque', 'slug': 'al-fateh-grand-mosque', 'description': 'Largest mosque in Bahrain with stunning architecture', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bahrain World Trade Center', 'slug': 'bahrain-world-trade-center', 'description': 'Iconic twin towers with integrated wind turbines', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Tree of Life', 'slug': 'tree-of-life', 'description': 'Ancient tree in the desert, a natural wonder', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Bahrain Bay', 'location': 'Manama', 'rating': 4.8, 'price': 320, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4622,11 +4723,11 @@ def country_detail(request, country):
             'accommodations_count': 156,
             'tours_count': 78,
             'attractions': [
-                {'name': 'Muscat', 'description': 'Beautiful capital with white-washed buildings and harbor', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Nizwa Fort', 'description': 'Impressive 17th-century fort with circular towers', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Wahiba Sands', 'description': 'Spectacular desert with red dunes and Bedouin camps', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Jebel Shams', 'description': 'Highest mountain in Oman with breathtaking views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Sur', 'description': 'Coastal town famous for traditional dhow building', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Muscat', 'slug': 'muscat', 'description': 'Beautiful capital with white-washed buildings and harbor', 'image': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Nizwa Fort', 'slug': 'nizwa-fort', 'description': 'Impressive 17th-century fort with circular towers', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Wahiba Sands', 'slug': 'wahiba-sands', 'description': 'Spectacular desert with red dunes and Bedouin camps', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Jebel Shams', 'slug': 'jebel-shams', 'description': 'Highest mountain in Oman with breathtaking views', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Sur', 'slug': 'sur', 'description': 'Coastal town famous for traditional dhow building', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'The Chedi Muscat', 'location': 'Muscat', 'rating': 4.9, 'price': 380, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4648,11 +4749,11 @@ def country_detail(request, country):
             'accommodations_count': 89,
             'tours_count': 45,
             'attractions': [
-                {'name': 'Damascus', 'description': 'Ancient capital city with Umayyad Mosque and souks', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Aleppo', 'description': 'Historic city with Citadel and ancient medina', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Palmyra', 'description': 'Ancient oasis city with Roman ruins', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Krak des Chevaliers', 'description': 'Magnificent Crusader castle and UNESCO site', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Bosra', 'description': 'Ancient Roman theater and archaeological site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Damascus', 'slug': 'damascus', 'description': 'Ancient capital city with Umayyad Mosque and souks', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aleppo', 'slug': 'aleppo', 'description': 'Historic city with Citadel and ancient medina', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Palmyra', 'slug': 'palmyra', 'description': 'Ancient oasis city with Roman ruins', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Krak des Chevaliers', 'slug': 'krak-des-chevaliers', 'description': 'Magnificent Crusader castle and UNESCO site', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Bosra', 'slug': 'bosra', 'description': 'Ancient Roman theater and archaeological site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Four Seasons Hotel Damascus', 'location': 'Damascus', 'rating': 4.6, 'price': 220, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4674,11 +4775,11 @@ def country_detail(request, country):
             'accommodations_count': 67,
             'tours_count': 34,
             'attractions': [
-                {'name': 'Baghdad', 'description': 'Historic capital with Abbasid heritage and modern developments', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Babylon', 'description': 'Ancient city with Hanging Gardens and Ishtar Gate', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Uruk', 'description': 'Ancient Sumerian city and birthplace of writing', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Karbala', 'description': 'Sacred city with Imam Hussein Shrine', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Erbil Citadel', 'description': 'Ancient fortified settlement and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Baghdad', 'slug': 'baghdad', 'description': 'Historic capital with Abbasid heritage and modern developments', 'image': 'https://images.unsplash.com/photo-1555992336-fb0d29498b13?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Babylon', 'slug': 'babylon', 'description': 'Ancient city with Hanging Gardens and Ishtar Gate', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Uruk', 'slug': 'uruk', 'description': 'Ancient Sumerian city and birthplace of writing', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Karbala', 'slug': 'karbala', 'description': 'Sacred city with Imam Hussein Shrine', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Erbil Citadel', 'slug': 'erbil-citadel', 'description': 'Ancient fortified settlement and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Palestine Hotel Baghdad', 'location': 'Baghdad', 'rating': 4.2, 'price': 120, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -4701,10 +4802,10 @@ def country_detail(request, country):
             'tours_count': 23,
             'attractions': [
                 {'name': 'Sana\'a', 'description': 'Ancient capital with unique mud-brick architecture', 'image': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Socotra Island', 'description': 'Unique island with dragon\'s blood trees and biodiversity', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Zabid', 'description': 'Historic city and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Shibam', 'description': 'Manhattan of the desert with mud skyscrapers', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
-                {'name': 'Aden', 'description': 'Port city with volcanic crater and British colonial history', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+                {'name': 'Socotra Island', 'slug': 'socotra-island', 'description': 'Unique island with dragon\'s blood trees and biodiversity', 'image': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Zabid', 'slug': 'zabid', 'description': 'Historic city and UNESCO World Heritage Site', 'image': 'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Shibam', 'slug': 'shibam', 'description': 'Manhattan of the desert with mud skyscrapers', 'image': 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
+                {'name': 'Aden', 'slug': 'aden', 'description': 'Port city with volcanic crater and British colonial history', 'image': 'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
             ],
             'accommodations': [
                 {'name': 'Moevenpick Hotel Sana\'a', 'location': 'Sana\'a', 'rating': 4.3, 'price': 140, 'image': 'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'},
@@ -5190,10 +5291,10 @@ def attraction_detail(request, country, slug):
                     'The Nabateans built a dam and temple ruins that can still be seen today'
                 ],
                 'key_sites': [
-                    {'name': 'Seven Pillars of Wisdom', 'description': 'A massive rock formation named after T.E. Lawrence\'s book', 'significance': 'One of the most iconic landmarks in Wadi Rum'},
+                    {'name': 'Seven Pillars of Wisdom', 'slug': 'seven-pillars-of-wisdom', 'description': 'A massive rock formation named after T.E. Lawrence\'s book', 'significance': 'One of the most iconic landmarks in Wadi Rum'},
                     {'name': 'Lawrence\'s Spring', 'description': 'A natural spring with Nabataean inscriptions and a water tank', 'significance': 'Named after T.E. Lawrence who reportedly bathed here'},
-                    {'name': 'Khazali Canyon', 'description': 'A narrow siq with ancient petroglyphs and inscriptions', 'significance': 'Contains 4,000-year-old rock art depicting humans and animals'},
-                    {'name': 'Umm Fruth Rock Bridge', 'description': 'A natural rock bridge arch formation', 'significance': 'Popular for climbing and photography'}
+                    {'name': 'Khazali Canyon', 'slug': 'khazali-canyon', 'description': 'A narrow siq with ancient petroglyphs and inscriptions', 'significance': 'Contains 4,000-year-old rock art depicting humans and animals'},
+                    {'name': 'Umm Fruth Rock Bridge', 'slug': 'umm-fruth-rock-bridge', 'description': 'A natural rock bridge arch formation', 'significance': 'Popular for climbing and photography'}
                 ],
                 'visitor_tips': [
                     'Stay overnight in a Bedouin camp for the full desert experience',
@@ -5269,11 +5370,11 @@ def attraction_detail(request, country, slug):
                     'Jerash is the second-most popular tourist attraction in Jordan after Petra'
                 ],
                 'key_sites': [
-                    {'name': 'Oval Forum', 'description': 'Unique oval-shaped plaza surrounded by 56 Ionic columns', 'significance': 'Links the cardo maximus with the Temple of Zeus'},
-                    {'name': 'Cardo Maximus', 'description': '800-meter colonnaded street with original paving stones', 'significance': 'The city\'s main thoroughfare showing ancient urban planning'},
+                    {'name': 'Oval Forum', 'slug': 'oval-forum', 'description': 'Unique oval-shaped plaza surrounded by 56 Ionic columns', 'significance': 'Links the cardo maximus with the Temple of Zeus'},
+                    {'name': 'Cardo Maximus', 'slug': 'cardo-maximus', 'description': '800-meter colonnaded street with original paving stones', 'significance': 'The city\'s main thoroughfare showing ancient urban planning'},
                     {'name': 'Hadrian\'s Arch', 'description': 'Splendid triumphal arch at the southern entrance', 'significance': 'Built to honor Emperor Hadrian\'s visit in 129 AD'},
-                    {'name': 'South Theatre', 'description': '1st-century theatre with 5,000-seat capacity', 'significance': 'Still used for performances during the Jerash Festival'},
-                    {'name': 'Nymphaeum', 'description': 'Ornamental fountain from 191 AD', 'significance': 'Dedicated to the Nymphs with elaborate marble and plaster decoration'}
+                    {'name': 'South Theatre', 'slug': 'south-theatre', 'description': '1st-century theatre with 5,000-seat capacity', 'significance': 'Still used for performances during the Jerash Festival'},
+                    {'name': 'Nymphaeum', 'slug': 'nymphaeum', 'description': 'Ornamental fountain from 191 AD', 'significance': 'Dedicated to the Nymphs with elaborate marble and plaster decoration'}
                 ],
                 'entrance_fees': '10 JOD (about $14 USD) for foreigners. Free with Jordan Pass.',
                 'opening_hours': 'Summer (Apr-Oct): 8:00 AM to 7:00 PM; Winter (Nov-Mar): 8:00 AM to 4:00 PM',
@@ -5313,9 +5414,9 @@ def attraction_detail(request, country, slug):
                     'A serpentine cross sculpture stands outside, symbolizing Moses\' bronze serpent and Jesus\' crucifixion'
                 ],
                 'key_sites': [
-                    {'name': 'Byzantine Church', 'description': 'Ruins of a 4th-century church with beautiful mosaics', 'significance': 'Built to commemorate Moses\' death, contains some of the finest Byzantine mosaics'},
-                    {'name': 'Memorial Church of Moses', 'description': 'Modern church built over the original Byzantine structure', 'significance': 'Active place of worship and pilgrimage'},
-                    {'name': 'Brazen Serpent Monument', 'description': 'Serpentine cross sculpture by Giovanni Fantoni', 'significance': 'Symbolizes Moses\' bronze serpent and Christ\'s crucifixion'},
+                    {'name': 'Byzantine Church', 'slug': 'byzantine-church', 'description': 'Ruins of a 4th-century church with beautiful mosaics', 'significance': 'Built to commemorate Moses\' death, contains some of the finest Byzantine mosaics'},
+                    {'name': 'Memorial Church of Moses', 'slug': 'memorial-church-of-moses', 'description': 'Modern church built over the original Byzantine structure', 'significance': 'Active place of worship and pilgrimage'},
+                    {'name': 'Brazen Serpent Monument', 'slug': 'brazen-serpent-monument', 'description': 'Serpentine cross sculpture by Giovanni Fantoni', 'significance': 'Symbolizes Moses\' bronze serpent and Christ\'s crucifixion'},
                     {'name': 'Pope\'s Olive Tree', 'description': 'Olive tree planted by Pope John Paul II in 2000', 'significance': 'Symbol of peace planted during papal visit'}
                 ],
                 'entrance_fees': '2 JOD (about $3 USD). Free with Jordan Pass.',
@@ -5357,9 +5458,9 @@ def attraction_detail(request, country, slug):
                 ],
                 'key_sites': [
                     {'name': 'St. George\'s Church Mosaic Map', 'description': '6th-century mosaic floor map of the Holy Land', 'significance': 'The oldest known geographic floor mosaic in art history'},
-                    {'name': 'Archaeological Park', 'description': 'Complex of Byzantine churches with stunning mosaics', 'significance': 'Contains the Church of the Virgin and Hippolytus Hall mosaics'},
-                    {'name': 'Madaba Museum', 'description': 'Museum housed in old houses displaying local artifacts', 'significance': 'Features mosaics and artifacts from various periods'},
-                    {'name': 'Church of the Apostles', 'description': 'Church with personification of the sea mosaic', 'significance': 'Contains one of the most famous mosaics in Madaba'}
+                    {'name': 'Archaeological Park', 'slug': 'archaeological-park', 'description': 'Complex of Byzantine churches with stunning mosaics', 'significance': 'Contains the Church of the Virgin and Hippolytus Hall mosaics'},
+                    {'name': 'Madaba Museum', 'slug': 'madaba-museum', 'description': 'Museum housed in old houses displaying local artifacts', 'significance': 'Features mosaics and artifacts from various periods'},
+                    {'name': 'Church of the Apostles', 'slug': 'church-of-the-apostles', 'description': 'Church with personification of the sea mosaic', 'significance': 'Contains one of the most famous mosaics in Madaba'}
                 ],
                 'entrance_fees': 'St. George Church: 1 JOD. Archaeological Park: 3 JOD. Free with Jordan Pass.',
                 'opening_hours': 'Most sites: 8:00 AM to 6:00 PM (may vary by season)',
@@ -5399,10 +5500,10 @@ def attraction_detail(request, country, slug):
                     'Offers 360-degree panoramic views of Amman'
                 ],
                 'key_sites': [
-                    {'name': 'Temple of Hercules', 'description': 'Roman temple with massive restored columns', 'significance': 'Dedicated to co-emperors Marcus Aurelius and Lucius Verus'},
-                    {'name': 'Hand of Hercules', 'description': 'Massive marble hand fragment from colossal statue', 'significance': 'One of the largest known marble statue fragments from antiquity'},
-                    {'name': 'Umayyad Palace', 'description': 'Large palatial complex from the 8th century', 'significance': 'Shows the Islamic period\'s architectural achievements'},
-                    {'name': 'Byzantine Church', 'description': 'Ruins of an early Christian basilica', 'significance': 'Evidence of early Christianity in the region'}
+                    {'name': 'Temple of Hercules', 'slug': 'temple-of-hercules', 'description': 'Roman temple with massive restored columns', 'significance': 'Dedicated to co-emperors Marcus Aurelius and Lucius Verus'},
+                    {'name': 'Hand of Hercules', 'slug': 'hand-of-hercules', 'description': 'Massive marble hand fragment from colossal statue', 'significance': 'One of the largest known marble statue fragments from antiquity'},
+                    {'name': 'Umayyad Palace', 'slug': 'umayyad-palace', 'description': 'Large palatial complex from the 8th century', 'significance': 'Shows the Islamic period\'s architectural achievements'},
+                    {'name': 'Byzantine Church', 'slug': 'byzantine-church', 'description': 'Ruins of an early Christian basilica', 'significance': 'Evidence of early Christianity in the region'}
                 ],
                 'entrance_fees': '3 JOD (about $4 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 7:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5442,10 +5543,10 @@ def attraction_detail(request, country, slug):
                     'Aqaba is a tax-free economic zone'
                 ],
                 'key_sites': [
-                    {'name': 'Aqaba Marine Park', 'description': 'Protected area with 21 dive sites featuring coral reefs', 'significance': 'Home to diverse marine life and well-preserved coral gardens'},
-                    {'name': 'Aqaba Fort', 'description': '16th-century Mamluk fortress', 'significance': 'Historical military structure overlooking the city'},
-                    {'name': 'Public Beach', 'description': 'Free public beach with facilities', 'significance': 'Accessible beach for swimming and relaxation'},
-                    {'name': 'Dive Centers', 'description': 'Multiple PADI-certified dive centers', 'significance': 'Offer diving courses and trips to coral reefs and wrecks'}
+                    {'name': 'Aqaba Marine Park', 'slug': 'aqaba-marine-park', 'description': 'Protected area with 21 dive sites featuring coral reefs', 'significance': 'Home to diverse marine life and well-preserved coral gardens'},
+                    {'name': 'Aqaba Fort', 'slug': 'aqaba-fort', 'description': '16th-century Mamluk fortress', 'significance': 'Historical military structure overlooking the city'},
+                    {'name': 'Public Beach', 'slug': 'public-beach', 'description': 'Free public beach with facilities', 'significance': 'Accessible beach for swimming and relaxation'},
+                    {'name': 'Dive Centers', 'slug': 'dive-centers', 'description': 'Multiple PADI-certified dive centers', 'significance': 'Offer diving courses and trips to coral reefs and wrecks'}
                 ],
                 'entrance_fees': 'Beaches vary: public beaches free, resort beaches 10-30 JOD',
                 'opening_hours': 'Beaches and dive centers typically 8:00 AM to sunset',
@@ -5488,9 +5589,9 @@ def attraction_detail(request, country, slug):
                 ],
                 'key_sites': [
                     {'name': 'Tell Al-Kharrar (Elijah\'s Hill)', 'description': 'Archaeological tel with Byzantine church remains', 'significance': 'Believed to be where Elijah ascended to heaven and John the Baptist lived'},
-                    {'name': 'Churches of St. John the Baptist', 'description': 'Complex of churches near the Jordan River', 'significance': 'Multiple churches built over centuries at the baptism site'},
-                    {'name': 'Baptismal Pools', 'description': 'Ancient pools used for baptism ceremonies', 'significance': 'Show the continuous use of the site for baptisms'},
-                    {'name': 'Hermit Caves', 'description': 'Caves used by early Christian hermits', 'significance': 'Evidence of early monastic life in the area'}
+                    {'name': 'Churches of St. John the Baptist', 'slug': 'churches-of-st-john-the-baptist', 'description': 'Complex of churches near the Jordan River', 'significance': 'Multiple churches built over centuries at the baptism site'},
+                    {'name': 'Baptismal Pools', 'slug': 'baptismal-pools', 'description': 'Ancient pools used for baptism ceremonies', 'significance': 'Show the continuous use of the site for baptisms'},
+                    {'name': 'Hermit Caves', 'slug': 'hermit-caves', 'description': 'Caves used by early Christian hermits', 'significance': 'Evidence of early monastic life in the area'}
                 ],
                 'entrance_fees': '12 JOD (about $17 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 6:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5532,10 +5633,10 @@ def attraction_detail(request, country, slug):
                     'Recently restored by Department of Antiquities'
                 ],
                 'key_sites': [
-                    {'name': 'Corner Towers', 'description': 'Four defensive towers at castle corners', 'significance': 'Provided 360-degree defensive coverage'},
-                    {'name': 'Moat', 'description': 'Defensive ditch 16m wide and 12-15m deep', 'significance': 'Protected the castle from ground attacks'},
-                    {'name': 'Museum Exhibition', 'description': 'Display of artifacts from various periods', 'significance': 'Shows the history of the region through artifacts'},
-                    {'name': 'Arrow Slits', 'description': 'Narrow openings in thick walls', 'significance': 'Allowed archers to defend while protected'}
+                    {'name': 'Corner Towers', 'slug': 'corner-towers', 'description': 'Four defensive towers at castle corners', 'significance': 'Provided 360-degree defensive coverage'},
+                    {'name': 'Moat', 'slug': 'moat', 'description': 'Defensive ditch 16m wide and 12-15m deep', 'significance': 'Protected the castle from ground attacks'},
+                    {'name': 'Museum Exhibition', 'slug': 'museum-exhibition', 'description': 'Display of artifacts from various periods', 'significance': 'Shows the history of the region through artifacts'},
+                    {'name': 'Arrow Slits', 'slug': 'arrow-slits', 'description': 'Narrow openings in thick walls', 'significance': 'Allowed archers to defend while protected'}
                 ],
                 'entrance_fees': '3 JOD (about $4 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 7:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5576,10 +5677,10 @@ def attraction_detail(request, country, slug):
                     '140 km south of Amman'
                 ],
                 'key_sites': [
-                    {'name': 'North Wall Galleries', 'description': 'Crusader arched halls on two levels', 'significance': 'Used for living, stables, and defense'},
-                    {'name': 'Underground Passages', 'description': 'Network of tunnels and rooms', 'significance': 'Includes marketplace, prison cells, and storage'},
-                    {'name': 'Church and Mosque', 'description': 'Religious structures from different periods', 'significance': 'Shows the castle\'s changing occupants'},
-                    {'name': 'Museum', 'description': 'Displays artifacts and castle history', 'significance': 'Provides historical context'}
+                    {'name': 'North Wall Galleries', 'slug': 'north-wall-galleries', 'description': 'Crusader arched halls on two levels', 'significance': 'Used for living, stables, and defense'},
+                    {'name': 'Underground Passages', 'slug': 'underground-passages', 'description': 'Network of tunnels and rooms', 'significance': 'Includes marketplace, prison cells, and storage'},
+                    {'name': 'Church and Mosque', 'slug': 'church-and-mosque', 'description': 'Religious structures from different periods', 'significance': 'Shows the castle\'s changing occupants'},
+                    {'name': 'Museum', 'slug': 'museum', 'description': 'Displays artifacts and castle history', 'significance': 'Provides historical context'}
                 ],
                 'entrance_fees': '2 JOD (about $3 USD). Free with Jordan Pass.',
                 'opening_hours': 'October-March: 8:00 AM to 4:00 PM; April-September: 8:00 AM to 7:00 PM',
@@ -5619,10 +5720,10 @@ def attraction_detail(request, country, slug):
                     'Human habitation for over 6,000 years'
                 ],
                 'key_sites': [
-                    {'name': 'Dana Village', 'description': '15th-century Ottoman stone village', 'significance': 'Well-preserved historical village with traditional architecture'},
-                    {'name': 'Wadi Dana Trail', 'description': '14 km hiking trail through the reserve', 'significance': 'Descends through all four bio-geographical zones'},
-                    {'name': 'Feynan Eco-lodge', 'description': 'Award-winning sustainable lodge', 'significance': 'First solar-powered lodge in the Middle East'},
-                    {'name': 'Copper Mines', 'description': 'Ancient copper mining sites', 'significance': 'Evidence of historical metal working'}
+                    {'name': 'Dana Village', 'slug': 'dana-village', 'description': '15th-century Ottoman stone village', 'significance': 'Well-preserved historical village with traditional architecture'},
+                    {'name': 'Wadi Dana Trail', 'slug': 'wadi-dana-trail', 'description': '14 km hiking trail through the reserve', 'significance': 'Descends through all four bio-geographical zones'},
+                    {'name': 'Feynan Eco-lodge', 'slug': 'feynan-eco-lodge', 'description': 'Award-winning sustainable lodge', 'significance': 'First solar-powered lodge in the Middle East'},
+                    {'name': 'Copper Mines', 'slug': 'copper-mines', 'description': 'Ancient copper mining sites', 'significance': 'Evidence of historical metal working'}
                 ],
                 'entrance_fees': 'Day visit: 7 JOD. Free with Jordan Pass. Hiking permits required for trails.',
                 'opening_hours': 'Reserve accessible year-round. Visitor center: 8:00 AM to 3:00 PM',
@@ -5664,10 +5765,10 @@ def attraction_detail(request, country, slug):
                     'Gadara was home to famous poets and philosophers in ancient times'
                 ],
                 'key_sites': [
-                    {'name': 'West Theatre', 'description': 'Unique basalt theater with 5,000-seat capacity', 'significance': 'Only westward-facing theater in Jordan with perfect acoustics'},
-                    {'name': 'Colonnaded Street', 'description': 'Impressive main street with columns', 'significance': 'Shows the grandeur of the Decapolis city'},
-                    {'name': 'Ottoman Village', 'description': 'Well-preserved 19th-century Ottoman village', 'significance': 'Demonstrates later periods of habitation'},
-                    {'name': 'Basilica Terrace', 'description': 'Byzantine church complex', 'significance': 'Evidence of early Christian presence'}
+                    {'name': 'West Theatre', 'slug': 'west-theatre', 'description': 'Unique basalt theater with 5,000-seat capacity', 'significance': 'Only westward-facing theater in Jordan with perfect acoustics'},
+                    {'name': 'Colonnaded Street', 'slug': 'colonnaded-street', 'description': 'Impressive main street with columns', 'significance': 'Shows the grandeur of the Decapolis city'},
+                    {'name': 'Ottoman Village', 'slug': 'ottoman-village', 'description': 'Well-preserved 19th-century Ottoman village', 'significance': 'Demonstrates later periods of habitation'},
+                    {'name': 'Basilica Terrace', 'slug': 'basilica-terrace', 'description': 'Byzantine church complex', 'significance': 'Evidence of early Christian presence'}
                 ],
                 'entrance_fees': '3 JOD (about $4 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 7:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5709,10 +5810,10 @@ def attraction_detail(request, country, slug):
                     'Inscriptions in both Greek and Arabic'
                 ],
                 'key_sites': [
-                    {'name': 'Reception Hall', 'description': 'Main hall with extensive frescoes', 'significance': 'Contains the famous Painting of the Six Kings'},
-                    {'name': 'Bath House', 'description': 'Three-room bathing complex', 'significance': 'Shows Umayyad bathing culture with unique frescoes'},
-                    {'name': 'Caldarium Dome', 'description': 'Hot room with zodiac ceiling', 'significance': 'One of earliest surviving celestial maps on a dome'},
-                    {'name': 'Frescoed Walls', 'description': 'Walls covered in 8th-century paintings', 'significance': 'Rare example of Umayyad decorative art'}
+                    {'name': 'Reception Hall', 'slug': 'reception-hall', 'description': 'Main hall with extensive frescoes', 'significance': 'Contains the famous Painting of the Six Kings'},
+                    {'name': 'Bath House', 'slug': 'bath-house', 'description': 'Three-room bathing complex', 'significance': 'Shows Umayyad bathing culture with unique frescoes'},
+                    {'name': 'Caldarium Dome', 'slug': 'caldarium-dome', 'description': 'Hot room with zodiac ceiling', 'significance': 'One of earliest surviving celestial maps on a dome'},
+                    {'name': 'Frescoed Walls', 'slug': 'frescoed-walls', 'description': 'Walls covered in 8th-century paintings', 'significance': 'Rare example of Umayyad decorative art'}
                 ],
                 'entrance_fees': '3 JOD (about $4 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 6:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5754,10 +5855,10 @@ def attraction_detail(request, country, slug):
                     'Water pumping supplied 60 million cubic meters annually to cities'
                 ],
                 'key_sites': [
-                    {'name': 'Boardwalk Trails', 'description': 'Elevated walkways through wetland', 'significance': 'Allow close observation of birds and fish'},
-                    {'name': 'Observation Points', 'description': 'Bird watching platforms', 'significance': 'Best spots for viewing migratory species'},
-                    {'name': 'Marshland Pools', 'description': 'Restored wetland areas', 'significance': 'Habitat for endemic Azraq Killifish'},
-                    {'name': 'Visitor Center', 'description': 'Educational facility with exhibits', 'significance': 'Explains wetland ecology and conservation'}
+                    {'name': 'Boardwalk Trails', 'slug': 'boardwalk-trails', 'description': 'Elevated walkways through wetland', 'significance': 'Allow close observation of birds and fish'},
+                    {'name': 'Observation Points', 'slug': 'observation-points', 'description': 'Bird watching platforms', 'significance': 'Best spots for viewing migratory species'},
+                    {'name': 'Marshland Pools', 'slug': 'marshland-pools', 'description': 'Restored wetland areas', 'significance': 'Habitat for endemic Azraq Killifish'},
+                    {'name': 'Visitor Center', 'slug': 'visitor-center', 'description': 'Educational facility with exhibits', 'significance': 'Explains wetland ecology and conservation'}
                 ],
                 'entrance_fees': '5 JOD (about $7 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 6:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5798,10 +5899,10 @@ def attraction_detail(request, country, slug):
                     'Siq Trail is the most popular adventure route'
                 ],
                 'key_sites': [
-                    {'name': 'Siq Trail', 'description': 'River hike through slot canyon to waterfall', 'significance': 'Most popular 2-4 hour adventure with swimming and climbing'},
-                    {'name': 'Malaqi Trail', 'description': 'Longer route with waterfall rappelling', 'significance': 'Advanced canyoning experience requiring guides'},
-                    {'name': 'Canyon Trail', 'description': 'Full-day canyon descent', 'significance': 'Technical route with multiple waterfalls'},
-                    {'name': 'Ibex Trail', 'description': 'Dry hiking trail', 'significance': 'Only year-round trail, good for wildlife spotting'}
+                    {'name': 'Siq Trail', 'slug': 'siq-trail', 'description': 'River hike through slot canyon to waterfall', 'significance': 'Most popular 2-4 hour adventure with swimming and climbing'},
+                    {'name': 'Malaqi Trail', 'slug': 'malaqi-trail', 'description': 'Longer route with waterfall rappelling', 'significance': 'Advanced canyoning experience requiring guides'},
+                    {'name': 'Canyon Trail', 'slug': 'canyon-trail', 'description': 'Full-day canyon descent', 'significance': 'Technical route with multiple waterfalls'},
+                    {'name': 'Ibex Trail', 'slug': 'ibex-trail', 'description': 'Dry hiking trail', 'significance': 'Only year-round trail, good for wildlife spotting'}
                 ],
                 'entrance_fees': 'Siq Trail: 21 JOD (about $30 USD). Other trails: 28-70 JOD. Not included in Jordan Pass.',
                 'opening_hours': 'April to October: 8:00 AM to 4:00 PM for wet trails. Ibex Trail: Year-round',
@@ -5845,10 +5946,10 @@ def attraction_detail(request, country, slug):
                     'Part of Petra UNESCO World Heritage Site'
                 ],
                 'key_sites': [
-                    {'name': 'Painted Biclinium', 'description': 'Rock-cut dining room with rare frescoes', 'significance': 'Only surviving example of Nabataean interior figurative painting'},
-                    {'name': 'Rock-Cut Tombs', 'description': 'Elaborate burial chambers', 'significance': 'Show Nabataean funerary architecture'},
-                    {'name': 'Water Channels', 'description': 'Sophisticated water management system', 'significance': 'Demonstrates Nabataean engineering skills'},
-                    {'name': 'Temple Facades', 'description': 'Carved building fronts', 'significance': 'Smaller-scale versions of Petra\'s monuments'}
+                    {'name': 'Painted Biclinium', 'slug': 'painted-biclinium', 'description': 'Rock-cut dining room with rare frescoes', 'significance': 'Only surviving example of Nabataean interior figurative painting'},
+                    {'name': 'Rock-Cut Tombs', 'slug': 'rock-cut-tombs', 'description': 'Elaborate burial chambers', 'significance': 'Show Nabataean funerary architecture'},
+                    {'name': 'Water Channels', 'slug': 'water-channels', 'description': 'Sophisticated water management system', 'significance': 'Demonstrates Nabataean engineering skills'},
+                    {'name': 'Temple Facades', 'slug': 'temple-facades', 'description': 'Carved building fronts', 'significance': 'Smaller-scale versions of Petra\'s monuments'}
                 ],
                 'entrance_fees': 'Free admission',
                 'opening_hours': '6:00 AM to 6:00 PM (similar to Petra)',
@@ -5891,10 +5992,10 @@ def attraction_detail(request, country, slug):
                     'Decorated with 14th-century Mamluk inscriptions'
                 ],
                 'key_sites': [
-                    {'name': 'Water Tunnel', 'description': '350-step tunnel to cisterns', 'significance': 'Ingenious solution to water shortage problem'},
-                    {'name': 'Crusader Chapels', 'description': 'Two Christian chapels', 'significance': 'Best-preserved Crusader religious structures'},
-                    {'name': 'Curtain Wall', 'description': 'Original Crusader defensive wall', 'significance': 'Shows medieval military architecture'},
-                    {'name': 'Mamluk Towers', 'description': 'Later Islamic additions with inscriptions', 'significance': '14th-century modifications and decorations'}
+                    {'name': 'Water Tunnel', 'slug': 'water-tunnel', 'description': '350-step tunnel to cisterns', 'significance': 'Ingenious solution to water shortage problem'},
+                    {'name': 'Crusader Chapels', 'slug': 'crusader-chapels', 'description': 'Two Christian chapels', 'significance': 'Best-preserved Crusader religious structures'},
+                    {'name': 'Curtain Wall', 'slug': 'curtain-wall', 'description': 'Original Crusader defensive wall', 'significance': 'Shows medieval military architecture'},
+                    {'name': 'Mamluk Towers', 'slug': 'mamluk-towers', 'description': 'Later Islamic additions with inscriptions', 'significance': '14th-century modifications and decorations'}
                 ],
                 'entrance_fees': '2 JOD (about $3 USD). Free with Jordan Pass.',
                 'opening_hours': 'Summer: 8:00 AM to 6:00 PM; Winter: 8:00 AM to 4:00 PM',
@@ -5936,10 +6037,10 @@ def attraction_detail(request, country, slug):
                     'Strategic location in fertile valley'
                 ],
                 'key_sites': [
-                    {'name': 'Tell al-Husn', 'description': 'Main archaeological mound with Byzantine fort', 'significance': 'Overlooks site with remains from multiple periods'},
-                    {'name': 'Roman Civic Complex', 'description': 'Public buildings and forum area', 'significance': 'Shows city\'s importance in Roman period'},
-                    {'name': 'Byzantine Churches', 'description': 'Three excavated church complexes', 'significance': 'Evidence of early Christian community'},
-                    {'name': 'Neolithic Settlement', 'description': 'Earliest housing remains', 'significance': 'Some of oldest permanent structures in region'}
+                    {'name': 'Tell al-Husn', 'slug': 'tell-al-husn', 'description': 'Main archaeological mound with Byzantine fort', 'significance': 'Overlooks site with remains from multiple periods'},
+                    {'name': 'Roman Civic Complex', 'slug': 'roman-civic-complex', 'description': 'Public buildings and forum area', 'significance': 'Shows city\'s importance in Roman period'},
+                    {'name': 'Byzantine Churches', 'slug': 'byzantine-churches', 'description': 'Three excavated church complexes', 'significance': 'Evidence of early Christian community'},
+                    {'name': 'Neolithic Settlement', 'slug': 'neolithic-settlement', 'description': 'Earliest housing remains', 'significance': 'Some of oldest permanent structures in region'}
                 ],
                 'entrance_fees': '3 JOD (about $4 USD). Free with Jordan Pass.',
                 'opening_hours': 'Daily 8:00 AM to 5:00 PM',
@@ -5981,10 +6082,10 @@ def attraction_detail(request, country, slug):
                     'Walking street with pedestrian priority'
                 ],
                 'key_sites': [
-                    {'name': 'Books@Cafe', 'description': 'Popular bookstore cafe', 'significance': 'Cultural gathering spot with terrace views'},
-                    {'name': 'Wild Jordan Center', 'description': 'RSCN cafe and visitor center', 'significance': 'Organic food and nature reserve information'},
-                    {'name': 'Paris Circle', 'description': 'Historic roundabout at street\'s top', 'significance': 'Starting point with city views'},
-                    {'name': 'Independent Galleries', 'description': 'Art spaces and studios', 'significance': 'Showcase local Jordanian artists'}
+                    {'name': 'Books@Cafe', 'slug': 'bookscafe', 'description': 'Popular bookstore cafe', 'significance': 'Cultural gathering spot with terrace views'},
+                    {'name': 'Wild Jordan Center', 'slug': 'wild-jordan-center', 'description': 'RSCN cafe and visitor center', 'significance': 'Organic food and nature reserve information'},
+                    {'name': 'Paris Circle', 'slug': 'paris-circle', 'description': 'Historic roundabout at street\'s top', 'significance': 'Starting point with city views'},
+                    {'name': 'Independent Galleries', 'slug': 'independent-galleries', 'description': 'Art spaces and studios', 'significance': 'Showcase local Jordanian artists'}
                 ],
                 'entrance_fees': 'Free to walk. Individual cafes and shops have their own pricing.',
                 'opening_hours': 'Street accessible 24/7. Most businesses open 9:00 AM to midnight',
@@ -6006,6 +6107,896 @@ def attraction_detail(request, country, slug):
                 ],
                 'coordinates': '31.9539° N, 35.9246° E',
                 'climate': 'Mediterranean climate, pleasant most of year'
+            }
+        },
+        'egypt': {
+            'pyramids-of-giza': {
+                'id': 'pyramids-of-giza',
+                'name': 'Pyramids of Giza & Sphinx',
+                'location': 'Giza, Egypt',
+                'description': 'Ancient architectural marvels and the only surviving Wonder of the Ancient World',
+                'long_description': 'The Giza Pyramid Complex, located approximately 9 km west of the Nile River in Giza, Egypt, stands as one of humanity\'s greatest architectural achievements. Part of the UNESCO World Heritage Site "Memphis and its Necropolis," this ancient complex features the iconic Great Pyramid of Khufu, the Pyramid of Khafre, the Pyramid of Menkaure, and the enigmatic Great Sphinx. These monuments were constructed during the Fourth Dynasty of the Old Kingdom (c. 2600-2500 BC) and continue to captivate millions of visitors annually with their precision, scale, and enduring mystery.',
+                'historical_significance': 'Built during Egypt\'s Fourth Dynasty Old Kingdom period, the pyramids served as elaborate tombs for pharaohs, designed to house their "ka" (spirit) and provide resources for the afterlife. The Great Pyramid of Khufu was constructed by an estimated workforce of 10,000 skilled laborers over approximately 30 years. Contrary to popular belief, these workers were not slaves but skilled craftsmen and laborers who lived in a workers\' village discovered near the pyramids. The pyramids were built using limestone from the Mokattam Formation and were precisely aligned to cardinal directions, suggesting advanced astronomical knowledge.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979. As the only surviving Wonder of the Ancient World, the Pyramids of Giza attract millions of visitors annually and remain central to Egypt\'s cultural identity and tourism economy. The complex recently underwent a €17 million renovation to enhance visitor facilities and experience.',
+                'best_time_to_visit': 'October to April when temperatures are cooler. Early morning visits (6-9 AM) offer the best light for photography and fewer crowds.',
+                'how_to_get_there': 'Located 13 km southwest of Cairo city center. Accessible by taxi, Uber, or organized tour buses. The journey from central Cairo takes 30-45 minutes.',
+                'entrance_fees': 'General admission approximately 200 EGP (Egyptian Pounds). Additional fees for entering the pyramids. Guided tours range from $50-150 USD.',
+                'opening_hours': 'Open daily from 8:00 AM to 5:00 PM (winter) and 7:00 AM to 7:00 PM (summer). Seasonal variations apply.',
+                'what_to_wear': 'Light, breathable clothing in summer; layers in winter. Comfortable walking shoes essential. Hat, sunglasses, and sunscreen recommended.',
+                'guided_tours': 'Official guides available at entrance. Audio guides offered in multiple languages. Private tours provide deeper historical context and skip-the-line access.',
+                'nearby_attractions': 'Grand Egyptian Museum (2 km), Memphis archaeological site, Saqqara Step Pyramid, Solar Boat Museum',
+                'facts': [
+                    'Only surviving Wonder of the Ancient World',
+                    'Great Pyramid was world\'s tallest structure for 3,800 years',
+                    'Built by skilled laborers, not slaves as commonly believed',
+                    'Workers\' village discovered nearby housed pyramid builders',
+                    'Pyramids precisely aligned to cardinal directions',
+                    'Construction took approximately 30 years with 10,000 workers',
+                    'Great Sphinx is 73 meters long and 20 meters high',
+                    'Hosts occasional cultural events including concerts'
+                ],
+                'visitor_tips': [
+                    'Visit early morning to avoid heat and crowds',
+                    'Bring plenty of water and stay hydrated',
+                    'Negotiate prices for camel rides beforehand',
+                    'Beware of unofficial guides and touts',
+                    'Allow 3-4 hours for comprehensive exploration',
+                    'Consider visiting the Solar Boat Museum',
+                    'New visitor center offers amenities and free Wi-Fi'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '29.9792° N, 31.1342° E',
+                'unesco_status': 'UNESCO World Heritage Site (Memphis and its Necropolis) since 1979',
+                'climate': 'Hot desert climate with very hot summers (40°C+) and mild winters (15-25°C)'
+            },
+            'grand-egyptian-museum': {
+                'id': 'grand-egyptian-museum',
+                'name': 'Grand Egyptian Museum',
+                'location': 'Giza, Egypt',
+                'description': 'World\'s largest museum dedicated to a single civilization',
+                'long_description': 'The Grand Egyptian Museum (GEM), located just 2 kilometers from the Giza Pyramid Complex, stands as the world\'s largest archaeological museum dedicated to a single civilization. Designed by Dublin-based Heneghan Peng Architects and shaped like a chamfered triangle aligned with the Great Pyramid of Khufu, the museum houses over 100,000 artifacts spanning from the Predynastic Period to the Greco-Roman era. The building features translucent alabaster stone facades and represents a billion-dollar investment in preserving and showcasing Egypt\'s unparalleled archaeological heritage.',
+                'historical_significance': 'First announced in 1992 with construction beginning in 2005, the Grand Egyptian Museum took nearly two decades to complete at a cost of $1 billion. The museum officially opened in 2023, offering partial public access to its treasures. The project represents Egypt\'s commitment to modern museology and cultural preservation, bringing together artifacts previously scattered across multiple facilities. Most notably, it houses the complete 5,398-piece King Tutankhamun collection, many items displayed publicly for the first time.',
+                'cultural_impact': 'The Grand Egyptian Museum serves as an international center for museum communication and Egyptology. With 12 galleries arranged chronologically and thematically, the museum offers unprecedented access to Egypt\'s archaeological treasures. Official full opening scheduled for November 1, 2025. The facility includes a children\'s museum, conference center, conservation labs, and training facilities.',
+                'best_time_to_visit': 'October to April for pleasant weather. Weekday mornings typically less crowded. Plan for 4-6 hours minimum.',
+                'how_to_get_there': 'Located 2 km from Pyramids of Giza. Accessible by taxi, Uber, or organized tours. 20 km from central Cairo (45-minute drive).',
+                'entrance_fees': 'Ticket prices vary by section. Full access approximately 500-1000 EGP. Special exhibitions may require additional fees.',
+                'opening_hours': 'Daily 9:00 AM to 6:00 PM. Extended hours during peak season. Advance booking recommended.',
+                'what_to_wear': 'Comfortable walking shoes for extensive galleries. Casual, modest clothing. Temperature-controlled interior.',
+                'guided_tours': 'Professional guides available in multiple languages. Audio guides included with admission. Specialized tours for archaeology enthusiasts.',
+                'nearby_attractions': 'Pyramids of Giza (2 km), Solar Boat Museum, Sound and Light Show at Pyramids, Memphis ruins',
+                'facts': [
+                    'World\'s largest museum dedicated to single civilization',
+                    'Houses over 100,000 artifacts',
+                    'Complete King Tutankhamun collection (5,398 pieces)',
+                    'Construction cost exceeded $1 billion',
+                    'Building covers 500,000 square meters',
+                    'Facade aligned with Great Pyramid of Khufu',
+                    'Features Khufu\'s second restored solar ship',
+                    'Includes conservation laboratories and training facilities'
+                ],
+                'visitor_tips': [
+                    'Book tickets online in advance to avoid queues',
+                    'Allow minimum 4-6 hours for comprehensive visit',
+                    'Start with King Tutankhamun galleries',
+                    'Visit children\'s museum if traveling with family',
+                    'Photography restrictions apply in certain areas',
+                    'Museum restaurant offers Nile views',
+                    'Combine visit with Pyramids of Giza for full day experience'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '29.9932° N, 31.1175° E',
+                'unesco_status': 'Not a UNESCO site but houses UNESCO-recognized artifacts',
+                'climate': 'Hot desert climate. Museum is fully climate-controlled year-round.'
+            },
+            'valley-of-the-kings': {
+                'id': 'valley-of-the-kings',
+                'name': 'Valley of the Kings',
+                'location': 'Luxor, Egypt',
+                'description': 'Ancient necropolis housing tombs of Egyptian pharaohs and nobles',
+                'long_description': 'The Valley of the Kings, located on the west bank of the Nile near Luxor, served as Egypt\'s royal burial ground during the New Kingdom period (1539-1075 BC). This remarkable necropolis contains 65 known tombs and chambers carved into limestone cliffs, including the famous tomb of Tutankhamun (KV62) discovered by Howard Carter in 1922. The valley replaced earlier pyramid burials, with rock-cut tombs decorated with religious texts and scenes from Egyptian mythology designed to guide pharaohs through the afterlife.',
+                'historical_significance': 'For nearly 500 years, the Valley of the Kings served as the primary burial site for pharaohs, queens, and powerful nobles during Egypt\'s New Kingdom period. The shift from pyramid tombs to hidden rock-cut chambers reflected efforts to prevent tomb robbery. Despite these precautions, most tombs were plundered in antiquity, making the discovery of Tutankhamun\'s nearly intact tomb in 1922 extraordinarily significant. The valley has been a major focus of Egyptological exploration for two centuries, providing invaluable insights into ancient Egyptian funerary practices, religious beliefs, and royal life.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979 as part of "Ancient Thebes with its Necropolis." The valley receives 4,000-5,000 daily visitors and remains an active archaeological site with ongoing discoveries. Only 18 tombs occasionally open to public, with rotation to minimize damage from humidity and carbon dioxide.',
+                'best_time_to_visit': 'October to April for cooler temperatures. Visit early morning (6-8 AM) to avoid extreme heat and crowds.',
+                'how_to_get_there': 'Located 5 km west of Luxor across the Nile. Accessible by ferry and taxi, organized tours, or private car. Most visitors combine with other West Bank sites.',
+                'entrance_fees': 'General admission approximately 240 EGP. Special tombs (including Tutankhamun) require additional tickets. Photography fees apply.',
+                'opening_hours': 'Daily 6:00 AM to 5:00 PM (winter), 6:00 AM to 6:00 PM (summer). Last entry one hour before closing.',
+                'what_to_wear': 'Light, breathable clothing. Comfortable walking shoes. Hat and sunglasses essential. Modest dress recommended.',
+                'guided_tours': 'Highly recommended for historical context. Egyptologist-led tours provide detailed explanations of hieroglyphics and tomb significance.',
+                'nearby_attractions': 'Hatshepsut Temple, Valley of the Queens, Tombs of the Nobles, Medinet Habu, Colossi of Memnon, Luxor Temple',
+                'facts': [
+                    'Contains 65 known tombs and chambers',
+                    'Used for royal burials for nearly 500 years (1539-1075 BC)',
+                    'Tutankhamun\'s tomb (KV62) discovered in 1922 nearly intact',
+                    'UNESCO World Heritage Site since 1979',
+                    'Most tombs robbed in antiquity',
+                    'Carved over 1,000 feet of limestone and sedimentary rock',
+                    'Receives 4,000-5,000 daily visitors',
+                    'Only 18 tombs occasionally open to public'
+                ],
+                'visitor_tips': [
+                    'Purchase combination ticket for multiple tombs',
+                    'Visit Tutankhamun tomb early as crowds form quickly',
+                    'Bring flashlight for darker tomb sections',
+                    'Photography prohibited inside tombs (fees at entrance only)',
+                    'Stay hydrated - limited shade available',
+                    'Hire guide for maximum educational value',
+                    'Allow 2-3 hours minimum for visit'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '25.7402° N, 32.6014° E',
+                'unesco_status': 'UNESCO World Heritage Site (Ancient Thebes with its Necropolis) since 1979',
+                'climate': 'Hot desert climate. Summer temperatures exceed 40°C. Winter mild (15-25°C).'
+            },
+            'karnak-temple': {
+                'id': 'karnak-temple',
+                'name': 'Karnak Temple Complex',
+                'location': 'Luxor, Egypt',
+                'description': 'Massive ancient temple complex and Egypt\'s second most-visited site',
+                'long_description': 'The Karnak Temple Complex, located near Luxor in ancient Thebes, represents one of the largest religious complexes ever constructed. Known in ancient Egyptian as "The Most Select of Places," this vast site covers multiple precincts built over 2,000 years from the Middle Kingdom (c. 2000-1700 BC) through the Ptolemaic period (305-30 BC). The complex reached its zenith during the 18th Dynasty when Thebes became Egypt\'s capital. The magnificent Great Hypostyle Hall alone covers 5,000 square meters with 134 massive columns ranging from 10-21 meters tall, creating a forest of stone that continues to awe visitors.',
+                'historical_significance': 'Construction at Karnak spanned over 2,000 years with contributions from approximately 30 pharaohs, making it a living chronicle of ancient Egyptian architectural evolution and religious practices. Dedicated primarily to Amun-Re, chief deity of the Theban Triad, the complex served as the most important religious center in ancient Egypt during the New Kingdom. The site demonstrates remarkable continuity of worship, with the complex later adapted for Coptic Christian use. The scale and ambition of Karnak reflects the power and resources of ancient Egyptian civilization at its height.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979 as part of "Ancient Thebes with its Necropolis." Second most-visited historical site in Egypt after the Giza pyramids. Currently, only the Precinct of Amun-Re is open to the public, featuring an Open Air Museum.',
+                'best_time_to_visit': 'October to April for pleasant weather. Late afternoon visits (3-5 PM) offer beautiful golden light. Sound and Light show available evening.',
+                'how_to_get_there': 'Located 3 km north of Luxor city center. Easily accessible by taxi, Uber, or short walk from most Luxor hotels.',
+                'entrance_fees': 'General admission approximately 200 EGP. Sound and Light show additional 300 EGP. Student discounts available.',
+                'opening_hours': 'Daily 6:00 AM to 5:30 PM (winter), 6:00 AM to 6:30 PM (summer). Sound and Light shows at sunset.',
+                'what_to_wear': 'Comfortable walking shoes essential. Light, modest clothing. Hat and sunscreen. Layers for evening shows.',
+                'guided_tours': 'Highly recommended for understanding complex history. Audio guides available. Specialized Egyptologist tours offer deep insights.',
+                'nearby_attractions': 'Luxor Temple (2.7 km via Avenue of Sphinxes), Luxor Museum, Mummification Museum, Valley of the Kings (across Nile)',
+                'facts': [
+                    'Construction spanned over 2,000 years',
+                    'Approximately 30 pharaohs contributed to construction',
+                    'Great Hypostyle Hall covers 5,000 square meters',
+                    'Contains 134 massive columns (10-21 meters tall)',
+                    'Houses one of Egypt\'s largest obelisks (328 tons, 29 meters)',
+                    'UNESCO World Heritage Site since 1979',
+                    'Second most-visited site in Egypt',
+                    'Connected to Luxor Temple via 2.7 km Avenue of Sphinxes'
+                ],
+                'visitor_tips': [
+                    'Visit early morning or late afternoon for best light',
+                    'Allow minimum 2-3 hours for exploration',
+                    'Combine visit with Luxor Temple via Avenue of Sphinxes',
+                    'Attend evening Sound and Light show',
+                    'Bring water - limited shade in complex',
+                    'Hire qualified Egyptologist guide for rich historical context',
+                    'Visit Open Air Museum for impressive artifacts'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '25.7188° N, 32.6573° E',
+                'unesco_status': 'UNESCO World Heritage Site (Ancient Thebes with its Necropolis) since 1979',
+                'climate': 'Hot desert climate. Summer extremely hot (40°C+). Winter pleasant (15-25°C).'
+            },
+            'luxor-temple': {
+                'id': 'luxor-temple',
+                'name': 'Luxor Temple',
+                'location': 'Luxor, Egypt',
+                'description': 'Ancient temple dedicated to kingship rejuvenation on Nile\'s east bank',
+                'long_description': 'Luxor Temple, known in ancient Egyptian as "ipet resyt" (the southern sanctuary), stands majestically on the east bank of the Nile River in the heart of modern Luxor. Constructed around 1400 BCE using Nubian sandstone from Gebel el-Silsila, this architectural masterpiece was dedicated not to a specific cult god but to the rejuvenation of kingship. The temple features unique architectural illusions, grand colonnades, and multiple courtyards. Two original obelisks graced the entrance, though one now stands in Paris\'s Place de la Concorde. The temple represents over 3,400 years of continuous religious worship.',
+                'historical_significance': 'Built primarily by Amenhotep III around 1400 BCE and later expanded by Tutankhamun and Ramesses II, Luxor Temple served as the focal point of the annual Opet Festival, celebrating the rejuvenation of the pharaoh\'s divine power. The temple was associated with the Theban Triad (Amun, Mut, and Khonsu) and potentially served as the symbolic coronation site for pharaohs. The complex experienced remarkable continuity through history - converted into a Roman legionary fortress, then later housing an active mosque (Abu Haggag Mosque) still functioning today within the ancient walls.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979 as part of "Ancient Thebes with its Necropolis." Connected to Karnak Temple by the recently restored 2.7 km Avenue of Sphinxes, creating a monumental processional route. Extensive excavation beginning in 1884 revealed extraordinary preservation.',
+                'best_time_to_visit': 'October to April for comfortable weather. Evening visits stunning when temple illuminated. Avoid midday summer heat.',
+                'how_to_get_there': 'Located in central Luxor city on the Corniche. Walking distance from most Luxor hotels. 2.7 km south of Karnak Temple.',
+                'entrance_fees': 'General admission approximately 160 EGP. Photography fees may apply. Combination tickets with other Luxor sites available.',
+                'opening_hours': 'Daily 6:00 AM to 9:00 PM. Extended evening hours allow atmospheric illuminated visits.',
+                'what_to_wear': 'Modest, comfortable clothing. Walking shoes recommended. Evening visits may require light jacket in winter.',
+                'guided_tours': 'Professional guides offer insights into architectural illusions and hieroglyphic meanings. Audio guides available in multiple languages.',
+                'nearby_attractions': 'Karnak Temple (2.7 km), Luxor Museum, Avenue of Sphinxes, Mummification Museum, Winter Palace Hotel',
+                'facts': [
+                    'Built around 1400 BCE using Nubian sandstone',
+                    'Dedicated to kingship rejuvenation, not specific deity',
+                    'One original obelisk now in Paris (Place de la Concorde)',
+                    'Connected to Karnak via 2.7 km Avenue of Sphinxes',
+                    'Contains functioning mosque (Abu Haggag) within ancient walls',
+                    'Represents 3,400+ years continuous religious worship',
+                    'UNESCO World Heritage Site since 1979',
+                    'Features unique architectural "illusionism" techniques'
+                ],
+                'visitor_tips': [
+                    'Visit at sunset for spectacular illumination',
+                    'Walk Avenue of Sphinxes to/from Karnak Temple',
+                    'Allow 1.5-2 hours for thorough exploration',
+                    'Evening visits cooler and beautifully lit',
+                    'Respect active Abu Haggag Mosque within complex',
+                    'Photography excellent in golden hour',
+                    'Combine with Luxor Museum visit'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '25.6990° N, 32.6390° E',
+                'unesco_status': 'UNESCO World Heritage Site (Ancient Thebes with its Necropolis) since 1979',
+                'climate': 'Hot desert climate. Summer very hot (40°C+). Winter mild and pleasant (15-25°C).'
+            },
+            'abu-simbel': {
+                'id': 'abu-simbel',
+                'name': 'Abu Simbel Temples',
+                'location': 'Aswan Governorate, Egypt',
+                'description': 'Colossal rock-cut temples relocated to save them from flooding',
+                'long_description': 'The Abu Simbel Temples, located near Egypt\'s border with Sudan in Aswan Governorate, represent one of ancient Egypt\'s most spectacular monuments and modern archaeology\'s greatest rescue operations. Built by Ramesses II around 1264 BC, these two massive rock-cut temples were carved directly into a mountainside. The Great Temple features four colossal 20-meter statues of Ramesses II guarding the entrance, while the Small Temple honors Queen Nefertari and the goddess Hathor. In an unprecedented engineering feat, the entire complex was relocated in 1968, cut into 1,036 blocks and reassembled 208 meters inland to prevent submersion by Lake Nasser.',
+                'historical_significance': 'Commissioned by Ramesses II during the 13th century BC, the Great Temple was dedicated to the gods Ra-Horakhty, Ptah, Amun, and the deified Ramesses himself. The temples feature intricate bas-reliefs depicting Ramesses II\'s military campaigns, particularly the Battle of Kadesh. The Small Temple is remarkable for depicting Queen Nefertari with statues equal in size to the pharaoh, extremely rare in Egyptian history. The temples demonstrate the pinnacle of New Kingdom architectural ambition and the pharaoh\'s determination to assert Egyptian power in Nubia.',
+                'cultural_impact': 'UNESCO World Heritage Site. The 1960s relocation involved a $41.7 million international UNESCO campaign funded by 48 countries, representing one of archaeology\'s greatest achievements. The temples feature remarkable solar alignment - twice yearly, sunlight penetrates the inner sanctuary to illuminate specific statues.',
+                'best_time_to_visit': 'October to April for moderate temperatures. February 22 and October 22 for solar alignment phenomenon (sun festival).',
+                'how_to_get_there': 'Located 280 km south of Aswan. Accessible by 3-hour bus/car journey, domestic flights to Abu Simbel Airport, or Lake Nasser cruise.',
+                'entrance_fees': 'General admission approximately 240 EGP. Sound and Light show additional fee. Early morning flights from Aswan often include entrance.',
+                'opening_hours': 'Daily 5:00 AM to 6:00 PM. Sound and Light shows evening (weather permitting).',
+                'what_to_wear': 'Light, breathable clothing. Comfortable walking shoes. Sun protection essential. Early morning visits may require light jacket.',
+                'guided_tours': 'Organized day trips from Aswan include transport, guide, and entrance fees. Egyptologist guides enhance understanding of relocation and history.',
+                'nearby_attractions': 'Lake Nasser, Nubian villages, Aswan High Dam, Kalabsha Temple (on Lake Nasser), Sudan border region',
+                'facts': [
+                    'Built by Ramesses II around 1264 BC',
+                    'Four colossal 20-meter statues guard Great Temple entrance',
+                    'Relocated in 1968 using 1,036 individual blocks',
+                    'Moved 208 meters inland to prevent Lake Nasser flooding',
+                    'Relocation cost $41.7 million funded by 48 countries',
+                    'Solar alignment illuminates inner sanctuary twice yearly',
+                    'Small Temple rare example of queen equal-sized to pharaoh',
+                    'UNESCO World Heritage Site'
+                ],
+                'visitor_tips': [
+                    'Book early morning flight from Aswan for day trip',
+                    'Visit during sun festival (Feb 22, Oct 22) for solar alignment',
+                    'Allow 2-3 hours for both temples',
+                    'Bring water and snacks - limited facilities',
+                    'Photography allowed but tripods prohibited',
+                    'Sound and Light show worth attending',
+                    'Consider Lake Nasser cruise for leisurely visit'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '22.3372° N, 31.6258° E',
+                'unesco_status': 'UNESCO World Heritage Site (Nubian Monuments from Abu Simbel to Philae)',
+                'climate': 'Hot desert climate. Extremely hot summers (45°C+). Mild winters (15-25°C).'
+            },
+            'philae-temple': {
+                'id': 'philae-temple',
+                'name': 'Philae Temple',
+                'location': 'Aswan, Egypt',
+                'description': 'Sacred island temple complex dedicated to goddess Isis, relocated to Agilkia Island',
+                'long_description': 'The Philae Temple Complex, originally located on Philae Island near the First Cataract of the Nile, served as one of ancient Egypt\'s most sacred sites dedicated to the goddess Isis. This remarkable complex existed from the 7th/6th century BC to the 6th century AD, functioning as an important religious and cultural center for Egyptians, Nubians, and Mediterranean pilgrims. The temples feature stunning Ptolemaic and Roman-era architecture with intricate hieroglyphic reliefs. Threatened by flooding from both the Aswan Low Dam and High Dam, UNESCO orchestrated a heroic rescue operation between 1977-1980, carefully dismantling 40,000 individual pieces and reconstructing the entire complex on nearby Agilkia Island.',
+                'historical_significance': 'Philae\'s oldest known structure dates to the reign of Pharaoh Taharqa (7th century BC), though most surviving buildings were constructed during the Ptolemaic and Roman periods. The temple served as one of the last strongholds of ancient Egyptian religion, with the last known hieroglyphic inscription dated 394 AD carved here. The complex functioned as a pagan religious site until officially closed in 537 AD by Byzantine emperor Justinian I, after which it transitioned to Christian use. This long history represents over 1,200 years of continuous religious worship.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979 as part of "Nubian Monuments from Abu Simbel to Philae." The temple\'s successful relocation set precedent for preserving endangered archaeological sites worldwide. Evening Sound and Light shows illuminate the complex\'s history.',
+                'best_time_to_visit': 'October to April for pleasant weather. Evening Sound and Light shows particularly atmospheric. Avoid summer heat.',
+                'how_to_get_there': 'Located 12 km south of Aswan. Accessible only by motorboat from Shellal marina. Most visitors join organized tours from Aswan.',
+                'entrance_fees': 'General admission approximately 140 EGP. Boat transfer additional 30-50 EGP. Sound and Light show extra fee.',
+                'opening_hours': 'Daily 7:00 AM to 5:00 PM (winter), 7:00 AM to 6:00 PM (summer). Sound and Light shows at sunset.',
+                'what_to_wear': 'Comfortable walking shoes for island exploration. Modest clothing. Sun protection. Light layers for boat ride.',
+                'guided_tours': 'Organized tours from Aswan include boat transfer and guided tour. Audio guides available. Egyptologist tours offer deeper historical context.',
+                'nearby_attractions': 'Aswan High Dam, Unfinished Obelisk, Nubian villages, Elephantine Island, Aswan Museum, Abu Simbel Temples',
+                'facts': [
+                    'Dedicated primarily to goddess Isis',
+                    'Existed from 7th/6th century BC to 6th century AD',
+                    'Last known hieroglyphic inscription (394 AD) carved here',
+                    'Relocated 1977-1980 using 40,000 individual pieces',
+                    'Moved from Philae Island to Agilkia Island',
+                    'Closed as pagan site in 537 AD by Justinian I',
+                    'UNESCO World Heritage Site since 1979',
+                    'Accessible only by boat from mainland'
+                ],
+                'visitor_tips': [
+                    'Combine visit with Aswan High Dam and Unfinished Obelisk',
+                    'Attend evening Sound and Light show',
+                    'Negotiate boat fare before departure',
+                    'Allow 2-3 hours for island exploration',
+                    'Bring water - limited facilities on island',
+                    'Morning visits offer better photography light',
+                    'Wear comfortable shoes for temple walkways'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '24.0207° N, 32.8845° E',
+                'unesco_status': 'UNESCO World Heritage Site (Nubian Monuments from Abu Simbel to Philae) since 1979',
+                'climate': 'Hot desert climate. Very hot summers (40°C+). Mild, pleasant winters (15-25°C).'
+            },
+            'egyptian-museum': {
+                'id': 'egyptian-museum',
+                'name': 'Egyptian Museum Cairo',
+                'location': 'Cairo, Egypt',
+                'description': 'World\'s largest collection of Egyptian antiquities in iconic Tahrir Square building',
+                'long_description': 'The Egyptian Museum, located in Cairo\'s historic Tahrir Square, houses the world\'s largest collection of Egyptian antiquities with over 120,000 items spanning prehistoric to Roman periods. Established in 1835 and housed in its current iconic building since 1902, this pink neoclassical palace designed by French architect Marcel Dourgnon has served as the primary repository of Egypt\'s archaeological treasures for over a century. The museum\'s most famous collection is the treasure of Tutankhamun, including his iconic gold burial mask, alongside countless mummies, statues, jewelry, and artifacts that chronicle ancient Egyptian civilization.',
+                'historical_significance': 'The Egyptian Museum represents the world\'s first national museum dedicated to a single civilization. Founded in 1835, it moved through several locations before settling in its current purpose-built structure in 1902. The museum has witnessed Egypt\'s modern history, including damage during the 2011 Revolution when looters stole and damaged artifacts. In 2021, 22 royal mummies were transferred in a spectacular "Pharaohs\' Golden Parade" to the new National Museum of Egyptian Civilization, marking the beginning of a transition as some collections move to the new Grand Egyptian Museum.',
+                'cultural_impact': 'Considered Africa\'s largest museum and one of the world\'s most important Egyptological institutions. Contains invaluable research materials and a library with over 50,000 volumes on Egyptian antiquities. The museum underwent major renovations in 2016 to improve facilities and conservation.',
+                'best_time_to_visit': 'October to April for pleasant weather. Weekday mornings (9-11 AM) typically less crowded. Allow 3-4 hours minimum.',
+                'how_to_get_there': 'Located at Tahrir Square in central Cairo. Accessible by Cairo Metro (Sadat Station), taxi, or Uber. Walking distance from Nile Corniche hotels.',
+                'entrance_fees': 'General admission approximately 200 EGP. Additional fee for Royal Mummy Room. Photography fees 50 EGP. Student discounts available.',
+                'opening_hours': 'Daily 9:00 AM to 7:00 PM. Extended hours during peak season. Closed on major holidays.',
+                'what_to_wear': 'Comfortable walking shoes essential. Modest, casual clothing. Museum is climate-controlled but can be warm.',
+                'guided_tours': 'Professional Egyptologist guides highly recommended. Audio guides available in multiple languages. Specialized tours for specific collections offered.',
+                'nearby_attractions': 'Tahrir Square, Nile River Corniche, Cairo Tower, Downtown Cairo, Khan el-Khalili Bazaar (4 km), Islamic Cairo',
+                'facts': [
+                    'Houses over 120,000 Egyptian antiquities',
+                    'Established in 1835, current building opened 1902',
+                    'Contains Tutankhamun\'s gold burial mask',
+                    'Designed by French architect Marcel Dourgnon',
+                    'Library holds over 50,000 volumes',
+                    'Considered Africa\'s largest museum',
+                    'Experienced artifact damage during 2011 Revolution',
+                    '22 royal mummies transferred to new museum in 2021'
+                ],
+                'visitor_tips': [
+                    'Visit early to avoid crowds, especially for Tutankhamun galleries',
+                    'Hire Egyptologist guide for maximum educational value',
+                    'Allow minimum 3-4 hours for comprehensive visit',
+                    'Pay extra for Royal Mummy Room - worth it',
+                    'Photography allowed in most areas (50 EGP fee)',
+                    'Museum shop offers quality replicas and books',
+                    'Combine with Tahrir Square and downtown Cairo exploration'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '30.0478° N, 31.2336° E',
+                'unesco_status': 'Not a UNESCO site but houses UNESCO-recognized artifacts',
+                'climate': 'Hot desert climate. Museum climate-controlled year-round. Visit October-April for pleasant outdoor weather.'
+            },
+            'islamic-cairo': {
+                'id': 'islamic-cairo',
+                'name': 'Islamic Cairo',
+                'location': 'Cairo, Egypt',
+                'description': 'Historic medieval district with hundreds of mosques, markets, and Islamic monuments',
+                'long_description': 'Islamic Cairo, founded in 969 CE by the Fatimid Caliphate, encompasses one of the world\'s oldest and most concentrated collections of Islamic architecture and monuments. This historic district served as Egypt\'s royal city and administrative capital through multiple ruling dynasties including the Fatimids, Ayyubids, Mamluks, Ottomans, and Muhammad Ali\'s dynasty. The area features hundreds of historic mosques, madrasas, mausoleums, gates, walls, and the famous Khan el-Khalili bazaar. Notable landmarks include Al-Azhar Mosque, Ibn Tulun Mosque, the Citadel, and the vibrant Al-Mu\'izz Street, creating a living museum of Islamic civilization spanning over a millennium.',
+                'historical_significance': 'Islamic Cairo represents over 1,000 years of continuous Islamic civilization and architectural evolution. Founded as Al-Qahira (The Victorious) by the Fatimids, the district became the political and cultural heart of medieval Islamic Egypt. The area preserves extraordinary examples of Fatimid, Ayyubid, Mamluk, and Ottoman architecture. Al-Azhar Mosque, founded in 970 CE, became one of Islam\'s oldest universities and remains a premier center of Islamic learning. The historic street Al-Mu\'izz li-Din Allah contains the greatest concentration of medieval architectural treasures in the Islamic world.',
+                'cultural_impact': 'UNESCO World Heritage Site since 1979, recognized as "one of the world\'s oldest Islamic cities" covering 523.66 hectares. The area suffers from neglect and decay but ongoing restoration efforts by government and international organizations work to preserve this irreplaceable heritage. Khan el-Khalili bazaar remains a vibrant commercial center.',
+                'best_time_to_visit': 'October to April for comfortable weather. Early morning or late afternoon for exploring markets. Friday mornings busy with prayers.',
+                'how_to_get_there': 'Central Cairo location accessible by taxi, Uber, or Cairo Metro. Walking distance from Downtown Cairo. Many hotels in proximity.',
+                'entrance_fees': 'Individual monuments charge separate fees (typically 60-100 EGP each). Combination tickets available. Bazaar free to explore.',
+                'opening_hours': 'Varies by site. Mosques generally 9:00 AM to 5:00 PM (closed during prayers). Bazaar opens morning to late evening.',
+                'what_to_wear': 'Modest clothing essential. Women should cover shoulders and knees. Headscarf recommended for mosque visits. Comfortable walking shoes.',
+                'guided_tours': 'Professional guides recommended for navigating complex history and architecture. Walking tours of Al-Mu\'izz Street popular. Specialized Islamic architecture tours available.',
+                'nearby_attractions': 'Khan el-Khalili Bazaar, Al-Azhar Mosque, Citadel of Cairo, Ibn Tulun Mosque, Egyptian Museum (4 km), Nile River',
+                'facts': [
+                    'Founded in 969 CE by Fatimid Caliphate',
+                    'UNESCO World Heritage Site since 1979',
+                    'Covers 523.66 hectares',
+                    'Al-Azhar University founded 970 CE (oldest in Islam)',
+                    'Al-Mu\'izz Street: greatest concentration of medieval Islamic monuments',
+                    'Includes hundreds of historic mosques and monuments',
+                    'Spans Fatimid, Ayyubid, Mamluk, Ottoman periods',
+                    'Khan el-Khalili bazaar dates to 14th century'
+                ],
+                'visitor_tips': [
+                    'Hire knowledgeable guide for historical context',
+                    'Start early to avoid heat and crowds',
+                    'Allow full day for comprehensive exploration',
+                    'Dress modestly - required for mosque entry',
+                    'Bargain in Khan el-Khalili bazaar (start at 50% asking price)',
+                    'Visit Al-Mu\'izz Street pedestrian area',
+                    'Try traditional Egyptian coffee at historic cafes'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '30.0489° N, 31.2622° E',
+                'unesco_status': 'UNESCO World Heritage Site (Historic Cairo) since 1979',
+                'climate': 'Hot desert climate. Very hot summers (35-40°C). Mild winters (15-25°C). Best October-April.'
+            },
+            'muhammad-ali-mosque': {
+                'id': 'muhammad-ali-mosque',
+                'name': 'Muhammad Ali Mosque',
+                'location': 'Cairo, Egypt',
+                'description': 'Ottoman-style alabaster mosque crowning Cairo\'s historic Citadel',
+                'long_description': 'The Muhammad Ali Mosque, also known as the Alabaster Mosque, dominates Cairo\'s skyline from its commanding position within the Cairo Citadel. Commissioned by Muhammad Ali Pasha, an Ottoman governor who modernized Egypt, construction began in 1830 and was completed in 1857. This magnificent Ottoman-style mosque, designed with European influences, features extensive alabaster facing that gives it its nickname. The mosque showcases a central dome 21 meters in diameter reaching 52 meters high, flanked by two soaring 82-meter cylindrical minarets. The rectangular courtyard measures 55 by 57 meters, and the mosque can accommodate approximately 10,000 worshippers.',
+                'historical_significance': 'Muhammad Ali Pasha commissioned this mosque to symbolize his break from Istanbul and establish his dynasty\'s legitimacy. The design intentionally departed from traditional Cairene architectural styles, instead drawing inspiration from Istanbul\'s Blue Mosque and Hagia Sophia. This represented Muhammad Ali\'s modernization efforts and political independence from the Ottoman capital. The mosque contains Muhammad Ali\'s tomb in the western corner of the prayer hall. A monumental clock tower, gifted by French King Louis Philippe in exchange for the Luxor Obelisk, stands in the courtyard though it never functioned properly.',
+                'cultural_impact': 'One of Cairo\'s most prominent landmarks, visible across the city. Represents a radical architectural departure from traditional Islamic Cairo. The mosque symbolizes 19th-century Egypt\'s cultural and political transformations under Muhammad Ali\'s modernizing rule.',
+                'best_time_to_visit': 'October to April for pleasant weather. Early morning or late afternoon for best light. Sunset views of Cairo spectacular.',
+                'how_to_get_there': 'Located within Cairo Citadel in southern Cairo. Accessible by taxi or Uber. 15-20 minutes from Downtown Cairo.',
+                'entrance_fees': 'Citadel entrance approximately 200 EGP (includes mosque and other Citadel sites). Photography permitted.',
+                'opening_hours': 'Daily 8:00 AM to 5:00 PM. Closed to tourists during prayer times (approximately 15 minutes five times daily).',
+                'what_to_wear': 'Modest clothing required. Women must cover hair, shoulders, and knees. Headscarves provided if needed. Remove shoes before entering.',
+                'guided_tours': 'Included in most Citadel tours. Audio guides available. Egyptologist tours provide historical and architectural context.',
+                'nearby_attractions': 'Cairo Citadel, Sultan Hassan Mosque, Al-Rifai Mosque, Islamic Cairo, Ibn Tulun Mosque, Gayer-Anderson Museum',
+                'facts': [
+                    'Commissioned by Muhammad Ali Pasha in 1830',
+                    'Completed in 1857 after 27 years construction',
+                    'Known as "Alabaster Mosque" for extensive alabaster facing',
+                    'Central dome 21 meters diameter, 52 meters high',
+                    'Two 82-meter tall minarets',
+                    'Capacity approximately 10,000 people',
+                    'Contains Muhammad Ali\'s tomb',
+                    'French clock tower gift never functioned properly'
+                ],
+                'visitor_tips': [
+                    'Visit in morning for fewer crowds',
+                    'Combine with other Citadel attractions',
+                    'Panoramic Cairo views from Citadel walls',
+                    'Respect prayer times - mosque temporarily closes',
+                    'Photography allowed inside with restrictions',
+                    'Shoes removed and stored at entrance',
+                    'Allow 45-60 minutes for mosque visit'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '30.0288° N, 31.2602° E',
+                'unesco_status': 'Part of Historic Cairo UNESCO World Heritage Site',
+                'climate': 'Hot desert climate. Very hot summers (35-40°C). Mild winters (15-25°C). Best October-April.'
+            },
+            'hurghada': {
+                'id': 'hurghada',
+                'name': 'Hurghada',
+                'location': 'Red Sea, Egypt',
+                'description': 'Premier Red Sea resort destination famous for diving, beaches, and watersports',
+                'long_description': 'Hurghada, the capital of Egypt\'s Red Sea Governorate, has transformed from a small fishing village founded in 1905 into one of the world\'s premier resort destinations. This coastal city extends approximately 36 kilometers along the Red Sea coast and attracts over 1 million visitors annually. Known for crystal-clear waters, vibrant coral reefs, diverse marine life, and year-round warm climate, Hurghada offers world-class diving, snorkeling, windsurfing, and kitesurfing. The city features numerous beach resorts, the Hurghada Grand Aquarium, Hurghada Museum, and serves as a gateway for day trips to Luxor and Cairo.',
+                'historical_significance': 'While Hurghada itself is relatively modern (founded 1905), the region has ancient roots with Roman settlements nearby dating to the 4th century. The city\'s rapid transformation began in the 1980s when it emerged as Egypt\'s primary Red Sea resort destination. Hurghada\'s development represents Egypt\'s modern tourism industry evolution, with the city becoming home to a large Russian expatriate community and international resort infrastructure. The Hurghada Museum, opened recently, showcases artifacts from across Egyptian history.',
+                'cultural_impact': 'Hurghada serves as Egypt\'s primary Red Sea resort, attracting over 1 million annual visitors. The city is served by Hurghada International Airport, Egypt\'s second-busiest airport. Hurghada has become a major center for Red Sea diving tourism and marine conservation efforts.',
+                'best_time_to_visit': 'September to November and March to May for ideal weather. Year-round diving possible. Summer (June-August) very hot but water activities remain popular.',
+                'how_to_get_there': 'Hurghada International Airport receives international and domestic flights. 450 km from Cairo (5-hour drive). Regular bus services from Cairo and Luxor.',
+                'entrance_fees': 'City access free. Individual attractions charge separate fees: Hurghada Grand Aquarium (approximately 200 EGP), Hurghada Museum (100 EGP).',
+                'opening_hours': 'City operates 24/7. Museums and aquarium typically 9:00 AM to 5:00 PM. Dive centers operate dawn to dusk.',
+                'what_to_wear': 'Beach and resort casual. Swimwear for beaches and pools. Modest clothing for venturing into town. Sun protection essential.',
+                'guided_tours': 'Numerous diving centers offer PADI courses and guided dives. Day trips to Luxor, Cairo, and Giftun Islands widely available. Desert safari tours popular.',
+                'nearby_attractions': 'Giftun Islands, Mahmya Island, Makadi Bay, Sahl Hasheesh, El Gouna, Luxor (300 km), Cairo (450 km)',
+                'facts': [
+                    'Founded in 1905 as fishing village',
+                    'Over 1 million annual visitors',
+                    'Extends 36 kilometers along Red Sea coast',
+                    'Second busiest airport in Egypt',
+                    'Average annual sea temperature 24°C',
+                    'Population 214,247 (2023)',
+                    'Large Russian expatriate community',
+                    'Major center for Red Sea diving tourism'
+                ],
+                'visitor_tips': [
+                    'Book diving trips through reputable PADI-certified centers',
+                    'Giftun Islands day trips excellent for snorkeling',
+                    'Negotiate prices for watersports and excursions',
+                    'Many resorts offer all-inclusive packages',
+                    'Visit Hurghada Grand Aquarium on hot days',
+                    'Day trips to Luxor best booked through hotel',
+                    'Stay hydrated in summer heat'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '27.2579° N, 33.8116° E',
+                'unesco_status': 'Not a UNESCO site but gateway to marine protected areas',
+                'climate': 'Subtropical desert climate. Very hot summers (up to 46°C). Mild winters. Average sea temperature 24°C year-round.'
+            },
+            'sharm-el-sheikh': {
+                'id': 'sharm-el-sheikh',
+                'name': 'Sharm El-Sheikh',
+                'location': 'Sinai Peninsula, Egypt',
+                'description': 'World-class diving resort at Sinai\'s southern tip, the "City of Peace"',
+                'long_description': 'Sharm El-Sheikh, located on the southern tip of Egypt\'s Sinai Peninsula along the Red Sea coast, has evolved from a small fishing village and military base into one of the world\'s premier resort destinations. Developed initially by Israel beginning in 1968 and returned to Egypt in 1982 following the Camp David Accords, the city is nicknamed the "City of Peace" for hosting numerous international peace conferences. Home to 91 resorts, Sharm El-Sheikh is renowned for year-round dry climate, crystal-clear calm waters, exceptional scuba diving and snorkeling around Ras Muhammad National Park, with 250 types of coral reefs and 1,000 fish species.',
+                'historical_significance': 'Originally a small fishing village and military base, Sharm El-Sheikh\'s modern development began in 1968 during Israeli occupation. The city was returned to Egypt in 1982 under the Camp David Accords and has since grown into Egypt\'s premier Sinai resort. The nickname "City of Peace" reflects its role hosting international conferences including Middle East peace summits. In 2022, Sharm El-Sheikh hosted the COP27 climate conference, demonstrating its evolution into an international diplomatic venue alongside its tourism role.',
+                'cultural_impact': 'Major international resort destination with world-class diving facilities. Hosted COP27 climate conference in 2022. Ras Muhammad National Park (established 1983) protects unique marine ecosystems. Sharm El-Sheikh serves as a model for sustainable Red Sea tourism development.',
+                'best_time_to_visit': 'September to November and March to May for ideal conditions. Year-round diving excellent. Winter (December-February) mild and pleasant.',
+                'how_to_get_there': 'Sharm El-Sheikh International Airport receives international and domestic flights. Regular coach services from Cairo (6-7 hours). Marina accommodates cruise ships and private yachts.',
+                'entrance_fees': 'City access free. Ras Muhammad National Park entrance approximately 100 EGP. Individual dive trips and excursions priced separately.',
+                'opening_hours': 'City operates 24/7. Ras Muhammad National Park 8:00 AM to 5:00 PM. Dive centers operate dawn to dusk.',
+                'what_to_wear': 'Beach resort casual. Swimwear for beaches and watersports. Modest clothing for town areas. Sun protection essential year-round.',
+                'guided_tours': 'Numerous PADI diving centers offer courses and guided dives. Desert safari tours, Mount Sinai sunrise treks, St. Catherine\'s Monastery visits popular.',
+                'nearby_attractions': 'Ras Muhammad National Park, Naama Bay, Shark Reef, Yolanda Reef, Mount Sinai, St. Catherine\'s Monastery, Dahab (90 km)',
+                'facts': [
+                    'Located at southern tip of Sinai Peninsula',
+                    'Nicknamed "City of Peace" for hosting peace conferences',
+                    'Home to 91 resorts (as of 2000)',
+                    'Red Sea temperatures 21-28°C year-round',
+                    '250 coral reef types, 1,000 fish species',
+                    'Ras Muhammad National Park established 1983',
+                    'Hosted COP27 climate conference 2022',
+                    'Returned to Egypt 1982 after Camp David Accords'
+                ],
+                'visitor_tips': [
+                    'Book diving trips through reputable PADI centers',
+                    'Visit Ras Muhammad National Park for best diving',
+                    'Naama Bay offers restaurants and nightlife',
+                    'Mount Sinai sunrise trek unforgettable experience',
+                    'All-inclusive resorts offer excellent value',
+                    'Respect marine life - no touching coral',
+                    'Airport transfers typically included in resort packages'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '27.9158° N, 34.3300° E',
+                'unesco_status': 'Ras Muhammad National Park (nearby) internationally protected marine area',
+                'climate': 'Subtropical arid climate. Temperatures 18-23°C (January) to 33-37°C (August). Very low precipitation.'
+            },
+            'bibliotheca-alexandrina': {
+                'id': 'bibliotheca-alexandrina',
+                'name': 'Bibliotheca Alexandrina',
+                'location': 'Alexandria, Egypt',
+                'description': 'Modern revival of the ancient Library of Alexandria, major cultural center',
+                'long_description': 'The Bibliotheca Alexandrina, officially inaugurated on October 16, 2002, commemorates and revives the legendary ancient Library of Alexandria on the Mediterranean Sea coastline. Designed by Norwegian architectural firm Snøhetta (selected from 524 international competition entries), this US$220 million cultural complex features a distinctive tilted cylindrical form with a 32-meter-high glass-paneled roof resembling a sundial. The main reading room spans 20,000 square meters with shelf space for 8 million books. The complex includes specialized libraries, four museums, four art galleries, 15 permanent exhibitions, a planetarium, conference center, and manuscript restoration laboratory.',
+                'historical_significance': 'The Bibliotheca Alexandrina represents Egypt and UNESCO\'s effort to revive the spirit of the ancient Library of Alexandria, one of antiquity\'s greatest centers of learning destroyed centuries ago. The modern library received a 500,000-book donation from France\'s Bibliothèque nationale in 2009 and a $5 million donation plus 10 billion archived web pages from the Internet Archive. During Egypt\'s 2011 Revolution, the library was protected by citizens forming human chains, demonstrating its cultural importance. The library houses collections in classical Arabic, English, and French, plus the Nobel Prize Laureates in Literature collection.',
+                'cultural_impact': 'Major cultural and educational landmark for Egypt and the Mediterranean region. Houses extensive digital archives and serves as regional hub for Internet Archive. The library survived and was protected during 2011 Revolution. Serves as international conference center and educational institution.',
+                'best_time_to_visit': 'October to April for pleasant Mediterranean weather. Library less crowded weekday mornings. Allow 3-4 hours for comprehensive visit.',
+                'how_to_get_there': 'Located in Alexandria\'s Eastern Harbor area. Accessible by taxi, tram, or bus from central Alexandria. 220 km from Cairo (3-hour drive).',
+                'entrance_fees': 'General admission approximately 70 EGP. Additional fees for planetarium and special exhibitions. Photography fees apply.',
+                'opening_hours': 'Daily 10:00 AM to 7:00 PM. Closed Fridays and public holidays. Reduced summer hours during Ramadan.',
+                'what_to_wear': 'Casual, modest clothing. Comfortable shoes for exploring multiple levels. Library climate-controlled.',
+                'guided_tours': 'Professional guided tours available in multiple languages. Specialized architectural tours offered. Educational programs for students and researchers.',
+                'nearby_attractions': 'Citadel of Qaitbay (3 km), Alexandria Corniche, Catacombs of Kom El Shoqafa, Montaza Palace, Roman Amphitheater',
+                'facts': [
+                    'Inaugurated October 16, 2002',
+                    'Construction cost US$220 million',
+                    'Shelf space for 8 million books',
+                    'Main reading room 20,000 square meters',
+                    'Designed by Norwegian firm Snøhetta',
+                    'Selected from 524 competition entries',
+                    'Walls carved with 120 different scripts',
+                    'Internet Archive donated $5 million and 10 billion web pages'
+                ],
+                'visitor_tips': [
+                    'Allow 3-4 hours for comprehensive visit',
+                    'Visit planetarium show (additional ticket)',
+                    'Explore specialized libraries and exhibitions',
+                    'Library cafe offers Mediterranean views',
+                    'Photography permitted (fee required)',
+                    'Combine with Alexandria Corniche walk',
+                    'Research facilities available for scholars'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '31.2089° N, 29.9097° E',
+                'unesco_status': 'Not a UNESCO site but UNESCO-supported project',
+                'climate': 'Mediterranean climate. Mild winters (10-18°C). Warm summers (25-30°C). Best October-April.'
+            },
+            'citadel-qaitbay': {
+                'id': 'citadel-qaitbay',
+                'name': 'Citadel of Qaitbay',
+                'location': 'Alexandria, Egypt',
+                'description': 'Medieval fortress built on ancient Lighthouse of Alexandria foundations',
+                'long_description': 'The Citadel of Qaitbay, standing 17 meters high on Alexandria\'s Mediterranean coast, represents one of Egypt\'s most important defensive fortifications. Built between 1477-1479 AD by Mamluk Sultan Al-Ashraf Sayf al-Din Qa\'it Bay, this fortress was constructed on the exact site of the legendary Lighthouse of Alexandria (Pharos), one of the Seven Wonders of the Ancient World. The citadel\'s builders incorporated stones from the lighthouse ruins into the fortress walls. The site served critical defensive roles during the Mamluk period, protecting Alexandria against potential Ottoman threats, and now functions as a Maritime Museum.',
+                'historical_significance': 'Built on the site of the ancient Pharos Lighthouse (one of the Seven Wonders of the Ancient World), the Citadel of Qaitbay incorporated stones from the lighthouse ruins destroyed by earthquakes. Constructed during the Mamluk period to defend against Ottoman expansion, the fortress represents Mamluk military architecture. The citadel suffered damage during the British bombardment of Alexandria in 1882 during the Urabi Revolt. Muhammad Ali Pasha renovated the structure in 1805, and the Egyptian Antiquities Organization restored it in 1984. The citadel has witnessed Alexandria\'s transitions through Mamluk, Ottoman, and modern Egyptian periods.',
+                'cultural_impact': 'Considered "one of the most important defensive strongholds" along the Mediterranean coast during the Mamluk period. Now functions as Maritime Museum. Popular tourist attraction offering Mediterranean views and connection to ancient Alexandria.',
+                'best_time_to_visit': 'October to April for pleasant Mediterranean weather. Sunset visits particularly scenic. Combine with Alexandria Corniche walk.',
+                'how_to_get_there': 'Located at eastern tip of Pharos Island in Alexandria. Accessible by taxi or tram from central Alexandria. Walking distance from Alexandria Corniche.',
+                'entrance_fees': 'General admission approximately 60 EGP. Additional fee for Maritime Museum. Photography permitted.',
+                'opening_hours': 'Daily 9:00 AM to 5:00 PM (winter), 9:00 AM to 6:00 PM (summer). Friday mornings may have restrictions.',
+                'what_to_wear': 'Comfortable walking shoes for fortress exploration. Casual, modest clothing. Sun protection recommended.',
+                'guided_tours': 'Professional guides available explaining Mamluk architecture and Pharos Lighthouse history. Audio guides in multiple languages.',
+                'nearby_attractions': 'Bibliotheca Alexandrina (3 km), Alexandria Corniche, Montaza Palace, Catacombs of Kom El Shoqafa, Pompey\'s Pillar',
+                'facts': [
+                    'Built 1477-1479 AD by Sultan Qa\'it Bay',
+                    'Constructed on site of ancient Pharos Lighthouse',
+                    'Incorporates stones from lighthouse ruins',
+                    'Height 17 meters',
+                    'Damaged in British bombardment of 1882',
+                    'Renovated by Muhammad Ali Pasha in 1805',
+                    'Restored by Egyptian Antiquities Organization in 1984',
+                    'Now functions as Maritime Museum'
+                ],
+                'visitor_tips': [
+                    'Visit at sunset for spectacular Mediterranean views',
+                    'Explore Maritime Museum inside fortress',
+                    'Combine with Bibliotheca Alexandrina visit',
+                    'Walk Alexandria Corniche to/from citadel',
+                    'Allow 1-2 hours for exploration',
+                    'Fortress offers excellent photo opportunities',
+                    'Learn about ancient Pharos Lighthouse from guides'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '31.2138° N, 29.8856° E',
+                'unesco_status': 'Not a UNESCO site but built on former Wonder of the World location',
+                'climate': 'Mediterranean climate. Mild winters (10-18°C). Warm summers (25-30°C). Sea breezes moderate temperatures.'
+            },
+            'aswan-high-dam': {
+                'id': 'aswan-high-dam',
+                'name': 'Aswan High Dam',
+                'location': 'Aswan, Egypt',
+                'description': 'Massive engineering marvel controlling Nile floods and generating hydroelectric power',
+                'long_description': 'The Aswan High Dam, one of the world\'s largest embankment dams, stands as a monument to modern engineering and Egypt\'s 20th-century development ambitions. Constructed between 1960-1970 and designed by Nikolai Aleksandrovich Malyshev from Moscow\'s Hydroproject Institute, the dam measures 3,830 meters long, 980 meters wide at the base, and 111 meters high. The project created Lake Nasser, a massive 500-kilometer-long reservoir with capacity for 132 cubic kilometers of water. Built primarily with Soviet funding after the United States and UK withdrew support, 25,000 Egyptian engineers and workers contributed to this transformative project.',
+                'historical_significance': 'The Aswan High Dam represented Egypt\'s modernization under President Gamal Abdel Nasser and a major Cold War-era infrastructure project symbolizing Soviet-Egyptian cooperation. The dam mitigated periodic floods and droughts that had plagued Egypt for millennia, increased irrigated land by one-third, enabled two crop cycles annually, and reclaimed approximately 840,000 hectares of land. Twelve generators produce 2.1 gigawatts of power, bringing electricity to many Egyptian villages for the first time. However, the project displaced over 100,000 Nubian people and submerged archaeological sites, prompting the famous UNESCO campaign to relocate Abu Simbel and other monuments.',
+                'cultural_impact': 'Symbolized Egypt\'s modernization and technological ambition under Nasser. Required displacement of 100,000+ Nubians and submersion of archaeological sites. Prompted UNESCO\'s largest archaeological rescue operation (relocating Abu Simbel, Philae, and other monuments). Changed Nile ecology and Mediterranean fisheries.',
+                'best_time_to_visit': 'October to April for pleasant weather. Early morning visits offer cooler temperatures and clearer views. Combine with Philae Temple visit.',
+                'how_to_get_there': 'Located 13 km south of Aswan. Accessible by taxi or organized tours from Aswan. Often combined with Philae Temple and Unfinished Obelisk tours.',
+                'entrance_fees': 'General admission approximately 75 EGP. Photography permitted. Guided tours available.',
+                'opening_hours': 'Daily 7:00 AM to 5:00 PM. Security checkpoints at entrance. Photography restrictions in certain areas.',
+                'what_to_wear': 'Comfortable walking shoes. Sun protection essential. Modest clothing. Windy conditions possible near dam.',
+                'guided_tours': 'Tours from Aswan hotels include dam visit, Philae Temple, and Unfinished Obelisk. Guides explain engineering and historical significance.',
+                'nearby_attractions': 'Philae Temple, Unfinished Obelisk, Lake Nasser, Kalabsha Temple, Abu Simbel Temples (280 km south), Nubian villages',
+                'facts': [
+                    'Constructed 1960-1970',
+                    'Length 3,830 meters, height 111 meters',
+                    'Created Lake Nasser (500 km long)',
+                    'Reservoir capacity 132 cubic kilometers',
+                    '12 generators produce 2.1 gigawatts',
+                    'Displaced 100,000+ Nubian people',
+                    'Increased irrigated land by one-third',
+                    'Built with Soviet funding and Egyptian labor'
+                ],
+                'visitor_tips': [
+                    'Visit morning for best views and cooler weather',
+                    'Combine with Philae Temple and Unfinished Obelisk',
+                    'Allow 45-60 minutes for visit',
+                    'Bring ID - security checkpoints present',
+                    'Photography restricted in certain areas',
+                    'Panoramic Lake Nasser views from dam top',
+                    'Learn about Nubian displacement from guides'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '23.9703° N, 32.8773° E',
+                'unesco_status': 'Not a UNESCO site but prompted major UNESCO archaeological rescue campaign',
+                'climate': 'Hot desert climate. Extremely hot summers (40°C+). Mild winters (15-25°C). Best October-April.'
+            },
+            'siwa-oasis': {
+                'id': 'siwa-oasis',
+                'name': 'Siwa Oasis',
+                'location': 'Western Desert, Egypt',
+                'description': 'Remote desert oasis famous for Oracle of Amun, visited by Alexander the Great',
+                'long_description': 'Siwa Oasis, located in Egypt\'s Western Desert approximately 560 km from Cairo, sits between the Qattara Depression and the Great Sand Sea at 19 meters below sea level. This remarkable oasis covers about 80 km in length and 20 km in width, featuring around 200 natural springs that have sustained settlement since at least the 10th millennium BCE. Known in ancient Egypt as the "Field of Trees," Siwa gained fame for its Oracle of Amun, which Alexander the Great visited in 331 BCE. The predominantly Berber population of around 30,000 people speaks the Siwi language and maintains unique cultural traditions including distinctive silver jewelry and the Siyaha Festival.',
+                'historical_significance': 'Siwa has been continuously inhabited since at least the 10th millennium BCE. The Oracle of Amun at Siwa was one of the ancient world\'s most famous oracles, consulted by Alexander the Great in 331 BCE who traveled here to legitimize his rule as pharaoh. The oasis was relatively isolated until annexed by Muhammad Ali of Egypt in 1820. During World Wars I and II, the region experienced significant military activity due to its strategic location. The ancient fortress of Shali Ghadi and the Mountain of the Dead (Gebel al Mawta) containing ancient tombs testify to Siwa\'s long history.',
+                'cultural_impact': 'Siwa\'s Berber culture remains distinct from mainstream Egyptian culture. The oasis is famous for unique cultural traditions, handicrafts, and the natural spring known as "Cleopatra\'s Bath." Growing tourism sector brings economic opportunity while challenging cultural preservation.',
+                'best_time_to_visit': 'October to April for moderate temperatures. Summer extremely hot (up to 48°C). October Siyaha Festival offers cultural immersion.',
+                'how_to_get_there': 'Located 560 km from Cairo. Accessible by 8-10 hour bus journey from Cairo or Marsa Matrouh. 4WD vehicles recommended for desert exploration.',
+                'entrance_fees': 'Oasis access free. Individual sites charge fees: Oracle Temple (approximately 30 EGP), Mountain of the Dead (30 EGP).',
+                'opening_hours': 'Oasis operates 24/7. Archaeological sites typically 8:00 AM to 5:00 PM. Natural springs accessible dawn to dusk.',
+                'what_to_wear': 'Modest clothing respecting conservative local culture. Comfortable shoes for oasis exploration. Sun protection essential. Layers for temperature variations.',
+                'guided_tours': 'Organized tours from Cairo include transport and accommodation. Local guides offer desert safaris and cultural tours. Multi-day trips recommended.',
+                'nearby_attractions': 'Oracle Temple of Amun, Shali Ghadi fortress, Gebel al Mawta (Mountain of the Dead), Cleopatra\'s Bath spring, Great Sand Sea',
+                'facts': [
+                    'Located 560 km from Cairo, 19 meters below sea level',
+                    'Settled since 10th millennium BCE',
+                    'Oracle of Amun visited by Alexander the Great (331 BCE)',
+                    'Around 200 natural springs',
+                    'Covers 80 km length, 20 km width',
+                    'Population approximately 30,000 Berber people',
+                    'Speaks unique Siwi language',
+                    'Summer temperatures reach 48°C'
+                ],
+                'visitor_tips': [
+                    'Plan minimum 2-3 days to experience oasis properly',
+                    'Dress modestly - conservative Berber community',
+                    'Book accommodation in advance (limited options)',
+                    'Try dates and olives - primary local crops',
+                    'Visit natural springs for refreshing swim',
+                    'Explore Shali Ghadi fortress at sunset',
+                    'Hire local guide for desert safaris'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '29.2028° N, 25.5194° E',
+                'unesco_status': 'Not formally UNESCO listed but culturally significant',
+                'climate': 'Hot desert climate. Extremely hot summers (up to 48°C). Mild winters. Very low precipitation.'
+            },
+            'hatshepsut-temple': {
+                'id': 'hatshepsut-temple',
+                'name': 'Hatshepsut Temple',
+                'location': 'Luxor, Egypt',
+                'description': 'Spectacular mortuary temple of Egypt\'s female pharaoh carved into cliff face',
+                'long_description': 'The Mortuary Temple of Hatshepsut at Deir el-Bahari, located opposite Luxor, stands as one of ancient Egypt\'s greatest architectural wonders. Built during Hatshepsut\'s reign in the 15th century BC, this spectacular temple features three massive terraces rising into limestone cliff faces, constructed with limestone, sandstone, and granite. Inspired by the adjacent Temple of Mentuhotep II, the complex includes shrines to Hathor, Anubis, and Amun, with unique porticoes featuring remarkable relief artwork depicting Hatshepsut\'s expedition to Punt and her divine birth. The temple was aligned with Karnak Temple across the Nile and served the mortuary cults of Hatshepsut and her father Thutmose I.',
+                'historical_significance': 'Built by Egypt\'s most successful female pharaoh Hatshepsut in the 15th century BC, the temple demonstrated her architectural and political ambitions. The temple served as the endpoint of the annual Beautiful Festival of the Valley procession from Karnak. After Hatshepsut\'s death, her successor Thutmose III systematically defaced her images and cartouches in an attempt to erase her from history. The temple suffered further damage during the Amarna Period and from earthquakes in the Third Intermediate Period. Extensively excavated between 1893-1936, ongoing Polish archaeological missions continue restoration work. The temple partially opened to tourists in 2000 and fully reopened in March 2023.',
+                'cultural_impact': 'Considered "one of the great architectural wonders of the ancient world." Represents rare example of female pharaoh\'s monumental architecture. Extensive excavation and restoration by Polish missions since 1960s. Fully reopened to public in March 2023.',
+                'best_time_to_visit': 'October to April for comfortable weather. Early morning visits (6-8 AM) avoid extreme heat and crowds. Combine with Valley of the Kings.',
+                'how_to_get_there': 'Located on Luxor\'s West Bank in Deir el-Bahari. Accessible by ferry from East Bank, then taxi or tour bus. Often combined with Valley of the Kings.',
+                'entrance_fees': 'General admission approximately 140 EGP. Combination tickets with other West Bank sites available. Photography permitted.',
+                'opening_hours': 'Daily 6:00 AM to 5:00 PM (winter), 6:00 AM to 6:00 PM (summer). Last entry one hour before closing.',
+                'what_to_wear': 'Comfortable walking shoes for temple terraces. Light, breathable clothing. Hat and sun protection essential. Modest dress recommended.',
+                'guided_tours': 'Egyptologist-led tours highly recommended for understanding Hatshepsut\'s history and temple symbolism. Audio guides available.',
+                'nearby_attractions': 'Valley of the Kings, Valley of the Queens, Medinet Habu, Colossi of Memnon, Tombs of the Nobles, Ramesseum',
+                'facts': [
+                    'Built in 15th century BC by female pharaoh Hatshepsut',
+                    'Considered "one of great architectural wonders of ancient world"',
+                    'Features three massive terraces rising into cliffs',
+                    'Aligned with Karnak Temple across Nile',
+                    'Defaced by Thutmose III after Hatshepsut\'s death',
+                    'Excavated extensively 1893-1936',
+                    'Ongoing Polish restoration since 1960s',
+                    'Fully reopened March 2023 after restoration'
+                ],
+                'visitor_tips': [
+                    'Visit early morning to avoid heat',
+                    'Combine with Valley of the Kings (nearby)',
+                    'Allow 1.5-2 hours for exploration',
+                    'Climb all three terraces for full experience',
+                    'Study Punt expedition reliefs - historically significant',
+                    'Photography excellent in morning light',
+                    'Hire Egyptologist guide for Hatshepsut\'s fascinating story'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '25.7380° N, 32.6065° E',
+                'unesco_status': 'UNESCO World Heritage Site (Ancient Thebes with its Necropolis) since 1979',
+                'climate': 'Hot desert climate. Summer extremely hot (40°C+). Winter pleasant (15-25°C). Best October-April.'
+            },
+            'dahab': {
+                'id': 'dahab',
+                'name': 'Dahab',
+                'location': 'Sinai Peninsula, Egypt',
+                'description': 'Laid-back Bedouin beach town famous for world-class windsurfing and diving',
+                'long_description': 'Dahab, located on the southeast coast of Egypt\'s Sinai Peninsula approximately 80 km northeast of Sharm el-Sheikh, has evolved from a small Bedouin fishing village into a world-renowned destination for windsurfing, diving, and alternative tourism. Situated at 21 meters above sea level, the town is divided into three main parts: Masbat (including the Bedouin village Asalah with its beachfront cafes), Mashraba, and Medina. Dahab offers a more relaxed, bohemian atmosphere than Sharm el-Sheikh, with beach cafes, budget accommodations, and some of the Red Sea\'s best diving sites. The town features Neoproterozoic rock formations and mineral deposits including rutile, zircon, and gold.',
+                'historical_significance': 'Dahab is mentioned in biblical texts (Deuteronomy) as "דִ֥י זָהָֽב" (dî zāhāḇ). During the Six-Day War in 1967, it was occupied by Israel and known as Di-Zahav, serving as a small military outpost and beginning its transformation into a tourist destination. The town was returned to Egyptian control in 1982 under the Egypt-Israel peace treaty. Since then, Dahab has developed its reputation as a windsurfing and diving destination while maintaining its laid-back Bedouin character. The town remains less developed and more authentic than nearby Sharm el-Sheikh.',
+                'cultural_impact': 'World-renowned for windsurfing and kitesurfing, attracting international enthusiasts. Known for relaxed, bohemian atmosphere and Bedouin cultural influence. Popular budget alternative to Sharm el-Sheikh. Part of Red Sea Riviera tourism region.',
+                'best_time_to_visit': 'March to May and September to November for ideal conditions. Year-round windsurfing excellent. Winter (December-February) cooler but still pleasant.',
+                'how_to_get_there': 'Located 80 km northeast of Sharm el-Sheikh. Accessible by bus or shared taxi from Sharm, Cairo, or Nuweiba. Sharm el-Sheikh Airport nearest international airport.',
+                'entrance_fees': 'Town access free. Individual dive sites and activities priced separately. Beach cafes typically free with food/drink purchase.',
+                'opening_hours': 'Town operates 24/7. Beach cafes open dawn to late night. Dive centers operate 7:00 AM to 6:00 PM.',
+                'what_to_wear': 'Beach casual and bohemian style common. Modest clothing for venturing beyond beach areas. Wetsuit for diving. Sun protection essential.',
+                'guided_tours': 'Numerous dive centers offer PADI courses and guided dives. Windsurfing and kitesurfing instruction available. Bedouin desert safari tours popular.',
+                'nearby_attractions': 'Blue Hole dive site, Lighthouse dive site, Ras Abu Gallum nature reserve, Mount Sinai, Colored Canyon, St. Catherine\'s Monastery',
+                'facts': [
+                    'Located 80 km northeast of Sharm el-Sheikh',
+                    'Population approximately 3,169 (2023)',
+                    'World-renowned for windsurfing and kitesurfing',
+                    'Mentioned in biblical Deuteronomy',
+                    'Occupied by Israel 1967-1982',
+                    'Hot desert climate (Köppen: BWh)',
+                    'Elevation 21 meters above sea level',
+                    'Contains mineral deposits including gold'
+                ],
+                'visitor_tips': [
+                    'Blue Hole dive site world-famous but challenging',
+                    'Beach cafes offer cushioned seating and shisha',
+                    'Negotiate accommodation prices - many budget options',
+                    'Respect Bedouin culture and traditions',
+                    'Try camel treks to Ras Abu Gallum',
+                    'More laid-back atmosphere than Sharm el-Sheikh',
+                    'Local Bedouin children often sell handmade crafts'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '28.4928° N, 34.5044° E',
+                'unesco_status': 'Not a UNESCO site but near protected areas',
+                'climate': 'Hot desert climate. Extremely hot summer days/nights. Warm winter days, mild nights. Minimal precipitation.'
+            },
+            'marsa-alam': {
+                'id': 'marsa-alam',
+                'name': 'Marsa Alam',
+                'location': 'Red Sea, Egypt',
+                'description': 'Emerging Red Sea resort known as "Egyptian Maldives" for pristine beaches and marine life',
+                'long_description': 'Marsa Alam, located in southeastern Egypt on the Red Sea\'s western shore, sits 274 km south of Hurghada and 134 km south of Qusayr. This relatively new resort town, with development beginning in 1995 by Kuwait\'s Al-Kharafi Group, covers 38,433 square kilometers at approximately 60 meters elevation. Known as the "Egyptian Maldives" for its crystal-clear water and white sandy beaches, Marsa Alam offers exceptional underwater diving, kitesurfing, and safaris. The region features Wadi El Gemal National Park with diverse wildlife including mountain goats, gazelles, dugongs, green turtles, and whale sharks. The area also provides access to historic emerald mines and the Temple of Seti I at Khanais.',
+                'historical_significance': 'While Marsa Alam itself is modern (development from 1995), the region has ancient significance with historic emerald mines that supplied the Roman Empire and the Temple of Seti I at nearby Khanais dating to the 19th Dynasty. The town\'s growth accelerated with the opening of Marsa Alam International Airport in 2003, transforming it from a small fishing village into an international resort destination. The establishment of Wadi El Gemal National Park protects the region\'s unique desert and marine ecosystems. Marsa Alam represents Egypt\'s effort to develop sustainable Red Sea tourism south of traditional centers like Hurghada.',
+                'cultural_impact': 'Nicknamed "Egyptian Maldives" for pristine beaches and marine life. Wadi El Gemal National Park protects unique ecosystems including dugongs, whale sharks, and mangroves. Growing reputation for eco-tourism and sustainable diving. Port Ghalib Marina developed for yacht tourism.',
+                'best_time_to_visit': 'September to November and March to May for ideal weather. Year-round diving excellent. Red Sea water temperatures 22-29°C.',
+                'how_to_get_there': 'Marsa Alam International Airport receives international and domestic flights. Located 274 km south of Hurghada (4-hour drive). Road access from Cairo and Luxor.',
+                'entrance_fees': 'Town access free. Wadi El Gemal National Park entrance approximately 100 EGP. Individual dive trips priced separately.',
+                'opening_hours': 'Town operates 24/7. Wadi El Gemal National Park 8:00 AM to 5:00 PM. Dive centers operate dawn to dusk.',
+                'what_to_wear': 'Beach resort casual. Swimwear for beaches and watersports. Modest clothing for town areas. Sun protection essential year-round.',
+                'guided_tours': 'PADI diving centers offer courses and guided dives to pristine reefs. Desert safaris to historic emerald mines popular. Dolphin and dugong watching tours available.',
+                'nearby_attractions': 'Wadi El Gemal National Park, Port Ghalib, Temple of Seti I at Khanais, historic emerald mines, Hamata Islands, Luxor (300 km)',
+                'facts': [
+                    'Development began 1995 by Kuwaiti Al-Kharafi Group',
+                    'Known as "Egyptian Maldives"',
+                    'Covers 38,433 square kilometers',
+                    'Marsa Alam Airport opened 2003',
+                    'Red Sea temperatures 22-29°C',
+                    'January temperatures 22-25°C, August 33-40°C',
+                    'Wadi El Gemal National Park protects dugongs, whale sharks',
+                    'Historic emerald mines supplied Roman Empire'
+                ],
+                'visitor_tips': [
+                    'Less crowded alternative to Hurghada',
+                    'Excellent for spotting dugongs and dolphins',
+                    'Visit Wadi El Gemal National Park for wildlife',
+                    'Pristine reefs less damaged than northern Red Sea',
+                    'Port Ghalib offers upscale marina and shopping',
+                    'Consider day trip to historic emerald mines',
+                    'Book diving trips through reputable PADI centers'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '25.0631° N, 34.8914° E',
+                'unesco_status': 'Wadi El Gemal National Park (nearby) nationally protected area',
+                'climate': 'Hot desert climate. Minimal rainfall. January 22-25°C, August 33-40°C. Red Sea water 22-29°C year-round.'
+            },
+            'catacombs-kom-el-shoqafa': {
+                'id': 'catacombs-kom-el-shoqafa',
+                'name': 'Catacombs of Kom El Shoqafa',
+                'location': 'Alexandria, Egypt',
+                'description': 'Underground necropolis blending Egyptian, Greek, and Roman cultural elements',
+                'long_description': 'The Catacombs of Kom El Shoqafa, located in Alexandria, represent one of the "Seven Wonders of the Middle Ages" and one of the largest Roman-period burial sites in Egypt. Established in the 2nd century CE during the Antonine emperors\' period, this remarkable underground complex consists of three levels cut through solid rock, featuring a six-pillared central shaft and circular staircase for transporting deceased bodies. The catacombs demonstrate a unique fusion of Roman, Greek, and Egyptian cultural attributes, with statues and artwork displaying Egyptian-style sculptures bearing Roman clothes and hairstyles. The site was rediscovered in 1900 when a donkey accidentally fell into the access shaft.',
+                'historical_significance': 'Built in the 2nd century CE and used through the 4th century CE, the Catacombs of Kom El Shoqafa represent the cultural melting pot of Greco-Roman Alexandria. Originally believed to be intended for a single family, the complex expanded to accommodate multiple burials. The catacombs feature a triclinium (funeral banquet hall) where families gathered to honor the deceased, three large stone sarcophagi with intricate decorations, and the "Hall of Caracalla" containing horse bones from young men supposedly killed by Emperor Caracalla. The site\'s name "Kom El Shoqafa" (Mound of Shards) derives from broken pottery left by visitors bringing food offerings.',
+                'cultural_impact': 'Considered one of the "Seven Wonders of the Middle Ages." Represents unique blend of Egyptian, Greek, and Roman funerary traditions. Rediscovered accidentally in 1900. Depth reaches approximately 100 feet underground.',
+                'best_time_to_visit': 'October to April for pleasant Alexandria weather. Underground temperature constant year-round. Allow 1-1.5 hours for visit.',
+                'how_to_get_there': 'Located in Alexandria\'s Karmouz district. Accessible by taxi or tram from central Alexandria. 3-4 km from Alexandria Corniche.',
+                'entrance_fees': 'General admission approximately 80 EGP. Student discounts available. Photography fees may apply.',
+                'opening_hours': 'Daily 9:00 AM to 5:00 PM. Last entry 4:30 PM. May close early on Fridays.',
+                'what_to_wear': 'Comfortable walking shoes for underground stairs and passages. Modest clothing. Temperature cool underground - light jacket recommended.',
+                'guided_tours': 'Professional guides available explaining Greco-Roman funerary practices and architectural symbolism. Audio guides in multiple languages.',
+                'nearby_attractions': 'Pompey\'s Pillar (nearby), Citadel of Qaitbay, Bibliotheca Alexandrina, Alexandria Corniche, Roman Amphitheater, Alexandria National Museum',
+                'facts': [
+                    'Established 2nd century CE',
+                    'Considered "Seven Wonders of the Middle Ages"',
+                    'Rediscovered 1900 when donkey fell into shaft',
+                    'Three underground levels cut through solid rock',
+                    'Blends Egyptian, Greek, and Roman cultural elements',
+                    'Used for burials 2nd-4th centuries CE',
+                    'Depth approximately 100 feet underground',
+                    '"Hall of Caracalla" contains horse bones'
+                ],
+                'visitor_tips': [
+                    'Bring light jacket - cool underground',
+                    'Watch your step on circular staircase',
+                    'Hire guide for understanding cultural fusion',
+                    'Combine with Pompey\'s Pillar (nearby)',
+                    'Photography restrictions may apply',
+                    'Allow 1-1.5 hours for exploration',
+                    'Study statues showing cultural blend'
+                ],
+                'photos': [
+                    'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1568322445389-f64ac2515020?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                    'https://images.unsplash.com/photo-1539768942893-daf53e448371?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                ],
+                'coordinates': '31.1781° N, 29.8925° E',
+                'unesco_status': 'Not formally UNESCO listed but historically significant',
+                'climate': 'Mediterranean climate above ground. Underground temperature constant and cool year-round. Best October-April.'
             }
         },
         'uae': {
@@ -6032,10 +7023,10 @@ def attraction_detail(request, country, slug):
                     'Construction took 6 years from 2004-2010'
                 ],
                 'key_sites': [
-                    {'name': 'At The Top (Level 124-125)', 'description': 'Observation deck at 452-456 meters', 'significance': 'Standard observation experience with 360-degree views'},
-                    {'name': 'At The Top SKY (Level 148)', 'description': 'Highest observation deck at 555 meters', 'significance': 'Premium experience with highest outdoor terrace in the world'},
-                    {'name': 'The Lounge', 'description': 'Luxury lounge on levels 152-154', 'significance': 'Exclusive refreshments with stunning views'},
-                    {'name': 'Armani Hotel', 'description': 'Hotel occupying floors 1-8 and 38-39', 'significance': 'World\'s first Armani Hotel designed by Giorgio Armani'}
+                    {'name': 'At The Top (Level 124-125)', 'slug': 'at-the-top-level-124-125', 'description': 'Observation deck at 452-456 meters', 'significance': 'Standard observation experience with 360-degree views'},
+                    {'name': 'At The Top SKY (Level 148)', 'slug': 'at-the-top-sky-level-148', 'description': 'Highest observation deck at 555 meters', 'significance': 'Premium experience with highest outdoor terrace in the world'},
+                    {'name': 'The Lounge', 'slug': 'the-lounge', 'description': 'Luxury lounge on levels 152-154', 'significance': 'Exclusive refreshments with stunning views'},
+                    {'name': 'Armani Hotel', 'slug': 'armani-hotel', 'description': 'Hotel occupying floors 1-8 and 38-39', 'significance': 'World\'s first Armani Hotel designed by Giorgio Armani'}
                 ],
                 'entrance_fees': 'At The Top: 149-189 AED. At The Top SKY: 378-533 AED. Prices vary by time slot.',
                 'opening_hours': '8:30 AM to 11:00 PM daily. Last entry at 10:00 PM.',
@@ -6079,10 +7070,10 @@ def attraction_detail(request, country, slug):
                     'Free entry for all visitors'
                 ],
                 'key_sites': [
-                    {'name': 'Main Prayer Hall', 'description': 'Massive hall with world\'s largest carpet', 'significance': 'Features Swarovski crystal chandeliers and holds 7,000 worshippers'},
-                    {'name': 'Courtyard', 'description': 'Marble courtyard with floral mosaic', 'significance': 'World\'s largest marble mosaic covering 17,000 square meters'},
-                    {'name': 'Reflective Pools', 'description': 'Surrounding pools that mirror the mosque', 'significance': 'Create stunning visual effects especially at night'},
-                    {'name': 'Minarets', 'description': 'Four 107-meter tall minarets', 'significance': 'Mark the four corners of the mosque'}
+                    {'name': 'Main Prayer Hall', 'slug': 'main-prayer-hall', 'description': 'Massive hall with world\'s largest carpet', 'significance': 'Features Swarovski crystal chandeliers and holds 7,000 worshippers'},
+                    {'name': 'Courtyard', 'slug': 'courtyard', 'description': 'Marble courtyard with floral mosaic', 'significance': 'World\'s largest marble mosaic covering 17,000 square meters'},
+                    {'name': 'Reflective Pools', 'slug': 'reflective-pools', 'description': 'Surrounding pools that mirror the mosque', 'significance': 'Create stunning visual effects especially at night'},
+                    {'name': 'Minarets', 'slug': 'minarets', 'description': 'Four 107-meter tall minarets', 'significance': 'Mark the four corners of the mosque'}
                 ],
                 'entrance_fees': 'Free admission',
                 'opening_hours': 'Saturday-Thursday: 9:00 AM - 10:00 PM (last tour 9:30 PM). Friday: 4:30 PM - 10:00 PM. Closed to visitors during prayer times.',
@@ -6129,10 +7120,10 @@ def attraction_detail(request, country, slug):
                     'Part of larger Palm Islands development project'
                 ],
                 'key_sites': [
-                    {'name': 'Atlantis The Palm', 'description': 'Iconic luxury resort with water park and aquarium', 'significance': 'World-famous hotel with underwater dining and marine attractions'},
-                    {'name': 'The Pointe', 'description': 'Shopping and entertainment complex at the island\'s tip', 'significance': 'Features restaurants, bars, and panoramic views'},
-                    {'name': 'Golden Mile', 'description': 'Beachfront promenade with luxury hotels', 'significance': 'Home to prestigious hotels like Jumeirah Zabeel Saray'},
-                    {'name': 'Trunk Road', 'description': 'Main artery connecting the island', 'significance': 'Features luxury shopping and dining options'}
+                    {'name': 'Atlantis The Palm', 'slug': 'atlantis-the-palm', 'description': 'Iconic luxury resort with water park and aquarium', 'significance': 'World-famous hotel with underwater dining and marine attractions'},
+                    {'name': 'The Pointe', 'slug': 'the-pointe', 'description': 'Shopping and entertainment complex at the island\'s tip', 'significance': 'Features restaurants, bars, and panoramic views'},
+                    {'name': 'Golden Mile', 'slug': 'golden-mile', 'description': 'Beachfront promenade with luxury hotels', 'significance': 'Home to prestigious hotels like Jumeirah Zabeel Saray'},
+                    {'name': 'Trunk Road', 'slug': 'trunk-road', 'description': 'Main artery connecting the island', 'significance': 'Features luxury shopping and dining options'}
                 ],
                 'entrance_fees': 'Free to visit the island. Individual attractions have their own fees.',
                 'opening_hours': '24/7 access. Individual venues have varying hours.',
@@ -6174,10 +7165,10 @@ def attraction_detail(request, country, slug):
                     'Connected directly to Burj Khalifa'
                 ],
                 'key_sites': [
-                    {'name': 'Dubai Aquarium & Underwater Zoo', 'description': 'World\'s largest acrylic panel tunnel with marine life', 'significance': 'Features sharks, rays, and underwater viewing experiences'},
-                    {'name': 'Dubai Ice Rink', 'description': 'Olympic-sized ice skating rink', 'significance': 'Year-round skating in desert climate'},
-                    {'name': 'Fashion Avenue', 'description': 'Luxury shopping district with high-end brands', 'significance': 'Features flagship stores of international designers'},
-                    {'name': 'KidZania', 'description': 'Educational entertainment center for children', 'significance': 'Interactive learning through role-playing activities'}
+                    {'name': 'Dubai Aquarium & Underwater Zoo', 'slug': 'dubai-aquarium-underwater-zoo', 'description': 'World\'s largest acrylic panel tunnel with marine life', 'significance': 'Features sharks, rays, and underwater viewing experiences'},
+                    {'name': 'Dubai Ice Rink', 'slug': 'dubai-ice-rink', 'description': 'Olympic-sized ice skating rink', 'significance': 'Year-round skating in desert climate'},
+                    {'name': 'Fashion Avenue', 'slug': 'fashion-avenue', 'description': 'Luxury shopping district with high-end brands', 'significance': 'Features flagship stores of international designers'},
+                    {'name': 'KidZania', 'slug': 'kidzania', 'description': 'Educational entertainment center for children', 'significance': 'Interactive learning through role-playing activities'}
                 ],
                 'entrance_fees': 'Free entry to mall. Individual attractions: Aquarium (95-140 AED), Ice Rink (50-80 AED), VR Park (95 AED).',
                 'opening_hours': '10:00 AM to 10:00 PM Sunday-Wednesday, 10:00 AM to 11:00 PM Thursday-Saturday.',
@@ -6223,10 +7214,10 @@ def attraction_detail(request, country, slug):
                     'Sunset views over Dubai skyline from desert'
                 ],
                 'key_sites': [
-                    {'name': 'Sand Dunes', 'description': 'Massive red sand dunes for 4x4 adventures', 'significance': 'Thrilling dune bashing experiences with professional drivers'},
-                    {'name': 'Bedouin Camp', 'description': 'Traditional desert camp with entertainment', 'significance': 'Authentic Arabian hospitality and cultural performances'},
-                    {'name': 'Camel Farm', 'description': 'Camel riding and interaction area', 'significance': 'Experience traditional desert transportation'},
-                    {'name': 'Falconry Display', 'description': 'Traditional Emirati falconry demonstration', 'significance': 'Showcases ancient Arabian hunting tradition'}
+                    {'name': 'Sand Dunes', 'slug': 'sand-dunes', 'description': 'Massive red sand dunes for 4x4 adventures', 'significance': 'Thrilling dune bashing experiences with professional drivers'},
+                    {'name': 'Bedouin Camp', 'slug': 'bedouin-camp', 'description': 'Traditional desert camp with entertainment', 'significance': 'Authentic Arabian hospitality and cultural performances'},
+                    {'name': 'Camel Farm', 'slug': 'camel-farm', 'description': 'Camel riding and interaction area', 'significance': 'Experience traditional desert transportation'},
+                    {'name': 'Falconry Display', 'slug': 'falconry-display', 'description': 'Traditional Emirati falconry demonstration', 'significance': 'Showcases ancient Arabian hunting tradition'}
                 ],
                 'entrance_fees': 'Standard safari: 150-250 AED. Premium options: 300-500 AED. Prices vary by package.',
                 'opening_hours': 'Sunset safaris depart 3:00-4:00 PM. Evening safaris 7:00-8:00 PM.',
@@ -6273,10 +7264,10 @@ def attraction_detail(request, country, slug):
                     'Average tower height of 50+ stories'
                 ],
                 'key_sites': [
-                    {'name': 'Dubai Marina Mall', 'description': 'Modern shopping and entertainment complex', 'significance': 'Features cinema, bowling, and diverse dining options'},
-                    {'name': 'JBR Beach', 'description': 'Artificial beach with promenade and water activities', 'significance': 'Popular recreational area with beach volleyball and dining'},
-                    {'name': 'Marina Walk', 'description': 'Waterfront promenade with restaurants and shops', 'significance': 'Scenic walking path with views of yachts and towers'},
-                    {'name': 'Pier 7', 'description': 'Entertainment complex with bars and restaurants', 'significance': 'Vibrant nightlife and dining destination'}
+                    {'name': 'Dubai Marina Mall', 'slug': 'dubai-marina-mall', 'description': 'Modern shopping and entertainment complex', 'significance': 'Features cinema, bowling, and diverse dining options'},
+                    {'name': 'JBR Beach', 'slug': 'jbr-beach', 'description': 'Artificial beach with promenade and water activities', 'significance': 'Popular recreational area with beach volleyball and dining'},
+                    {'name': 'Marina Walk', 'slug': 'marina-walk', 'description': 'Waterfront promenade with restaurants and shops', 'significance': 'Scenic walking path with views of yachts and towers'},
+                    {'name': 'Pier 7', 'slug': 'pier-7', 'description': 'Entertainment complex with bars and restaurants', 'significance': 'Vibrant nightlife and dining destination'}
                 ],
                 'entrance_fees': 'Free access to public areas. Individual venues have their own fees.',
                 'opening_hours': '24/7 access to marina. Shops and restaurants vary.',
@@ -6323,10 +7314,10 @@ def attraction_detail(request, country, slug):
                     'Construction cost $650 million'
                 ],
                 'key_sites': [
-                    {'name': 'Atrium Lounge', 'description': 'World\'s highest atrium lounge at 200 meters', 'significance': 'Panoramic views and afternoon tea experience'},
-                    {'name': 'Gold Leaf Restaurant', 'description': 'Signature restaurant with gold leaf decor', 'significance': 'Fine dining with views of Dubai Fountain'},
-                    {'name': 'Royal Suite', 'description': 'Presidential suite spanning 780 square meters', 'significance': 'Most luxurious accommodation in Dubai'},
-                    {'name': 'Private Beach', 'description': 'Exclusive beach with cabana services', 'significance': 'Secluded relaxation area with luxury amenities'}
+                    {'name': 'Atrium Lounge', 'slug': 'atrium-lounge', 'description': 'World\'s highest atrium lounge at 200 meters', 'significance': 'Panoramic views and afternoon tea experience'},
+                    {'name': 'Gold Leaf Restaurant', 'slug': 'gold-leaf-restaurant', 'description': 'Signature restaurant with gold leaf decor', 'significance': 'Fine dining with views of Dubai Fountain'},
+                    {'name': 'Royal Suite', 'slug': 'royal-suite', 'description': 'Presidential suite spanning 780 square meters', 'significance': 'Most luxurious accommodation in Dubai'},
+                    {'name': 'Private Beach', 'slug': 'private-beach', 'description': 'Exclusive beach with cabana services', 'significance': 'Secluded relaxation area with luxury amenities'}
                 ],
                 'entrance_fees': 'Public areas accessible. Restaurant reservations required. Day passes available for some facilities.',
                 'opening_hours': '24/7 hotel operations. Public areas accessible during business hours.',
@@ -6372,9 +7363,9 @@ def attraction_detail(request, country, slug):
                     'Cost $218 million to build'
                 ],
                 'key_sites': [
-                    {'name': 'Main Fountain Basin', 'description': '660-foot long lake with fountain system', 'significance': 'Features the world\'s largest fountain display'},
-                    {'name': 'Burj Khalifa View', 'description': 'Fountain viewed against the world\'s tallest building', 'significance': 'Creates spectacular visual contrast'},
-                    {'name': 'Surrounding Walkways', 'description': 'Pedestrian paths around the fountain', 'significance': 'Best viewing locations for the shows'}
+                    {'name': 'Main Fountain Basin', 'slug': 'main-fountain-basin', 'description': '660-foot long lake with fountain system', 'significance': 'Features the world\'s largest fountain display'},
+                    {'name': 'Burj Khalifa View', 'slug': 'burj-khalifa-view', 'description': 'Fountain viewed against the world\'s tallest building', 'significance': 'Creates spectacular visual contrast'},
+                    {'name': 'Surrounding Walkways', 'slug': 'surrounding-walkways', 'description': 'Pedestrian paths around the fountain', 'significance': 'Best viewing locations for the shows'}
                 ],
                 'entrance_fees': 'Free to view from surrounding areas. Premium viewing areas may have fees.',
                 'opening_hours': 'Shows every 30 minutes from 6:00 PM to 11:00 PM daily.',
@@ -6422,10 +7413,10 @@ def attraction_detail(request, country, slug):
                     'Spans 24,000 square meters'
                 ],
                 'key_sites': [
-                    {'name': 'Main Dome', 'description': 'Iconic dome with star-shaped perforations', 'significance': 'Creates "rain of light" effect in galleries'},
-                    {'name': 'Pavilion of Islamic Art', 'description': 'Dedicated gallery for Islamic masterpieces', 'significance': 'Showcases Islamic art and artifacts'},
-                    {'name': 'Modern Art Gallery', 'description': 'Contemporary art collection', 'significance': 'Features works from 20th and 21st centuries'},
-                    {'name': 'Ancient Civilizations', 'description': 'Artifacts from ancient cultures', 'significance': 'Includes Egyptian, Greek, and Roman works'}
+                    {'name': 'Main Dome', 'slug': 'main-dome', 'description': 'Iconic dome with star-shaped perforations', 'significance': 'Creates "rain of light" effect in galleries'},
+                    {'name': 'Pavilion of Islamic Art', 'slug': 'pavilion-of-islamic-art', 'description': 'Dedicated gallery for Islamic masterpieces', 'significance': 'Showcases Islamic art and artifacts'},
+                    {'name': 'Modern Art Gallery', 'slug': 'modern-art-gallery', 'description': 'Contemporary art collection', 'significance': 'Features works from 20th and 21st centuries'},
+                    {'name': 'Ancient Civilizations', 'slug': 'ancient-civilizations', 'description': 'Artifacts from ancient cultures', 'significance': 'Includes Egyptian, Greek, and Roman works'}
                 ],
                 'entrance_fees': '63 AED for adults. Free for children under 13.',
                 'opening_hours': '10:00 AM to 8:00 PM Saturday-Wednesday, 10:00 AM to 10:00 PM Thursday-Friday.',
@@ -6475,10 +7466,10 @@ def attraction_detail(request, country, slug):
                     'Hosts the annual Dubai Creek Festival'
                 ],
                 'key_sites': [
-                    {'name': 'Dhow Wharfage', 'description': 'Traditional wooden boat harbor and repair area', 'significance': 'Showcases Dubai\'s maritime heritage and boat-building tradition'},
-                    {'name': 'Dubai Creek Park', 'description': 'Riverside park with walking paths and picnic areas', 'significance': 'Popular recreational area with views of the creek and city skyline'},
-                    {'name': 'Al Seef', 'description': 'Heritage district with restored traditional buildings', 'significance': 'Preserves Dubai\'s architectural heritage from the 19th and 20th centuries'},
-                    {'name': 'Creek Side Promenade', 'description': 'Waterfront walkway connecting Deira and Bur Dubai', 'significance': 'Offers scenic views and connects historic districts'}
+                    {'name': 'Dhow Wharfage', 'slug': 'dhow-wharfage', 'description': 'Traditional wooden boat harbor and repair area', 'significance': 'Showcases Dubai\'s maritime heritage and boat-building tradition'},
+                    {'name': 'Dubai Creek Park', 'slug': 'dubai-creek-park', 'description': 'Riverside park with walking paths and picnic areas', 'significance': 'Popular recreational area with views of the creek and city skyline'},
+                    {'name': 'Al Seef', 'slug': 'al-seef', 'description': 'Heritage district with restored traditional buildings', 'significance': 'Preserves Dubai\'s architectural heritage from the 19th and 20th centuries'},
+                    {'name': 'Creek Side Promenade', 'slug': 'creek-side-promenade', 'description': 'Waterfront walkway connecting Deira and Bur Dubai', 'significance': 'Offers scenic views and connects historic districts'}
                 ],
                 'entrance_fees': 'Free access to public areas. Abra rides: 1 AED per person.',
                 'opening_hours': '24/7 access to public areas. Abra rides: 6:00 AM to 10:00 PM.',
@@ -6521,10 +7512,10 @@ def attraction_detail(request, country, slug):
                     'Temperature-controlled swimming pools available'
                 ],
                 'key_sites': [
-                    {'name': 'Jumeirah Beach Park', 'description': 'Public beach area with facilities and activities', 'significance': 'Free public access with beach volleyball and picnic areas'},
-                    {'name': 'Burj Al Arab Beach', 'description': 'Private beach area for Burj Al Arab guests', 'significance': 'Exclusive luxury beach experience'},
-                    {'name': 'Wild Wadi Beach', 'description': 'Beach area adjacent to the water park', 'significance': 'Family-friendly beach with water park access'},
-                    {'name': 'Jumeirah Beach Residence Beach', 'description': 'Beachfront promenade with restaurants', 'significance': 'Modern beach area with dining and shopping'}
+                    {'name': 'Jumeirah Beach Park', 'slug': 'jumeirah-beach-park', 'description': 'Public beach area with facilities and activities', 'significance': 'Free public access with beach volleyball and picnic areas'},
+                    {'name': 'Burj Al Arab Beach', 'slug': 'burj-al-arab-beach', 'description': 'Private beach area for Burj Al Arab guests', 'significance': 'Exclusive luxury beach experience'},
+                    {'name': 'Wild Wadi Beach', 'slug': 'wild-wadi-beach', 'description': 'Beach area adjacent to the water park', 'significance': 'Family-friendly beach with water park access'},
+                    {'name': 'Jumeirah Beach Residence Beach', 'slug': 'jumeirah-beach-residence-beach', 'description': 'Beachfront promenade with restaurants', 'significance': 'Modern beach area with dining and shopping'}
                 ],
                 'entrance_fees': 'Free public access. Beach clubs charge 50-200 AED for day passes.',
                 'opening_hours': '24/7 access. Beach clubs: 10:00 AM to sunset.',
@@ -6571,10 +7562,10 @@ def attraction_detail(request, country, slug):
                     'Regular cultural events and exhibitions'
                 ],
                 'key_sites': [
-                    {'name': 'Archaeological Gallery', 'description': 'Underground exhibits of ancient artifacts', 'significance': 'Showcases finds from Dubai\'s earliest settlements'},
-                    {'name': 'Traditional Life Gallery', 'description': 'Reconstructed souk and traditional house', 'significance': 'Demonstrates pre-oil Dubai lifestyle'},
-                    {'name': 'Pearl Diving Exhibit', 'description': 'Interactive display on pearl diving industry', 'significance': 'Highlights Dubai\'s maritime heritage'},
-                    {'name': 'Modern Dubai Gallery', 'description': 'Multimedia presentation of city\'s development', 'significance': 'Shows Dubai\'s rapid modernization'}
+                    {'name': 'Archaeological Gallery', 'slug': 'archaeological-gallery', 'description': 'Underground exhibits of ancient artifacts', 'significance': 'Showcases finds from Dubai\'s earliest settlements'},
+                    {'name': 'Traditional Life Gallery', 'slug': 'traditional-life-gallery', 'description': 'Reconstructed souk and traditional house', 'significance': 'Demonstrates pre-oil Dubai lifestyle'},
+                    {'name': 'Pearl Diving Exhibit', 'slug': 'pearl-diving-exhibit', 'description': 'Interactive display on pearl diving industry', 'significance': 'Highlights Dubai\'s maritime heritage'},
+                    {'name': 'Modern Dubai Gallery', 'slug': 'modern-dubai-gallery', 'description': 'Multimedia presentation of city\'s development', 'significance': 'Shows Dubai\'s rapid modernization'}
                 ],
                 'entrance_fees': '5 AED for adults. Free for children under 6.',
                 'opening_hours': '8:30 AM to 8:30 PM Saturday-Thursday, 2:30 PM to 8:30 PM Friday.',
@@ -6621,10 +7612,10 @@ def attraction_detail(request, country, slug):
                     'Preserves pre-oil Dubai architecture'
                 ],
                 'key_sites': [
-                    {'name': 'Wind Tower Houses', 'description': 'Traditional houses with distinctive wind catchers', 'significance': 'Showcase Persian Gulf architectural heritage'},
-                    {'name': 'Majlis Gallery', 'description': 'Contemporary art gallery in restored house', 'significance': 'Features rotating exhibitions of local and international artists'},
-                    {'name': 'Bastakiya Art Fair', 'description': 'Annual art event in the neighbourhood', 'significance': 'Showcases contemporary art in historic setting'},
-                    {'name': 'Traditional Courtyards', 'description': 'Restored open spaces with fountains', 'significance': 'Provide respite from heat and social gathering spaces'}
+                    {'name': 'Wind Tower Houses', 'slug': 'wind-tower-houses', 'description': 'Traditional houses with distinctive wind catchers', 'significance': 'Showcase Persian Gulf architectural heritage'},
+                    {'name': 'Majlis Gallery', 'slug': 'majlis-gallery', 'description': 'Contemporary art gallery in restored house', 'significance': 'Features rotating exhibitions of local and international artists'},
+                    {'name': 'Bastakiya Art Fair', 'slug': 'bastakiya-art-fair', 'description': 'Annual art event in the neighbourhood', 'significance': 'Showcases contemporary art in historic setting'},
+                    {'name': 'Traditional Courtyards', 'slug': 'traditional-courtyards', 'description': 'Restored open spaces with fountains', 'significance': 'Provide respite from heat and social gathering spaces'}
                 ],
                 'entrance_fees': 'Free access to public areas. Museum fees vary.',
                 'opening_hours': 'Galleries typically 10:00 AM to 6:00 PM.',
@@ -6671,10 +7662,10 @@ def attraction_detail(request, country, slug):
                     'Cost 170 million AED to construct'
                 ],
                 'key_sites': [
-                    {'name': 'Upper Observation Deck', 'description': '360-degree views at 150 meters', 'significance': 'Highest public viewpoint in Dubai Frame'},
-                    {'name': 'Lower Observation Deck', 'description': 'Views at 93 meters with glass floor', 'significance': 'Offers different perspective with transparent floor'},
-                    {'name': 'Multimedia Gallery', 'description': 'Interactive exhibits on Dubai\'s history', 'significance': 'Educational displays on city\'s development'},
-                    {'name': 'Bridge of Progress', 'description': 'Connecting bridge between platforms', 'significance': 'Symbolizes connection between past and future'}
+                    {'name': 'Upper Observation Deck', 'slug': 'upper-observation-deck', 'description': '360-degree views at 150 meters', 'significance': 'Highest public viewpoint in Dubai Frame'},
+                    {'name': 'Lower Observation Deck', 'slug': 'lower-observation-deck', 'description': 'Views at 93 meters with glass floor', 'significance': 'Offers different perspective with transparent floor'},
+                    {'name': 'Multimedia Gallery', 'slug': 'multimedia-gallery', 'description': 'Interactive exhibits on Dubai\'s history', 'significance': 'Educational displays on city\'s development'},
+                    {'name': 'Bridge of Progress', 'slug': 'bridge-of-progress', 'description': 'Connecting bridge between platforms', 'significance': 'Symbolizes connection between past and future'}
                 ],
                 'entrance_fees': '50 AED for adults. Free for children under 6.',
                 'opening_hours': '9:00 AM to 9:00 PM daily.',
@@ -6721,9 +7712,9 @@ def attraction_detail(request, country, slug):
                 ],
                 'key_sites': [
                     {'name': 'World\'s Largest Flower Sculpture', 'description': '15-meter tall floral structure', 'significance': 'Guinness World Record holder and iconic photo spot'},
-                    {'name': 'Heart of Love', 'description': 'Massive heart-shaped flower installation', 'significance': 'Popular romantic photo location'},
-                    {'name': 'Butterfly Garden', 'description': 'Enclosed garden with butterflies and flowers', 'significance': 'Interactive nature experience'},
-                    {'name': 'Seasonal Gardens', 'description': 'Themed floral displays that change with seasons', 'significance': 'Showcases different flower varieties throughout year'}
+                    {'name': 'Heart of Love', 'slug': 'heart-of-love', 'description': 'Massive heart-shaped flower installation', 'significance': 'Popular romantic photo location'},
+                    {'name': 'Butterfly Garden', 'slug': 'butterfly-garden', 'description': 'Enclosed garden with butterflies and flowers', 'significance': 'Interactive nature experience'},
+                    {'name': 'Seasonal Gardens', 'slug': 'seasonal-gardens', 'description': 'Themed floral displays that change with seasons', 'significance': 'Showcases different flower varieties throughout year'}
                 ],
                 'entrance_fees': '60 AED for adults. 30 AED for children 3-12.',
                 'opening_hours': '9:00 AM to 9:00 PM daily.',
@@ -6768,10 +7759,10 @@ def attraction_detail(request, country, slug):
                     'Accommodates up to 30,000 visitors daily'
                 ],
                 'key_sites': [
-                    {'name': 'International Pavilions', 'description': 'Authentic reproductions of world landmarks', 'significance': 'Showcase architecture and culture from different countries'},
-                    {'name': 'Cultural Shows', 'description': 'Daily performances of traditional dances and music', 'significance': 'Entertainment featuring artists from around the world'},
-                    {'name': 'Food Court', 'description': 'Diverse international cuisine options', 'significance': 'Culinary journey through global flavors'},
-                    {'name': 'Shopping Areas', 'description': 'Traditional crafts and souvenirs', 'significance': 'Authentic handicrafts from different cultures'}
+                    {'name': 'International Pavilions', 'slug': 'international-pavilions', 'description': 'Authentic reproductions of world landmarks', 'significance': 'Showcase architecture and culture from different countries'},
+                    {'name': 'Cultural Shows', 'slug': 'cultural-shows', 'description': 'Daily performances of traditional dances and music', 'significance': 'Entertainment featuring artists from around the world'},
+                    {'name': 'Food Court', 'slug': 'food-court', 'description': 'Diverse international cuisine options', 'significance': 'Culinary journey through global flavors'},
+                    {'name': 'Shopping Areas', 'slug': 'shopping-areas', 'description': 'Traditional crafts and souvenirs', 'significance': 'Authentic handicrafts from different cultures'}
                 ],
                 'entrance_fees': '15 AED for adults. Free for children under 3.',
                 'opening_hours': '4:00 PM to 12:00 AM daily (seasonal).',
@@ -6817,10 +7808,10 @@ def attraction_detail(request, country, slug):
                     'Capacity for 30,000 visitors daily'
                 ],
                 'key_sites': [
-                    {'name': 'Formula Rossa', 'description': 'World\'s fastest roller coaster reaching 240 km/h', 'significance': 'Guinness World Record holder and park\'s signature ride'},
-                    {'name': 'Racing Legends', 'description': 'Interactive exhibit on Ferrari\'s racing history', 'significance': 'Showcases Ferrari\'s championship-winning cars'},
-                    {'name': 'Junior GP Karting', 'description': 'Go-kart track for children and families', 'significance': 'Safe racing experience for younger visitors'},
-                    {'name': 'Ferrari Racing Academy', 'description': 'Professional racing simulators', 'significance': 'High-tech racing experience with real F1 cars'}
+                    {'name': 'Formula Rossa', 'slug': 'formula-rossa', 'description': 'World\'s fastest roller coaster reaching 240 km/h', 'significance': 'Guinness World Record holder and park\'s signature ride'},
+                    {'name': 'Racing Legends', 'slug': 'racing-legends', 'description': 'Interactive exhibit on Ferrari\'s racing history', 'significance': 'Showcases Ferrari\'s championship-winning cars'},
+                    {'name': 'Junior GP Karting', 'slug': 'junior-gp-karting', 'description': 'Go-kart track for children and families', 'significance': 'Safe racing experience for younger visitors'},
+                    {'name': 'Ferrari Racing Academy', 'slug': 'ferrari-racing-academy', 'description': 'Professional racing simulators', 'significance': 'High-tech racing experience with real F1 cars'}
                 ],
                 'entrance_fees': '295 AED for adults. 255 AED for children 3-12.',
                 'opening_hours': '11:00 AM to 8:00 PM Saturday-Wednesday, 11:00 AM to 10:00 PM Thursday-Friday.',
@@ -6866,10 +7857,10 @@ def attraction_detail(request, country, slug):
                     'Hosts various motorsport and entertainment events'
                 ],
                 'key_sites': [
-                    {'name': 'F1 Race Track', 'description': 'Professional Formula One circuit', 'significance': 'Hosts Abu Dhabi Grand Prix and other racing events'},
-                    {'name': 'Yas Marina Hotel', 'description': 'Hotel built into the circuit with track views', 'significance': 'Unique accommodation with F1 racing views'},
-                    {'name': 'Entertainment Venues', 'description': 'Restaurants, bars, and entertainment complexes', 'significance': 'Year-round dining and entertainment options'},
-                    {'name': 'VIP Areas', 'description': 'Premium viewing and hospitality areas', 'significance': 'Exclusive experiences during race weekends'}
+                    {'name': 'F1 Race Track', 'slug': 'f1-race-track', 'description': 'Professional Formula One circuit', 'significance': 'Hosts Abu Dhabi Grand Prix and other racing events'},
+                    {'name': 'Yas Marina Hotel', 'slug': 'yas-marina-hotel', 'description': 'Hotel built into the circuit with track views', 'significance': 'Unique accommodation with F1 racing views'},
+                    {'name': 'Entertainment Venues', 'slug': 'entertainment-venues', 'description': 'Restaurants, bars, and entertainment complexes', 'significance': 'Year-round dining and entertainment options'},
+                    {'name': 'VIP Areas', 'slug': 'vip-areas', 'description': 'Premium viewing and hospitality areas', 'significance': 'Exclusive experiences during race weekends'}
                 ],
                 'entrance_fees': 'Varies by event. Circuit tours available when no events.',
                 'opening_hours': 'Varies by events. Entertainment areas open daily.',
@@ -6914,10 +7905,10 @@ def attraction_detail(request, country, slug):
                     'Cultural events and festivals held regularly'
                 ],
                 'key_sites': [
-                    {'name': 'Corniche Beach', 'description': 'Pristine sandy beach with facilities', 'significance': 'Popular swimming and relaxation area'},
-                    {'name': 'Emirates Palace Hotel', 'description': 'Luxury hotel with corniche views', 'significance': 'Iconic landmark and hospitality venue'},
-                    {'name': 'Corniche Park', 'description': 'Green spaces with walking paths', 'significance': 'Recreational area for outdoor activities'},
-                    {'name': 'Waterfront Promenade', 'description': 'Scenic walkway with shops and cafes', 'significance': 'Popular for evening strolls and dining'}
+                    {'name': 'Corniche Beach', 'slug': 'corniche-beach', 'description': 'Pristine sandy beach with facilities', 'significance': 'Popular swimming and relaxation area'},
+                    {'name': 'Emirates Palace Hotel', 'slug': 'emirates-palace-hotel', 'description': 'Luxury hotel with corniche views', 'significance': 'Iconic landmark and hospitality venue'},
+                    {'name': 'Corniche Park', 'slug': 'corniche-park', 'description': 'Green spaces with walking paths', 'significance': 'Recreational area for outdoor activities'},
+                    {'name': 'Waterfront Promenade', 'slug': 'waterfront-promenade', 'description': 'Scenic walkway with shops and cafes', 'significance': 'Popular for evening strolls and dining'}
                 ],
                 'entrance_fees': 'Free access to public areas.',
                 'opening_hours': '24/7 access to promenade.',
@@ -6963,10 +7954,10 @@ def attraction_detail(request, country, slug):
                     'Educational programs and conservation focus'
                 ],
                 'key_sites': [
-                    {'name': 'Main Viewing Tunnel', 'description': '51-meter suspended tunnel with marine life', 'significance': 'Immersive underwater experience with sharks swimming overhead'},
-                    {'name': 'Shark Aquarium', 'description': 'Dedicated shark exhibit with various species', 'significance': 'Features sand tiger sharks, hammerheads, and reef sharks'},
-                    {'name': 'Ray Lagoon', 'description': 'Interactive area with stingrays', 'significance': 'Touch and feed experience with gentle rays'},
-                    {'name': 'Penguin Expedition', 'description': 'Antarctic penguin habitat', 'significance': 'Climate-controlled environment for penguin species'}
+                    {'name': 'Main Viewing Tunnel', 'slug': 'main-viewing-tunnel', 'description': '51-meter suspended tunnel with marine life', 'significance': 'Immersive underwater experience with sharks swimming overhead'},
+                    {'name': 'Shark Aquarium', 'slug': 'shark-aquarium', 'description': 'Dedicated shark exhibit with various species', 'significance': 'Features sand tiger sharks, hammerheads, and reef sharks'},
+                    {'name': 'Ray Lagoon', 'slug': 'ray-lagoon', 'description': 'Interactive area with stingrays', 'significance': 'Touch and feed experience with gentle rays'},
+                    {'name': 'Penguin Expedition', 'slug': 'penguin-expedition', 'description': 'Antarctic penguin habitat', 'significance': 'Climate-controlled environment for penguin species'}
                 ],
                 'entrance_fees': 'Dubai Aquarium: 95 AED. Underwater Zoo: 140 AED. Combined: 185 AED.',
                 'opening_hours': '10:00 AM to 10:00 PM daily.',
@@ -7012,9 +8003,9 @@ def attraction_detail(request, country, slug):
                     'Professional instruction for all levels'
                 ],
                 'key_sites': [
-                    {'name': 'Main Slope', 'description': 'Primary ski run for all skill levels', 'significance': 'Features varying difficulty sections'},
-                    {'name': 'Snow Park', 'description': 'Terrain park with jumps and obstacles', 'significance': 'For advanced skiers and snowboarders'},
-                    {'name': 'Penguin Habitat', 'description': 'Climate-controlled enclosure with Gentoo penguins', 'significance': 'Unique desert-meets-Arctic experience'},
+                    {'name': 'Main Slope', 'slug': 'main-slope', 'description': 'Primary ski run for all skill levels', 'significance': 'Features varying difficulty sections'},
+                    {'name': 'Snow Park', 'slug': 'snow-park', 'description': 'Terrain park with jumps and obstacles', 'significance': 'For advanced skiers and snowboarders'},
+                    {'name': 'Penguin Habitat', 'slug': 'penguin-habitat', 'description': 'Climate-controlled enclosure with Gentoo penguins', 'significance': 'Unique desert-meets-Arctic experience'},
                     {'name': 'Kids\' Slope', 'description': 'Gentle slope for children and beginners', 'significance': 'Safe learning environment for young skiers'}
                 ],
                 'entrance_fees': 'Basic entry: 260 AED. Premium packages: 350-450 AED.',
@@ -7061,10 +8052,10 @@ def attraction_detail(request, country, slug):
                     'Capacity for 1,500 guests'
                 ],
                 'key_sites': [
-                    {'name': 'Aquaventure Water Park', 'description': 'Massive water park with slides and marine habitats', 'significance': 'Features world\'s largest open-air marine habitat'},
-                    {'name': 'The Lost Chambers Aquarium', 'description': 'Underwater aquarium with marine exhibits', 'significance': 'Showcases over 65,000 marine creatures'},
-                    {'name': 'Underwater Suite', 'description': 'Luxury suite with underwater views', 'significance': 'Unique accommodation with marine life views'},
-                    {'name': 'Dolphin Bay', 'description': 'Interactive dolphin and sea lion shows', 'significance': 'Educational and entertaining marine performances'}
+                    {'name': 'Aquaventure Water Park', 'slug': 'aquaventure-water-park', 'description': 'Massive water park with slides and marine habitats', 'significance': 'Features world\'s largest open-air marine habitat'},
+                    {'name': 'The Lost Chambers Aquarium', 'slug': 'the-lost-chambers-aquarium', 'description': 'Underwater aquarium with marine exhibits', 'significance': 'Showcases over 65,000 marine creatures'},
+                    {'name': 'Underwater Suite', 'slug': 'underwater-suite', 'description': 'Luxury suite with underwater views', 'significance': 'Unique accommodation with marine life views'},
+                    {'name': 'Dolphin Bay', 'slug': 'dolphin-bay', 'description': 'Interactive dolphin and sea lion shows', 'significance': 'Educational and entertaining marine performances'}
                 ],
                 'entrance_fees': 'Water park day pass: 350 AED. Aquarium: 100 AED.',
                 'opening_hours': 'Water park: 10:00 AM to 6:00 PM. Hotel facilities vary.',
@@ -7110,10 +8101,10 @@ def attraction_detail(request, country, slug):
                     'Lifeguards and safety measures throughout'
                 ],
                 'key_sites': [
-                    {'name': 'Jumeirah Sceirah', 'description': 'World\'s largest water coaster with dark ride elements', 'significance': 'Signature attraction combining coaster and water slide'},
-                    {'name': 'Burj Suraj', 'description': 'Multi-level water playground', 'significance': 'Family-friendly area with various slides'},
-                    {'name': 'Riptide Racers', 'description': '4-person racing slides', 'significance': 'Thrilling competition between friends'},
-                    {'name': 'Wave Pool', 'description': 'Large pool with generated waves', 'significance': 'Surfing and wave-riding experience'}
+                    {'name': 'Jumeirah Sceirah', 'slug': 'jumeirah-sceirah', 'description': 'World\'s largest water coaster with dark ride elements', 'significance': 'Signature attraction combining coaster and water slide'},
+                    {'name': 'Burj Suraj', 'slug': 'burj-suraj', 'description': 'Multi-level water playground', 'significance': 'Family-friendly area with various slides'},
+                    {'name': 'Riptide Racers', 'slug': 'riptide-racers', 'description': '4-person racing slides', 'significance': 'Thrilling competition between friends'},
+                    {'name': 'Wave Pool', 'slug': 'wave-pool', 'description': 'Large pool with generated waves', 'significance': 'Surfing and wave-riding experience'}
                 ],
                 'entrance_fees': 'Adult day pass: 295 AED. Child day pass: 265 AED.',
                 'opening_hours': '10:00 AM to 6:00 PM daily (seasonal).',
@@ -7159,10 +8150,10 @@ def attraction_detail(request, country, slug):
                     'Capacity for 4,000 visitors daily'
                 ],
                 'key_sites': [
-                    {'name': 'African Savanna', 'description': 'Large habitat with giraffes and zebras', 'significance': 'Recreates African grassland environment'},
-                    {'name': 'Asian Elephant Habitat', 'description': 'Dedicated area for Asian elephants', 'significance': 'Features conservation and enrichment programs'},
-                    {'name': 'Primate Island', 'description': 'Monkey and ape exhibits', 'significance': 'Interactive viewing of primate behavior'},
-                    {'name': 'Bird Aviary', 'description': 'Large walk-through bird enclosure', 'significance': 'Features tropical and exotic bird species'}
+                    {'name': 'African Savanna', 'slug': 'african-savanna', 'description': 'Large habitat with giraffes and zebras', 'significance': 'Recreates African grassland environment'},
+                    {'name': 'Asian Elephant Habitat', 'slug': 'asian-elephant-habitat', 'description': 'Dedicated area for Asian elephants', 'significance': 'Features conservation and enrichment programs'},
+                    {'name': 'Primate Island', 'slug': 'primate-island', 'description': 'Monkey and ape exhibits', 'significance': 'Interactive viewing of primate behavior'},
+                    {'name': 'Bird Aviary', 'slug': 'bird-aviary', 'description': 'Large walk-through bird enclosure', 'significance': 'Features tropical and exotic bird species'}
                 ],
                 'entrance_fees': 'Adult: 25 AED. Child (3-12): 15 AED.',
                 'opening_hours': '10:00 AM to 6:00 PM daily.',
