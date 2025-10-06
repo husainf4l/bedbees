@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import pytz
+from slugify import slugify
 
 # Create your models here.
 
@@ -2943,3 +2944,35 @@ class RentalCarPhoto(models.Model):
 
     def __str__(self):
         return f"Photo for {self.rental_car.vehicle_name}"
+
+
+class Country(models.Model):
+    """Country model for destinations"""
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=3, unique=True, help_text="ISO country code")
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    image = models.URLField(blank=True, help_text="URL to country image")
+    accommodations_count = models.IntegerField(default=0)
+    tours_count = models.IntegerField(default=0)
+    attractions = models.JSONField(blank=True, null=True, help_text="List of attractions")
+
+    # Status
+    is_active = models.BooleanField(default=True)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Country'
+        verbose_name_plural = 'Countries'
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
