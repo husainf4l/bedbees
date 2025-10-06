@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-b9=a(tdwi3^j4d_cv)=j5!b0#tyn2h7z7sa*2#0((4sqsbw2mx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', 'bedbees.com', 'www.bedbees.com']
 
 
 # Application definition

@@ -1,0 +1,13 @@
+# Logo Placeholder
+
+This is a placeholder for your Bedbees logo PNG file.
+
+Please replace this file with your actual logo.png file.
+
+Recommended specifications:
+- Format: PNG
+- Size: 200x60px (for navbar) or 400x120px (for hero section)
+- Background: Transparent preferred
+- File name: logo.png
+
+Place your logo file in: core/static/core/images/logo.png
