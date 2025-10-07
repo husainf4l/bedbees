@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .forms import HostRegistrationForm, HostProfileForm, AccommodationForm, TourForm, TourGuideForm, RentalCarForm
-from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto, TourGuide, TourGuidePhoto, RentalCar, RentalCarPhoto
+from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto, TourGuide, TourGuidePhoto, RentalCar, RentalCarPhoto, Country
 
 def home(request):
     """Home page view with role-based access"""
@@ -25,7 +25,24 @@ def home(request):
             # Create profile for traveler if it doesn't exist
             UserProfile.objects.create(user=request.user, is_host=False)
     
-    return render(request, 'core/home.html')
+    # Get data for homepage display
+    countries = Country.objects.all()[:8]  # Limit to 8 for display
+    accommodations = Accommodation.objects.filter(
+        is_published=True, 
+        is_active=True
+    ).select_related('host').prefetch_related('photos')[:6]
+    tours = Tour.objects.filter(
+        is_published=True, 
+        is_active=True
+    ).select_related('host').prefetch_related('photos')[:6]
+    
+    context = {
+        'countries': countries,
+        'accommodations': accommodations,
+        'tours': tours,
+    }
+    
+    return render(request, 'core/home.html', context)
 
 def search_results(request):
     """Search results page with filters"""
