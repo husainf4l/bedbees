@@ -11250,12 +11250,10 @@ def attraction_detail(request, country, slug):
                     '/static/core/images/building-with-clock-front-cloudy-sky-background.jpg',
                 ],
             },
-        }
-    },
-
-    'morocco': {
-        'bahia-palace': {
-            'id': 'bahia-palace',
+        },
+        'morocco': {
+            'bahia-palace': {
+                'id': 'bahia-palace',
             'name': 'Bahia Palace',
             'location': 'Marrakech, Morocco',
             'description': 'The Bahia Palace is a stunning example of Moroccan architecture, featuring intricate carvings, colorful tiles, and beautiful gardens.',
@@ -12008,6 +12006,7 @@ def attraction_detail(request, country, slug):
             'image': '/static/core/images/constantine-gorge.jpg'
         }
     }
+}
 
     country_data = demo_attractions.get(country.lower())
     if not country_data:
