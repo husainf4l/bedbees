@@ -67,19 +67,17 @@ demo_attractions = {
                     'Purchase tickets online in advance during peak season',
                     'Respect the site by not climbing on monuments or removing artifacts'
                 ],
-                'image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
-                'hero_image': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
+                'image': '/static/core/images/attractions/jordan-petra-treasury.webp',
+                'hero_image': '/static/core/images/attractions/jordan-petra-treasury.webp',
                 'photos': [
-                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80',
-                    'https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80',
-                    'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/attractions/jordan-petra-treasury.webp',
+                    '/static/core/images/attractions/jordan-petra-monastery.webp',
+                    '/static/core/images/attractions/jordan-petra-siq.webp',
+                    '/static/core/images/attractions/jordan-petra-royal-tombs.webp',
+                    '/static/core/images/attractions/jordan-petra-great-temple.webp',
+                    '/static/core/images/attractions/jordan-petra-colonnade.webp',
+                    '/static/core/images/attractions/jordan-petra-facade.webp',
+                    '/static/core/images/attractions/jordan-petra-view.webp'
                 ],
                 'coordinates': '30.3285° N, 35.4444° E',
                 'unesco_status': 'UNESCO World Heritage Site since 1985',
@@ -127,10 +125,17 @@ demo_attractions = {
                     'Watch the sunset and sunrise for spectacular desert colors',
                     'Stargazing at night is phenomenal due to no light pollution'
                 ],
+                'image': '/static/core/images/attractions/jordan-wadi-rum-desert.webp',
+                'hero_image': '/static/core/images/attractions/jordan-wadi-rum-desert.webp',
                 'photos': [
-                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                    'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/attractions/jordan-wadi-rum-desert.webp',
+                    '/static/core/images/attractions/jordan-wadi-rum-sunset.webp',
+                    '/static/core/images/attractions/jordan-wadi-rum-rocks.webp',
+                    '/static/core/images/attractions/jordan-wadi-rum-landscape.jpg',
+                    '/static/core/images/attractions/jordan-wadi-rum-canyon.jpg',
+                    '/static/core/images/attractions/jordan-wadi-rum-dunes.jpg',
+                    '/static/core/images/attractions/jordan-wadi-rum-mountain.jpg',
+                    '/static/core/images/attractions/jordan-wadi-rum-camp.jpg'
                 ],
                 'coordinates': '29.5753° N, 35.4207° E',
                 'unesco_status': 'UNESCO World Heritage Site since 2011',
@@ -171,7 +176,16 @@ demo_attractions = {
                     'Visit early morning or late afternoon to avoid midday heat'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/attractions/jordan-dead-sea1.webp',
+                    '/static/core/images/attractions/jordan-dead-sea2.webp',
+                    '/static/core/images/attractions/jordan-dead-sea3.webp',
+                    '/static/core/images/attractions/jordan-dead-sea4.webp',
+                    '/static/core/images/attractions/jordan-dead-sea5.webp',
+                    '/static/core/images/attractions/jordan-dead-sea6.webp',
+                    '/static/core/images/attractions/jordan-dead-sea7.webp',
+                    '/static/core/images/attractions/jordan-dead-sea8.webp',
+                    '/static/core/images/attractions/jordan-dead-sea9.webp',
+                    '/static/core/images/attractions/jordan-dead-sea10.webp'
                 ],
                 'coordinates': '31.5° N, 35.5° E',
                 'area': '605 square kilometers (currently)',
@@ -216,7 +230,13 @@ demo_attractions = {
                     'Visit during the Jerash Festival in July for cultural performances'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/attractions/jordan-jerash1.webp',
+                    '/static/core/images/attractions/jordan-jerash2.webp',
+                    '/static/core/images/attractions/jordan-jerash3.webp',
+                    '/static/core/images/attractions/jordan-jerash4.webp',
+                    '/static/core/images/attractions/jordan-jerash5.webp',
+                    '/static/core/images/attractions/jordan-jerash6.webp',
+                    '/static/core/images/attractions/jordan-jerash7.webp'
                 ],
                 'coordinates': '32.2811° N, 35.8911° E',
                 'annual_visitors': 'Over 250,000',
