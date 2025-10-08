@@ -47,6 +47,12 @@ urlpatterns = [
     path('search/', views.search_results, name='search_results'),
     path('cart/', views.cart, name='cart'),
     path('wishlist/', views.wishlist, name='wishlist'),
+    
+    # New User Account Pages
+    path('genius-rewards/', views.genius_rewards, name='genius_rewards'),
+    path('credits-vouchers/', views.credits_vouchers, name='credits_vouchers'),
+    path('my-account/', views.my_account, name='my_account'),
+    path('reviews/', views.reviews, name='reviews'),
 
     # Bulk actions for host dashboard
     path('bulk-activate-listings/', views.bulk_activate_listings, name='bulk_activate_listings'),
