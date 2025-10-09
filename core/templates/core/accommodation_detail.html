@@ -51,8 +51,10 @@
 </section>
 
 <!-- Photo Gallery Section -->
-<section class="container mx-auto px-4 -mt-32 relative z-10 mb-8">
-    {% include 'core/photo_gallery.html' with gallery_id='accommodation-gallery' hero_photos=hero_photos all_photos=all_photos total_photos=total_photos %}
+<section class="container mx-auto px-4 -mt-24 relative z-10 mb-8">
+    <div class="max-w-5xl mx-auto">
+        {% include 'core/photo_gallery.html' with gallery_id='accommodation-gallery' hero_photos=hero_photos all_photos=all_photos total_photos=total_photos %}
+    </div>
 </section>
 
 <div class="container mx-auto px-4 py-6">
@@ -149,6 +151,140 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Room Types & Rates -->
+            {% if accommodation.room_types %}
+            <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Room Types & Rates</h2>
+                <div class="space-y-4">
+                    {% for room in accommodation.room_types %}
+                    <div class="border border-gray-200 rounded-lg p-4 {% if not room.available %}opacity-60{% endif %}">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ room.name }}</h3>
+                                    {% if room.available %}
+                                    <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Available</span>
+                                    {% else %}
+                                    <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Sold Out</span>
+                                    {% endif %}
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600 mb-3">
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h3M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                        <span>{{ room.size }}</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
+                                        </svg>
+                                        <span>{{ room.beds }}</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                        </svg>
+                                        <span>Up to {{ room.max_guests }} guests</span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    {% for amenity in room.amenities %}
+                                    <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{ amenity }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="text-right mt-3 md:mt-0 md:ml-4">
+                                <div class="text-2xl font-bold text-gray-900">${{ room.price }}</div>
+                                <div class="text-sm text-gray-600">per night</div>
+                                {% if room.available %}
+                                <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Select Room
+                                </button>
+                                {% else %}
+                                <button disabled class="mt-2 bg-gray-300 text-gray-500 px-4 py-2 rounded-lg text-sm font-medium cursor-not-allowed">
+                                    Unavailable
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Hotel Facilities -->
+            {% if accommodation.facilities %}
+            <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Hotel Facilities</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for facility in accommodation.facilities %}
+                    <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            {% if facility.icon == 'pool' %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                            {% elif facility.icon == 'spa' %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            {% elif facility.icon == 'fitness' %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            {% elif facility.icon == 'restaurant' %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"></path>
+                            </svg>
+                            {% elif facility.icon == 'bar' %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 0v1m-2 0V6a2 2 0 00-2 0v1m2 0V6a2 2 0 012 0v1M3 21h18M12 8h5l3 3-3 3h-5M3 12h5l3-3-3-3H3v6z"></path>
+                            </svg>
+                            {% else %}
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ facility.name }}</h3>
+                            <p class="text-sm text-gray-600">{{ facility.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Availability Calendar -->
+            {% if accommodation.availability_calendar %}
+            <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Availability & Pricing</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {% for date, info in accommodation.availability_calendar.items %}
+                    <div class="border rounded-lg p-3 {% if info.available %}border-green-200 bg-green-50{% else %}border-red-200 bg-red-50{% endif %}">
+                        <div class="text-sm font-medium text-gray-900">{{ date }}</div>
+                        <div class="flex items-center justify-between mt-1">
+                            <span class="text-lg font-bold {% if info.available %}text-green-700{% else %}text-red-700{% endif %}">
+                                ${{ info.price }}
+                            </span>
+                            {% if info.available %}
+                            <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">Available</span>
+                            {% else %}
+                            <span class="text-xs text-red-600 bg-red-100 px-2 py-1 rounded">Booked</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">Showing sample dates. Use the booking form to check availability for your specific dates.</p>
+                </div>
+            </section>
+            {% endif %}
 
             <!-- Policies -->
             <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
@@ -332,6 +468,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     nextDay.setDate(nextDay.getDate() + 1);
                     checkoutInput.value = nextDay.toISOString().split('T')[0];
                 }
+                
+                // Load availability when dates change
+                loadRealAvailability();
             }
         });
 
@@ -343,8 +482,93 @@ document.addEventListener('DOMContentLoaded', function() {
                 const nextDay = new Date(checkinDate);
                 nextDay.setDate(nextDay.getDate() + 1);
                 this.value = nextDay.toISOString().split('T')[0];
+            } else if (checkinDate && checkoutDate) {
+                // Load availability when dates change
+                loadRealAvailability();
             }
         });
+        
+        // Load initial availability
+        loadRealAvailability();
+    }
+    
+    // Function to load real availability from calendar API
+    function loadRealAvailability() {
+        const accommodationId = {{ accommodation.id }};
+        const today = new Date();
+        const nextMonth = new Date(today);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        
+        const startDate = formatDate(today);
+        const endDate = formatDate(nextMonth);
+        
+        fetch(`/api/accommodation/${accommodationId}/availability/?start_date=${startDate}&end_date=${endDate}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateAvailabilityDisplay(data.availability);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading availability:', error);
+            });
+    }
+    
+    function updateAvailabilityDisplay(availability) {
+        // Find the availability section
+        const availabilitySection = document.querySelector('.bg-white.rounded-xl.shadow-lg.p-6.mb-6');
+        if (!availabilitySection) return;
+        
+        // Find the grid container
+        const gridContainer = availabilitySection.querySelector('.grid');
+        if (!gridContainer) return;
+        
+        // Clear existing content
+        gridContainer.innerHTML = '';
+        
+        // Populate with real availability data
+        Object.entries(availability).forEach(([date, info]) => {
+            const dateObj = new Date(date);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            
+            const card = document.createElement('div');
+            card.className = `border rounded-lg p-3 ${info.available ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`;
+            
+            card.innerHTML = `
+                <div class="text-sm font-medium text-gray-900">${formattedDate}</div>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="text-lg font-bold ${info.available ? 'text-green-700' : 'text-red-700'}">
+                        $${info.price}
+                    </span>
+                    ${info.available 
+                        ? '<span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">Available</span>'
+                        : '<span class="text-xs text-red-600 bg-red-100 px-2 py-1 rounded">Booked</span>'
+                    }
+                </div>
+                ${info.rooms_available !== undefined 
+                    ? `<div class="text-xs text-gray-600 mt-1">${info.rooms_available} room(s) left</div>`
+                    : ''
+                }
+            `;
+            
+            gridContainer.appendChild(card);
+        });
+        
+        // Update notice text
+        const notice = availabilitySection.querySelector('.text-sm.text-gray-600');
+        if (notice) {
+            notice.textContent = 'Real-time availability. Prices may change based on demand.';
+        }
+    }
+    
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 });
 </script>

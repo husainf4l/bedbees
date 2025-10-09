@@ -696,7 +696,7 @@ def accommodation_detail(request, id):
         checkout = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
 
     # First check if this is a demo accommodation (string ID)
-    if str(id) in [str(i) for i in range(1, 21)]:
+    if str(id) in [str(i) for i in range(1, 50)]:
         # This is a demo accommodation - get it from the demo data in accommodations view
         # We'll import the demo data here
         demo_accommodations = [
@@ -1499,6 +1499,105 @@ def accommodation_detail(request, id):
             'check_in_time': '14:00',
             'check_out_time': '11:00',
             'property_highlights': ['Big Five wildlife viewing', 'Private viewing decks', 'Guided safari drives', 'Authentic Maasai cultural experiences']
+        },
+        {
+            'id': '44',
+            'name': 'Grand Palace Hotel & Spa',
+            'location': 'Dubai Downtown, UAE',
+            'description': 'Experience luxury redefined at our iconic downtown hotel featuring world-class amenities, stunning city views, and unparalleled service. Located in the heart of Dubai\'s business district with direct access to premium shopping and dining.',
+            'price': 299,
+            'currency': 'USD',
+            'rating': 4.7,
+            'reviews': 2847,
+            'type': 'hotel',
+            'amenities': ['Free WiFi', 'Infinity Pool', 'Full-Service Spa', 'Fitness Center', 'Business Center', 'Concierge Service', 'Valet Parking', 'Room Service', 'Airport Shuttle', 'Multiple Restaurants'],
+            'image': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            'photos': [
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1578774204375-826dc5d996ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1596436889106-be35e843f974?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1568495248636-6432b97bd949?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                'https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+            ],
+            'bedrooms': 1,
+            'bathrooms': 1,
+            'max_guests': 3,
+            'room_type': 'Deluxe City View King Room',
+            'cancellation_policy': 'Free cancellation up to 24 hours before check-in',
+            'check_in_time': '15:00',
+            'check_out_time': '12:00',
+            'property_highlights': ['Burj Khalifa views', 'Dubai Mall nearby', '24/7 concierge', 'Luxury spa treatments', 'Executive lounge access', 'Complimentary airport transfers'],
+            'room_types': [
+                {
+                    'name': 'Standard City View',
+                    'size': '35 sqm',
+                    'beds': '1 King or 2 Twin beds',
+                    'price': 199,
+                    'max_guests': 2,
+                    'amenities': ['City view', 'Work desk', 'Minibar', 'Coffee machine', 'Free WiFi'],
+                    'available': True
+                },
+                {
+                    'name': 'Deluxe City View King Room',
+                    'size': '42 sqm',
+                    'beds': '1 King bed',
+                    'price': 299,
+                    'max_guests': 3,
+                    'amenities': ['Panoramic city view', 'Seating area', 'Premium minibar', 'Nespresso machine', 'Marble bathroom'],
+                    'available': True
+                },
+                {
+                    'name': 'Executive Suite',
+                    'size': '65 sqm',
+                    'beds': '1 King bed + Sofa bed',
+                    'price': 499,
+                    'max_guests': 4,
+                    'amenities': ['Burj Khalifa view', 'Separate living area', 'Executive lounge access', 'Butler service', 'Premium bathroom amenities'],
+                    'available': False
+                },
+                {
+                    'name': 'Presidential Suite',
+                    'size': '120 sqm',
+                    'beds': '1 King bed + 2 bedrooms',
+                    'price': 899,
+                    'max_guests': 6,
+                    'amenities': ['360-degree city views', 'Private dining room', 'Personal butler', 'Champagne service', 'Private elevator access'],
+                    'available': True
+                }
+            ],
+            'facilities': [
+                {'name': 'Infinity Pool', 'description': 'Rooftop infinity pool with city skyline views', 'icon': 'pool'},
+                {'name': 'Zen Spa', 'description': 'Award-winning spa with traditional and modern treatments', 'icon': 'spa'},
+                {'name': 'Fitness Center', 'description': '24/7 state-of-the-art fitness facility', 'icon': 'fitness'},
+                {'name': 'Azure Restaurant', 'description': 'Fine dining with international cuisine', 'icon': 'restaurant'},
+                {'name': 'Sky Lounge', 'description': 'Rooftop bar with panoramic city views', 'icon': 'bar'},
+                {'name': 'Business Center', 'description': 'Fully equipped business facilities', 'icon': 'business'},
+                {'name': 'Concierge Service', 'description': '24/7 personalized guest services', 'icon': 'concierge'},
+                {'name': 'Valet Parking', 'description': 'Complimentary valet parking service', 'icon': 'parking'}
+            ],
+            'availability_calendar': {
+                '2025-10-10': {'available': True, 'price': 299},
+                '2025-10-11': {'available': True, 'price': 299},
+                '2025-10-12': {'available': False, 'price': 299},
+                '2025-10-13': {'available': True, 'price': 349},
+                '2025-10-14': {'available': True, 'price': 349},
+                '2025-10-15': {'available': True, 'price': 399},
+                '2025-10-16': {'available': True, 'price': 399},
+                '2025-10-17': {'available': True, 'price': 299},
+                '2025-10-18': {'available': True, 'price': 299},
+                '2025-10-19': {'available': False, 'price': 299},
+                '2025-10-20': {'available': True, 'price': 299}
+            }
         }
     ]
 

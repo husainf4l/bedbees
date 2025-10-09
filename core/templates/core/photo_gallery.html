@@ -3,28 +3,28 @@
     <!-- Hero Carousel -->
     <div class="hero-carousel relative overflow-hidden rounded-xl shadow-lg bg-gray-100">
         <!-- Main Image Container -->
-        <div class="hero-main relative aspect-[16/10] overflow-hidden">
-            {% for photo in hero_photos_objects %}
+        <div class="hero-main relative aspect-[16/9] overflow-hidden max-h-[480px]">
+            {% for photo in hero_photos %}
             <div class="hero-slide absolute inset-0 transition-opacity duration-500 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
                  data-slide="{{ forloop.counter0 }}"
                  data-photo-id="{{ photo.id }}"
-                 data-media-type="{{ photo.media_type }}">
+                 data-media-type="{{ photo.media_type|default:'image' }}">
 
-                {% if photo.is_video %}
+                {% if photo.media_type == 'video' %}
                 <video class="w-full h-full object-cover"
-                       poster="{{ photo.get_image_url }}"
+                       poster="{{ photo.image_url }}"
                        preload="metadata"
                        muted
                        playsinline>
-                    {% if photo.original_file %}
-                    <source src="{{ photo.original_file.url }}" type="{{ photo.mime_type|default:'video/mp4' }}">
+                    {% if photo.video_url %}
+                    <source src="{{ photo.video_url }}" type="video/mp4">
                     {% endif %}
                     Your browser does not support the video tag.
                 </video>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    {% if photo.original_file %}
+                    {% if photo.video_url %}
                     <button class="play-button bg-black/50 hover:bg-black/70 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110"
-                            data-video-src="{{ photo.original_file.url }}">
+                            data-video-src="{{ photo.video_url }}">
                         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z"/>
                         </svg>
@@ -37,22 +37,20 @@
                     </div>
                     {% endif %}
                 </div>
-                {% elif photo.is_360 %}
+                {% elif photo.media_type == '360' %}
                 <div class="w-full h-full relative">
-                    <img src="{{ photo.get_image_url }}"
+                    <img src="{{ photo.image_url }}"
                          alt="{{ photo.alt_text|default:photo.title }}"
-                         class="w-full h-full object-cover"
-                         {% if photo.original_file %}data-360-image="{{ photo.original_file.url }}"{% endif %}>
+                         class="w-full h-full object-cover">
                     <div class="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
                         360°
                     </div>
                 </div>
                 {% else %}
-                <img src="{{ photo.get_image_url }}"
+                <img src="{{ photo.image_url }}"
                      alt="{{ photo.alt_text|default:photo.title }}"
                      class="w-full h-full object-cover"
-                     srcset="{{ photo.get_srcset }}"
-                     sizes="{{ photo.get_sizes }}">
+                     loading="lazy">
                 {% endif %}
 
                 <!-- Caption Overlay -->
@@ -87,13 +85,13 @@
         <!-- Thumbnails Row -->
         {% if hero_photos|length > 1 %}
         <div class="hero-thumbnails flex gap-2 p-4 bg-white/95 backdrop-blur-sm overflow-x-auto">
-            {% for photo in hero_photos_objects %}
-            <button class="thumbnail-btn flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 {% if forloop.first %}border-blue-500 shadow-lg{% else %}border-gray-200 hover:border-gray-400{% endif %}"
+            {% for photo in hero_photos %}
+            <button class="thumbnail-btn flex-shrink-0 w-14 h-10 rounded-lg overflow-hidden border-2 transition-all duration-300 {% if forloop.first %}border-blue-500 shadow-lg{% else %}border-gray-200 hover:border-gray-400{% endif %}"
                     data-slide="{{ forloop.counter0 }}"
                     data-photo-id="{{ photo.id }}">
-                {% if photo.is_video %}
+                {% if photo.media_type == 'video' %}
                 <div class="relative w-full h-full">
-                    <img src="{{ photo.get_image_url }}"
+                    <img src="{{ photo.image_url }}"
                          alt="{{ photo.alt_text|default:photo.title }}"
                          class="w-full h-full object-cover">
                     <div class="absolute inset-0 flex items-center justify-center bg-black/30">
@@ -102,9 +100,9 @@
                         </svg>
                     </div>
                 </div>
-                {% elif photo.is_360 %}
+                {% elif photo.media_type == '360' %}
                 <div class="relative w-full h-full">
-                    <img src="{{ photo.get_image_url }}"
+                    <img src="{{ photo.image_url }}"
                          alt="{{ photo.alt_text|default:photo.title }}"
                          class="w-full h-full object-cover">
                     <div class="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
@@ -112,7 +110,7 @@
                     </div>
                 </div>
                 {% else %}
-                <img src="{{ photo.get_image_url }}"
+                <img src="{{ photo.image_url }}"
                      alt="{{ photo.alt_text|default:photo.title }}"
                      class="w-full h-full object-cover">
                 {% endif %}
@@ -149,20 +147,20 @@
 
         <!-- Main Image/Video Container -->
         <div class="lightbox-main relative max-w-5xl max-h-full flex items-center justify-center">
-            {% for photo in all_photos_objects %}
+            {% for photo in all_photos %}
             <div class="lightbox-slide absolute inset-0 transition-opacity duration-300 {% if forloop.first %}opacity-100{% else %}opacity-0{% endif %}"
                  data-slide="{{ forloop.counter0 }}"
                  data-photo-id="{{ photo.id }}"
-                 data-media-type="{{ photo.media_type }}">
+                 data-media-type="{{ photo.media_type|default:'image' }}">
 
-                {% if photo.is_video and photo.original_file %}
+                {% if photo.media_type == 'video' and photo.video_url %}
                 <video class="lightbox-video max-w-full max-h-full object-contain"
                        controls
                        preload="metadata">
-                    <source src="{{ photo.original_file.url }}" type="{{ photo.mime_type|default:'video/mp4' }}">
+                    <source src="{{ photo.video_url }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                {% elif photo.is_video %}
+                {% elif photo.media_type == 'video' %}
                 <div class="lightbox-video-placeholder max-w-full max-h-full flex items-center justify-center bg-gray-100">
                     <div class="text-center">
                         <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
@@ -171,19 +169,9 @@
                         <p class="text-gray-600">Video unavailable</p>
                     </div>
                 </div>
-                {% elif photo.is_360 and photo.original_file %}
+                {% elif photo.media_type == '360' %}
                 <div class="lightbox-360 max-w-full max-h-full">
-                    <img src="{{ photo.get_image_url }}"
-                         alt="{{ photo.alt_text|default:photo.title }}"
-                         class="max-w-full max-h-full object-contain"
-                         data-360-viewer="{{ photo.original_file.url }}">
-                    <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
-                        360° - Drag to explore
-                    </div>
-                </div>
-                {% elif photo.is_360 %}
-                <div class="lightbox-360 max-w-full max-h-full">
-                    <img src="{{ photo.get_image_url }}"
+                    <img src="{{ photo.image_url }}"
                          alt="{{ photo.alt_text|default:photo.title }}"
                          class="max-w-full max-h-full object-contain">
                     <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
@@ -191,7 +179,7 @@
                     </div>
                 </div>
                 {% else %}
-                <img src="{{ photo.get_image_url }}"
+                <img src="{{ photo.image_url }}"
                      alt="{{ photo.alt_text|default:photo.title }}"
                      class="lightbox-image max-w-full max-h-full object-contain select-none"
                      data-zoomable="true">
@@ -244,12 +232,12 @@
 
         <!-- Thumbnails Strip (Mobile) -->
         <div class="lightbox-thumbnails md:hidden absolute bottom-20 left-4 right-4 flex gap-2 overflow-x-auto bg-black/50 rounded-lg p-2">
-            {% for photo in all_photos_objects %}
+            {% for photo in all_photos %}
             <button class="lightbox-thumb flex-shrink-0 w-12 h-12 rounded overflow-hidden border-2 transition-all duration-300 {% if forloop.first %}border-white{% else %}border-gray-500 hover:border-gray-300{% endif %}"
                     data-slide="{{ forloop.counter0 }}">
-                {% if photo.is_video %}
+                {% if photo.media_type == 'video' %}
                 <div class="relative w-full h-full">
-                    <img src="{{ photo.get_image_url }}"
+                    <img src="{{ photo.image_url }}"
                          alt="{{ photo.alt_text|default:photo.title }}"
                          class="w-full h-full object-cover">
                     <div class="absolute inset-0 flex items-center justify-center bg-black/30">
@@ -259,7 +247,7 @@
                     </div>
                 </div>
                 {% else %}
-                <img src="{{ photo.get_image_url }}"
+                <img src="{{ photo.image_url }}"
                      alt="{{ photo.alt_text|default:photo.title }}"
                      class="w-full h-full object-cover">
                 {% endif %}
@@ -484,12 +472,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function nextLightboxSlide() {
-        const nextIndex = (lightboxCurrentSlide + 1) % allPhotos;
+        const nextIndex = (lightboxCurrentSlide + 1) % allPhotos.length;
         showLightboxSlide(nextIndex);
     }
 
     function prevLightboxSlide() {
-        const prevIndex = (lightboxCurrentSlide - 1 + allPhotos) % allPhotos;
+        const prevIndex = (lightboxCurrentSlide - 1 + allPhotos.length) % allPhotos.length;
         showLightboxSlide(prevIndex);
     }
 

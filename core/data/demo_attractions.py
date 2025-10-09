@@ -278,7 +278,13 @@ demo_attractions = {
                     'Allow 1-2 hours for the visit'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/mountnebo.webp',
+                    '/static/core/images/mountnebo1.webp',
+                    '/static/core/images/mountnebo2.webp',
+                    '/static/core/images/mountnebo3.webp',
+                    '/static/core/images/mountnebo4.webp',
+                    '/static/core/images/mountnebo5.webp',
+                    '/static/core/images/mountnebo6.webp'
                 ],
                 'coordinates': '31.7690° N, 35.7272° E',
                 'unesco_status': 'Part of the Bethany Beyond the Jordan UNESCO World Heritage Site',
@@ -321,7 +327,13 @@ demo_attractions = {
                     'Combine with Mount Nebo for a half-day trip'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/madaba1.webp',
+                    '/static/core/images/madaba2.webp',
+                    '/static/core/images/madaba3.webp',
+                    '/static/core/images/madaba4.webp',
+                    '/static/core/images/madaba5.webp',
+                    '/static/core/images/madaba6.webp',
+                    '/static/core/images/madaba7.webp'
                 ],
                 'coordinates': '31.7197° N, 35.7936° E',
                 'annual_visitors': 'Over 100,000',
@@ -365,7 +377,13 @@ demo_attractions = {
                     'Great for photography, especially the Hand of Hercules'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/amman1.webp',
+                    '/static/core/images/amman2.webp',
+                    '/static/core/images/amman3.webp',
+                    '/static/core/images/amman4.webp',
+                    '/static/core/images/amman5.webp',
+                    '/static/core/images/amman6.webp',
+                    '/static/core/images/amman7.webp'
                 ],
                 'coordinates': '31.9539° N, 35.9346° E',
                 'climate': 'Mediterranean climate with hot summers and mild winters'
@@ -409,7 +427,11 @@ demo_attractions = {
                     'Tax-free shopping available in Aqaba Special Economic Zone'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/aqaba1.webp',
+                    '/static/core/images/aqaba2.webp',
+                    '/static/core/images/aqaba3.webp',
+                    '/static/core/images/aqaba4.webp',
+                    '/static/core/images/aqaba5.webp'
                 ],
                 'coordinates': '29.5269° N, 35.0071° E',
                 'annual_visitors': 'Over 500,000',
@@ -453,7 +475,11 @@ demo_attractions = {
                     'Respect the sacred nature of the site'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/bethany1.webp',
+                    '/static/core/images/bethany2.webp',
+                    '/static/core/images/bethany3.webp',
+                    '/static/core/images/bethany4.webp',
+                    '/static/core/images/bethany5.webp'
                 ],
                 'coordinates': '31.8367° N, 35.5486° E',
                 'unesco_status': 'UNESCO World Heritage Site since 2015',
@@ -498,7 +524,13 @@ demo_attractions = {
                     'Allow 1-2 hours for visit'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/ajlune1.webp',
+                    '/static/core/images/ajlune2.webp',
+                    '/static/core/images/ajlune3.webp',
+                    '/static/core/images/ajulne4.webp',
+                    '/static/core/images/ajlune5.webp',
+                    '/static/core/images/ajlune6.webp',
+                    '/static/core/images/ajlune7.webp'
                 ],
                 'coordinates': '32.3319° N, 35.7519° E',
                 'climate': 'Mediterranean climate with cool winters and mild summers'
@@ -542,7 +574,13 @@ demo_attractions = {
                     'Combine with King\'s Highway scenic route'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/karak1.webp',
+                    '/static/core/images/karak2.webp',
+                    '/static/core/images/karak3.webp',
+                    '/static/core/images/karak4.webp',
+                    '/static/core/images/karak5.webp',
+                    '/static/core/images/karak6.webp',
+                    '/static/core/images/karak7.webp'
                 ],
                 'coordinates': '31.1843° N, 35.7049° E',
                 'climate': 'Mediterranean climate with cool winters and warm summers'
@@ -586,7 +624,11 @@ demo_attractions = {
                     'Support local crafts made by Dana cooperative'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/dana1.webp',
+                    '/static/core/images/dana2.webp',
+                    '/static/core/images/dana3.webp',
+                    '/static/core/images/dana4.webp',
+                    '/static/core/images/dana5.webp'
                 ],
                 'coordinates': '30.6833° N, 35.6000° E',
                 'area': '308 square kilometers',
@@ -630,7 +672,13 @@ demo_attractions = {
                     'Combine with other northern Jordan sites'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/umqais1.webp',
+                    '/static/core/images/umqais2.webp',
+                    '/static/core/images/umqais3.webp',
+                    '/static/core/images/umqais4.webp',
+                    '/static/core/images/umqais5.webp',
+                    '/static/core/images/umqais6.webp',
+                    '/static/core/images/umqais7.webp'
                 ],
                 'coordinates': '32.6539° N, 35.6828° E',
                 'annual_visitors': 'Over 50,000',
@@ -675,7 +723,13 @@ demo_attractions = {
                     'Combine with Azraq Wetland Reserve visit'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/QasrAmra1.webp',
+                    '/static/core/images/QasrAmra2.webp',
+                    '/static/core/images/QasrAmra3.webp',
+                    '/static/core/images/QasrAmra4.webp',
+                    '/static/core/images/QasrAmra5.webp',
+                    '/static/core/images/QasrAmra6.webp',
+                    '/static/core/images/QasrAmra7.webp'
                 ],
                 'coordinates': '31.8017° N, 36.5842° E',
                 'unesco_status': 'UNESCO World Heritage Site since 1985',
@@ -720,7 +774,11 @@ demo_attractions = {
                     'Allow 1-2 hours for visit'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/azraq1.webp',
+                    '/static/core/images/azraq2.webp',
+                    '/static/core/images/azraq3.webp',
+                    '/static/core/images/azraq4.webp',
+                    '/static/core/images/azraq5.webp'
                 ],
                 'coordinates': '31.8211° N, 36.8211° E',
                 'area': '12 square kilometers',
@@ -766,7 +824,13 @@ demo_attractions = {
                     'Physical fitness required for all wet trails'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/wadimujib1.webp',
+                    '/static/core/images/wadimujib2.webp',
+                    '/static/core/images/wadimujib3.webp',
+                    '/static/core/images/wadimujib4.webp',
+                    '/static/core/images/wadimujib5.webp',
+                    '/static/core/images/wadimujib6.webp',
+                    '/static/core/images/wadimujib7.webp'
                 ],
                 'coordinates': '31.4503° N, 35.5831° E',
                 'area': 'Reserve extends over 212 square kilometers',
@@ -812,7 +876,13 @@ demo_attractions = {
                     'Can hike to Petra from here via backdoor trail'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2074&q=80'
+                    '/static/core/images/LittlePetra1.webp',
+                    '/static/core/images/LittlePetra2.webp',
+                    '/static/core/images/LittlePetra3.webp',
+                    '/static/core/images/LittlePetra4.webp',
+                    '/static/core/images/LittlePetra5.webp',
+                    '/static/core/images/LittlePetra6.webp',
+                    '/static/core/images/LittlePetra7.webp'
                 ],
                 'coordinates': '30.3667° N, 35.4667° E',
                 'unesco_status': 'Part of Petra UNESCO World Heritage Site',
@@ -859,7 +929,13 @@ demo_attractions = {
                     'The tunnel descent is steep - wear good shoes'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/ShobakCastle1.webp',
+                    '/static/core/images/ShobakCastle2.webp',
+                    '/static/core/images/ShobakCastle3.webp',
+                    '/static/core/images/ShobakCastle4.webp',
+                    '/static/core/images/ShobakCastle5.webp',
+                    '/static/core/images/ShobakCastle6.webp',
+                    '/static/core/images/ShobakCastle7.webp'
                 ],
                 'coordinates': '30.5333° N, 35.5667° E',
                 'climate': 'Mediterranean climate with cooler temperatures at altitude'
@@ -903,7 +979,11 @@ demo_attractions = {
                     'Fertile valley setting makes it scenic in spring'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/pella1.webp',
+                    '/static/core/images/pella2.webp',
+                    '/static/core/images/pella3.webp',
+                    '/static/core/images/pella4.webp',
+                    '/static/core/images/pella5.webp'
                 ],
                 'coordinates': '32.4419° N, 35.6117° E',
                 'climate': 'Warm Mediterranean climate, can be hot in summer'
@@ -947,7 +1027,11 @@ demo_attractions = {
                     'Safe and walkable area'
                 ],
                 'photos': [
-                    'https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+                    '/static/core/images/RainbowStreet1.webp',
+                    '/static/core/images/RainbowStreet2.webp',
+                    '/static/core/images/RainbowStreet3.webp',
+                    '/static/core/images/RainbowStreet4.webp',
+                    '/static/core/images/RainbowStreet5.webp'
                 ],
                 'coordinates': '31.9539° N, 35.9246° E',
                 'climate': 'Mediterranean climate, pleasant most of year'

@@ -2976,3 +2976,264 @@ class Country(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class AccommodationAvailability(models.Model):
+    """
+    Per-date availability and pricing for accommodations.
+    Allows hosts to set availability status, pricing, and rules for specific dates.
+    """
+    accommodation = models.ForeignKey(
+        Accommodation, 
+        on_delete=models.CASCADE, 
+        related_name='availability_calendar'
+    )
+    date = models.DateField(db_index=True)
+    
+    # Availability Status
+    is_available = models.BooleanField(default=True, help_text="Is this date available for booking?")
+    is_blocked = models.BooleanField(default=False, help_text="Manually blocked by host")
+    
+    # Pricing
+    price_per_night = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        help_text="Price for this specific date"
+    )
+    original_price = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Original price before discounts"
+    )
+    
+    # Booking Rules
+    minimum_stay = models.IntegerField(default=1, help_text="Minimum nights required")
+    maximum_stay = models.IntegerField(null=True, blank=True, help_text="Maximum nights allowed")
+    
+    # Special Rates
+    is_special_rate = models.BooleanField(default=False)
+    rate_type = models.CharField(
+        max_length=50,
+        blank=True,
+        choices=[
+            ('weekend', 'Weekend Rate'),
+            ('holiday', 'Holiday Rate'),
+            ('seasonal', 'Seasonal Rate'),
+            ('early_bird', 'Early Bird Discount'),
+            ('last_minute', 'Last Minute Deal'),
+            ('long_stay', 'Long Stay Discount'),
+            ('custom', 'Custom Rate'),
+        ]
+    )
+    rate_note = models.CharField(max_length=200, blank=True, help_text="Note about this rate")
+    
+    # Inventory Management
+    total_rooms = models.IntegerField(default=1, help_text="Total rooms available")
+    rooms_booked = models.IntegerField(default=0, help_text="Number of rooms already booked")
+    rooms_blocked = models.IntegerField(default=0, help_text="Number of rooms blocked")
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['date']
+        verbose_name = 'Accommodation Availability'
+        verbose_name_plural = 'Accommodation Availabilities'
+        unique_together = ['accommodation', 'date']
+        indexes = [
+            models.Index(fields=['accommodation', 'date']),
+            models.Index(fields=['date', 'is_available']),
+        ]
+    
+    def __str__(self):
+        return f"{self.accommodation.name} - {self.date}"
+    
+    @property
+    def rooms_available(self):
+        """Calculate remaining available rooms"""
+        return max(0, self.total_rooms - self.rooms_booked - self.rooms_blocked)
+    
+    @property
+    def is_fully_booked(self):
+        """Check if all rooms are booked"""
+        return self.rooms_available == 0
+    
+    @property
+    def occupancy_percentage(self):
+        """Calculate occupancy percentage"""
+        if self.total_rooms == 0:
+            return 0
+        occupied = self.rooms_booked + self.rooms_blocked
+        return (occupied / self.total_rooms) * 100
+
+
+class TourAvailability(models.Model):
+    """
+    Per-date availability and pricing for tours.
+    Tracks tour slots, participant capacity, and dynamic pricing.
+    """
+    tour = models.ForeignKey(
+        'Tour', 
+        on_delete=models.CASCADE, 
+        related_name='availability_calendar'
+    )
+    date = models.DateField(db_index=True)
+    
+    # Availability Status
+    is_available = models.BooleanField(default=True, help_text="Is this tour date available?")
+    is_blocked = models.BooleanField(default=False, help_text="Manually blocked by host")
+    
+    # Pricing
+    price_per_person = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        help_text="Price per person for this date"
+    )
+    original_price = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Original price before discounts"
+    )
+    
+    # Group Pricing
+    group_discount_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        help_text="Discount percentage for groups"
+    )
+    group_size_threshold = models.IntegerField(
+        default=5,
+        help_text="Minimum group size for discount"
+    )
+    
+    # Capacity Management
+    max_participants = models.IntegerField(help_text="Maximum participants for this date")
+    participants_booked = models.IntegerField(default=0, help_text="Number of participants booked")
+    min_participants = models.IntegerField(default=1, help_text="Minimum participants to run tour")
+    
+    # Tour Schedule
+    start_time = models.TimeField(null=True, blank=True, help_text="Tour start time")
+    end_time = models.TimeField(null=True, blank=True, help_text="Tour end time")
+    
+    # Special Rates
+    is_special_rate = models.BooleanField(default=False)
+    rate_type = models.CharField(
+        max_length=50,
+        blank=True,
+        choices=[
+            ('weekend', 'Weekend Rate'),
+            ('holiday', 'Holiday Rate'),
+            ('peak_season', 'Peak Season'),
+            ('off_season', 'Off Season'),
+            ('early_bird', 'Early Bird Discount'),
+            ('last_minute', 'Last Minute Deal'),
+            ('group_special', 'Group Special'),
+            ('custom', 'Custom Rate'),
+        ]
+    )
+    rate_note = models.CharField(max_length=200, blank=True)
+    
+    # Cancellation Status
+    is_cancelled = models.BooleanField(default=False)
+    cancellation_reason = models.TextField(blank=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['date', 'start_time']
+        verbose_name = 'Tour Availability'
+        verbose_name_plural = 'Tour Availabilities'
+        unique_together = ['tour', 'date', 'start_time']
+        indexes = [
+            models.Index(fields=['tour', 'date']),
+            models.Index(fields=['date', 'is_available']),
+        ]
+    
+    def __str__(self):
+        return f"{self.tour.name} - {self.date}"
+    
+    @property
+    def spots_available(self):
+        """Calculate remaining available spots"""
+        return max(0, self.max_participants - self.participants_booked)
+    
+    @property
+    def is_fully_booked(self):
+        """Check if tour is fully booked"""
+        return self.spots_available == 0
+    
+    @property
+    def meets_minimum(self):
+        """Check if minimum participants requirement is met"""
+        return self.participants_booked >= self.min_participants
+    
+    @property
+    def occupancy_percentage(self):
+        """Calculate occupancy percentage"""
+        if self.max_participants == 0:
+            return 0
+        return (self.participants_booked / self.max_participants) * 100
+    
+    @property
+    def group_price(self):
+        """Calculate price with group discount applied"""
+        if self.participants_booked >= self.group_size_threshold:
+            discount = self.price_per_person * (self.group_discount_percentage / 100)
+            return self.price_per_person - discount
+        return self.price_per_person
+
+
+class CalendarBulkUpdate(models.Model):
+    """
+    Track bulk calendar updates for audit and undo functionality.
+    Stores information about batch updates to availability/pricing.
+    """
+    LISTING_TYPE_CHOICES = [
+        ('accommodation', 'Accommodation'),
+        ('tour', 'Tour'),
+    ]
+    
+    listing_type = models.CharField(max_length=20, choices=LISTING_TYPE_CHOICES)
+    listing_id = models.IntegerField(help_text="ID of the accommodation or tour")
+    
+    # Update Details
+    start_date = models.DateField()
+    end_date = models.DateField()
+    update_type = models.CharField(
+        max_length=50,
+        choices=[
+            ('price_change', 'Price Change'),
+            ('availability_change', 'Availability Change'),
+            ('block_dates', 'Block Dates'),
+            ('unblock_dates', 'Unblock Dates'),
+            ('minimum_stay', 'Minimum Stay Change'),
+            ('special_rate', 'Special Rate Applied'),
+            ('bulk_edit', 'Bulk Edit'),
+        ]
+    )
+    
+    # Update Values
+    previous_values = models.JSONField(help_text="Store previous values for undo")
+    new_values = models.JSONField(help_text="Store new values applied")
+    
+    # Metadata
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    notes = models.TextField(blank=True)
+    is_undone = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Calendar Bulk Update'
+        verbose_name_plural = 'Calendar Bulk Updates'
+    
+    def __str__(self):
+        return f"{self.listing_type} #{self.listing_id} - {self.update_type} ({self.start_date} to {self.end_date})"
