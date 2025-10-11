@@ -1998,13 +1998,8 @@ def create_accommodation(request):
                     f'📧 Confirmation email sent!',
                 )
                 
-                # Redirect to the new listing page
-                try:
-                    from django.urls import reverse
-                    listing_url = reverse("core:accommodation_detail", args=[accommodation.id])
-                    return redirect(listing_url)
-                except Exception:
-                    return redirect("core:hostdashboard")
+                # Redirect to home page to see the listing live
+                return redirect("core:home")
             else:
                 messages.success(
                     request,
