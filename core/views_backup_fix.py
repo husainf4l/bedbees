@@ -10,6 +10,7 @@ from .forms import HostRegistrationForm, HostProfileForm, AccommodationForm, Tou
 from .models import UserProfile, Accommodation, Tour, AccommodationPhoto, TourPhoto, TourGuide, TourGuidePhoto, RentalCar, RentalCarPhoto, Country
 from .data import countries_data, demo_attractions
 from .data.demo_accommodations import demo_accommodations_data, get_featured_accommodations, get_guest_favorite_accommodations, get_unique_accommodations, get_popular_accommodations
+from django.utils import timezone
 
 def home(request):
     """Home page view with role-based access"""
@@ -716,43 +717,10 @@ def accommodation_detail(request, id):
                 'alt_text': accommodation.get('name', ''),
                 'is_hero': idx < 6,
             }
-            'location': 'Maldives',
-            'description': 'Experience paradise at our beachfront resort with private villas, world-class spa, and stunning ocean views.',
-            'price': 450,
-            'currency': 'USD',
-            'rating': 4.8,
-            'reviews': 1250,
-            'type': 'resort',
-            'amenities': ['WiFi', 'Pool', 'Spa', 'Beach Access', 'Restaurant'],
-            'image': 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            'photos': [
-                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1533105079780-92b9be482077?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1531572753322-ad063cecc140?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
-            ],
-                        'bedrooms': 2,
-            'bathrooms': 2,
-            'max_guests': 4,
-            'room_type': 'Villa with Ocean View',
-            'cancellation_policy': 'Free cancellation up to 24 hours',
-            'check_in_time': '14:00',
-            'check_out_time': '12:00',
-            'property_highlights': ['Private beach access', '24/7 concierge', 'Spa treatments included', 'Daily housekeeping']
-        },
+            # Append the photo dicts to the photo lists
+            all_photos_json.append(photo_dict)
+            if idx < 6:
+                hero_photos_json.append(photo_dict)
         {
             'id': '2',
             'name': 'Boutique City Hotel Downtown',

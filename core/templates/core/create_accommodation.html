@@ -164,8 +164,10 @@ Bedbees{% endblock %} {% block extra_head %}
       </div>
     </div>
 
-    <form method="post" enctype="multipart/form-data" id="listingForm">
-      {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" id="listingForm" novalidate>
+  {% csrf_token %}
+  <!-- Hidden fallback for publish action so programmatic submits still include intent -->
+  <input type="hidden" name="publish_action" id="publish_action_input" value="draft">
 
       <!-- Step 1: Host/Business Info -->
       <div
@@ -3621,10 +3623,58 @@ Bedbees{% endblock %} {% block extra_head %}
   // Form submission validation - TEMPORARILY DISABLED FOR DEBUGGING
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("listingForm");
+    
+    // Disable HTML5 validation - we have custom validation
+    form.setAttribute('novalidate', 'novalidate');
+    
     form.addEventListener("submit", function (e) {
+      console.log("=== FORM SUBMIT EVENT FIRED ===");
+      console.log("Form action:", form.action);
+      console.log("Form method:", form.method);
+      
+      // Check which button was clicked
+      const publishInput = document.getElementById("publish_action_input");
+      console.log("Hidden input publish_action value:", publishInput.value);
+      
+      // Check all form data
+      const formData = new FormData(form);
+      console.log("publish_action in FormData:", formData.get("publish_action"));
+      
       console.log("Form is being submitted - validation temporarily disabled");
       // Validation disabled - let it submit
       return true;
+    });
+
+    // Ensure the publish action value is set when the Publish Now button is clicked.
+    const publishBtn = document.getElementById("publish-btn");
+    const publishInput = document.getElementById("publish_action_input");
+    
+    console.log("Publish button found:", publishBtn !== null);
+    console.log("Hidden input found:", publishInput !== null);
+    
+    if (publishBtn && publishInput) {
+      publishBtn.addEventListener("click", function (ev) {
+        console.log("=== PUBLISH NOW BUTTON CLICKED ===");
+        console.log("Button clicked, event type:", ev.type);
+        console.log("Setting hidden input to 'publish'");
+        
+        // Set the hidden fallback so programmatic submissions include the action
+        publishInput.value = "publish";
+        console.log("Hidden input value after setting:", publishInput.value);
+        
+        // Since this is a submit button, it will trigger form submission automatically
+        // We don't need to call form.submit() - that would lose the button's name/value
+      });
+    }
+    
+    // Also add listener to Save as Draft button for comparison
+    const draftBtns = document.querySelectorAll('button[name="publish_action"][value="draft"]');
+    draftBtns.forEach(btn => {
+      btn.addEventListener("click", function(ev) {
+        console.log("=== SAVE AS DRAFT BUTTON CLICKED ===");
+        publishInput.value = "draft";
+        console.log("Hidden input value set to:", publishInput.value);
+      });
     });
   });
 

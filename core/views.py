@@ -1947,6 +1947,7 @@ def create_accommodation(request):
             
             # Check if user wants to publish immediately or save as draft
             publish_action = request.POST.get("publish_action", "draft")
+            
             if publish_action == "publish":
                 # 📍 Normalize location for automatic placement
                 if accommodation.country:
@@ -1984,8 +1985,11 @@ def create_accommodation(request):
             if publish_action == "publish":
                 # 📧 Send confirmation email
                 from .email_utils import send_listing_published_email
-                send_listing_published_email(accommodation, "accommodation")
-                
+                try:
+                    send_listing_published_email(accommodation, "accommodation")
+                except Exception:
+                    pass
+
                 messages.success(
                     request,
                     f'🎉 SUCCESS! "{accommodation.property_name}" is now LIVE and published! '
@@ -1993,12 +1997,21 @@ def create_accommodation(request):
                     f'📍 It appears on the homepage, {accommodation.country} page, and {accommodation.property_type} listings. '
                     f'📧 Confirmation email sent!',
                 )
+                
+                # Redirect to the new listing page
+                try:
+                    from django.urls import reverse
+                    listing_url = reverse("core:accommodation_detail", args=[accommodation.id])
+                    return redirect(listing_url)
+                except Exception:
+                    return redirect("core:hostdashboard")
             else:
                 messages.success(
                     request,
                     f'✅ "{accommodation.property_name}" saved as draft! '
                     f'Go to "My Listings" and click "Publish Now" when you\'re ready to go live.',
                 )
+            
             return redirect("core:hostdashboard")
         else:
             messages.error(request, "Please correct the errors below.")
