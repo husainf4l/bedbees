@@ -56,8 +56,10 @@ endblock %} {% block content %}
       </div>
     </div>
 
-    <form method="post" enctype="multipart/form-data" class="space-y-8">
+    <form method="post" enctype="multipart/form-data" class="space-y-8" id="tourForm" novalidate>
       {% csrf_token %}
+      <!-- Hidden fallback for publish action -->
+      <input type="hidden" name="publish_action" id="publish_action_input" value="draft">
 
       <!-- Section 1: Host Info -->
       <div
@@ -1294,8 +1296,33 @@ endblock %} {% block content %}
 
   // Initialize tour country-city dropdown functionality
   document.addEventListener("DOMContentLoaded", function () {
+    const tourForm = document.getElementById("tourForm");
     const tourCountrySelect = document.getElementById("tour-country-select");
     const tourCitySelect = document.getElementById("tour-city-select");
+
+    // Disable HTML5 validation and add publish button handling
+    if (tourForm) {
+      tourForm.setAttribute('novalidate', 'novalidate');
+      
+      const publishBtn = document.querySelector('button[name="publish_action"][value="publish"]');
+      const publishInput = document.getElementById("publish_action_input");
+      
+      if (publishBtn && publishInput) {
+        publishBtn.addEventListener("click", function() {
+          console.log("=== TOUR PUBLISH NOW CLICKED ===");
+          publishInput.value = "publish";
+        });
+      }
+      
+      // Handle draft button
+      const draftBtn = document.querySelector('button[name="publish_action"][value="draft"]');
+      if (draftBtn && publishInput) {
+        draftBtn.addEventListener("click", function() {
+          console.log("=== TOUR SAVE AS DRAFT CLICKED ===");
+          publishInput.value = "draft";
+        });
+      }
+    }
 
     if (tourCountrySelect && tourCitySelect) {
       tourCountrySelect.addEventListener("change", function () {

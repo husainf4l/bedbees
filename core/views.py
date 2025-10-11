@@ -2071,6 +2071,7 @@ def create_tour(request):
                     f'📍 It appears on the homepage, {tour.country} page, and {tour.tour_category} tours. '
                     f'📧 Confirmation email sent!',
                 )
+                return redirect("core:home")
             else:
                 messages.success(
                     request,
@@ -4294,7 +4295,19 @@ def create_tour_guide(request):
         if form.is_valid():
             tour_guide = form.save(commit=False)
             tour_guide.host = request.user
-            tour_guide.is_published = True
+            
+            # Check if user wants to publish immediately or save as draft
+            publish_action = request.POST.get("publish_action", "draft")
+            if publish_action == "publish":
+                tour_guide.is_published = True
+                tour_guide.is_active = True
+                tour_guide.status = "published"
+                tour_guide.published_at = timezone.now()
+            else:
+                tour_guide.is_published = False
+                tour_guide.is_active = False
+                tour_guide.status = "draft"
+                
             tour_guide.save()
 
             # Handle photo uploads
@@ -4307,10 +4320,18 @@ def create_tour_guide(request):
                     display_order=index,
                 )
 
-            messages.success(
-                request,
-                f'Tour Guide profile "{tour_guide.guide_name}" created successfully!',
-            )
+            if publish_action == "publish":
+                messages.success(
+                    request,
+                    f'🎉 SUCCESS! Tour Guide "{tour_guide.guide_name}" is now LIVE and published!',
+                )
+                return redirect("core:home")
+            else:
+                messages.success(
+                    request,
+                    f'✅ Tour Guide "{tour_guide.guide_name}" saved as draft! '
+                    f'Go to "My Listings" and click "Publish Now" when you\'re ready to go live.',
+                )
             return redirect("core:hostdashboard")
         else:
             messages.error(request, "Please correct the errors below.")
@@ -4327,7 +4348,19 @@ def create_rental_car(request):
         if form.is_valid():
             rental_car = form.save(commit=False)
             rental_car.host = request.user
-            rental_car.is_published = True
+            
+            # Check if user wants to publish immediately or save as draft
+            publish_action = request.POST.get("publish_action", "draft")
+            if publish_action == "publish":
+                rental_car.is_published = True
+                rental_car.is_active = True
+                rental_car.status = "published"
+                rental_car.published_at = timezone.now()
+            else:
+                rental_car.is_published = False
+                rental_car.is_active = False
+                rental_car.status = "draft"
+                
             rental_car.save()
 
             # Handle photo uploads
@@ -4340,9 +4373,18 @@ def create_rental_car(request):
                     display_order=index,
                 )
 
-            messages.success(
-                request, f'Rental Car "{rental_car.vehicle_name}" listed successfully!'
-            )
+            if publish_action == "publish":
+                messages.success(
+                    request, 
+                    f'🎉 SUCCESS! Rental Car "{rental_car.vehicle_name}" is now LIVE and published!'
+                )
+                return redirect("core:home")
+            else:
+                messages.success(
+                    request, 
+                    f'✅ Rental Car "{rental_car.vehicle_name}" saved as draft! '
+                    f'Go to "My Listings" and click "Publish Now" when you\'re ready to go live.'
+                )
             return redirect("core:hostdashboard")
         else:
             messages.error(request, "Please correct the errors below.")
