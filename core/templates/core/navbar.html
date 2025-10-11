@@ -9,7 +9,7 @@
     <div class="flex items-center gap-4 sm:gap-8">
       <!-- Logo -->
       <a
-        href="{% url 'home' %}"
+        href="{% url 'core:home' %}"
         class="hover:scale-105 transition-all duration-300 flex items-center group"
       >
         {% load static %}
@@ -241,7 +241,7 @@
           </div>
           <div class="border-t border-gray-100/80 mt-6 pt-4">
             <a
-              href="{% url 'experiences' %}"
+              href="{% url 'core:experiences' %}"
               class="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200/50 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm border border-blue-400/20"
             >
               <span>Explore All Experiences</span>
@@ -597,7 +597,7 @@
           </h3>
           <div class="space-y-2">
             <a
-              href="{% url 'rental_cars' %}"
+              href="{% url 'core:rental_cars' %}"
               class="flex items-start gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 group/item hover:shadow-lg hover:shadow-blue-100/50 hover:-translate-y-0.5 border border-transparent hover:border-blue-200/30"
             >
               <div
@@ -617,7 +617,7 @@
               </div>
             </a>
             <a
-              href="{% url 'taxi_service' %}"
+              href="{% url 'core:taxi_service' %}"
               class="flex items-start gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 group/item hover:shadow-lg hover:shadow-blue-100/50 hover:-translate-y-0.5 border border-transparent hover:border-blue-200/30"
             >
               <div
@@ -1122,7 +1122,7 @@
           <!-- Sign In/Up Section -->
           <div class="space-y-2 mb-4 pb-4 border-b border-gray-100">
             <a
-              href="{% url 'signin' %}"
+              href="{% url 'core:signin' %}"
               class="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 group/item hover:shadow-lg hover:shadow-blue-100/50"
             >
               <svg
@@ -1144,7 +1144,7 @@
               </div>
             </a>
             <a
-              href="{% url 'signup' %}"
+              href="{% url 'core:signup' %}"
               class="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 group/item hover:shadow-lg hover:shadow-blue-200/50"
             >
               <svg
@@ -1171,7 +1171,7 @@
           <!-- Wishlist & Cart Links -->
           <div class="space-y-2">
             <a
-              href="{% url 'wishlist' %}"
+              href="{% url 'core:wishlist' %}"
               class="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 transition-all duration-200 group/item hover:shadow-lg hover:shadow-red-100/50"
             >
               <div class="flex items-center gap-3">
@@ -1199,7 +1199,7 @@
               >
             </a>
             <a
-              href="{% url 'cart' %}"
+              href="{% url 'core:cart' %}"
               class="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-200 group/item hover:shadow-lg hover:shadow-blue-100/50"
             >
               <div class="flex items-center gap-3">
@@ -1255,7 +1255,7 @@
             {% if user.profile.is_host %}
             <!-- Host Menu Items -->
             <a
-              href="{% url 'hostdashboard' %}"
+              href="{% url 'core:hostdashboard' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1276,7 +1276,7 @@
             {% else %}
             <!-- Traveler Menu Items -->
             <a
-              href="{% url 'genius_rewards' %}"
+              href="{% url 'core:genius_rewards' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1295,7 +1295,7 @@
               <span class="text-sm font-medium">Unlocked Genius rewards</span>
             </a>
             <a
-              href="{% url 'credits_vouchers' %}"
+              href="{% url 'core:credits_vouchers' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1314,7 +1314,7 @@
               <span class="text-sm font-medium">Credits and vouchers</span>
             </a>
             <a
-              href="{% url 'my_account' %}"
+              href="{% url 'core:my_account' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1333,7 +1333,7 @@
               <span class="text-sm font-medium">My account</span>
             </a>
             <a
-              href="{% url 'bookings' %}"
+              href="{% url 'core:bookings' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1371,7 +1371,7 @@
               <span class="text-sm font-medium">Saved</span>
             </a>
             <a
-              href="{% url 'reviews' %}"
+              href="{% url 'core:reviews' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors duration-200 text-gray-700 hover:text-blue-600"
             >
               <svg
@@ -1392,7 +1392,7 @@
             {% endif %}
             <div class="border-t border-gray-100/50 my-2"></div>
             <a
-              href="{% url 'logout' %}"
+              href="{% url 'core:logout' %}"
               class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50/50 transition-colors duration-200 text-red-600 hover:text-red-700"
             >
               <svg
@@ -1598,7 +1598,7 @@
             Walking Tours
           </a>
           <a
-            href="{% url 'experiences' %}"
+            href="{% url 'core:experiences' %}"
             class="flex items-center gap-3 px-3 py-3 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-blue-100/50"
           >
             <svg
@@ -1757,14 +1757,14 @@
         </div>
         <div class="space-y-2">
           <a
-            href="{% url 'rental_cars' %}"
+            href="{% url 'core:rental_cars' %}"
             class="flex items-center gap-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-blue-100/50"
           >
             <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
             Car Rental
           </a>
           <a
-            href="{% url 'taxi_service' %}"
+            href="{% url 'core:taxi_service' %}"
             class="flex items-center gap-3 px-3 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-blue-100/50"
           >
             <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -2024,7 +2024,7 @@
 
         {% if user.profile.is_host %}
         <a
-          href="{% url 'hostdashboard' %}"
+          href="{% url 'core:hostdashboard' %}"
           class="flex items-center gap-3 px-3 py-3 text-green-600 hover:bg-green-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-green-100/50 font-semibold"
         >
           <svg
@@ -2044,7 +2044,7 @@
         </a>
         {% else %}
         <a
-          href="{% url 'dashboard' %}"
+          href="{% url 'core:dashboard' %}"
           class="flex items-center gap-3 px-3 py-3 text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-blue-100/50 font-semibold"
         >
           <svg
@@ -2088,7 +2088,7 @@
           </svg>
           My Bookings
         </a>
-        <form method="post" action="{% url 'logout' %}" class="inline">
+        <form method="post" action="{% url 'core:logout' %}" class="inline">
           {% csrf_token %}
           <button
             type="submit"
@@ -2112,7 +2112,7 @@
         </form>
         {% else %}
         <a
-          href="{% url 'signin' %}"
+          href="{% url 'core:signin' %}"
           class="flex items-center gap-3 px-3 py-3 text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 hover:shadow-md hover:shadow-blue-100/50 font-semibold"
         >
           <svg
@@ -2131,7 +2131,7 @@
           Sign In
         </a>
         <a
-          href="{% url 'signup' %}"
+          href="{% url 'core:signup' %}"
           class="flex items-center gap-3 px-3 py-3 text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl transition-all duration-200 hover:shadow-xl hover:shadow-blue-200/50 hover:-translate-y-0.5 font-semibold text-center"
         >
           <svg

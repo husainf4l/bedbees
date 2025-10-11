@@ -363,7 +363,7 @@
 
         <!-- Modern Simplified Search Form -->
         <div class="max-w-4xl mx-auto mb-8">
-            <form method="GET" action="{% url 'search_results' %}" class="relative">
+            <form method="GET" action="{% url 'core:search_results' %}" class="relative">
                 <!-- Hidden input for search type -->
                 <input type="hidden" name="type" value="hotels">
 
@@ -408,7 +408,7 @@
         <!-- Advanced Filters Panel (Hidden by default) -->
         <div id="advanced-filters-panel" class="hidden max-w-6xl mx-auto">
             <div class="bg-white rounded-3xl shadow-2xl p-8">
-                <form method="GET" action="{% url 'search_results' %}" class="space-y-6">
+                <form method="GET" action="{% url 'core:search_results' %}" class="space-y-6">
                     <input type="hidden" name="type" value="hotels">
                     <!-- Price Range & Star Rating Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -660,6 +660,372 @@
     </div>
 </section>
 
+<!-- Trending Destinations Section -->
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Trending Destinations</h2>
+            <p class="text-lg text-gray-600">
+                Discover the world's most sought-after destinations
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- UAE -->
+            <a href="{% url 'core:country_detail' 'uae' %}" class="destination-card rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <div class="relative h-32 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                         alt="United Arab Emirates" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-2 left-3 text-white">
+                        <h3 class="text-sm font-bold">UAE</h3>
+                        <p class="text-xs">800+ tours</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Turkey -->
+            <a href="{% url 'core:country_detail' 'turkey' %}" class="destination-card rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <div class="relative h-32 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                         alt="Turkey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-2 left-3 text-white">
+                        <h3 class="text-sm font-bold">Turkey</h3>
+                        <p class="text-xs">198+ tours</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Egypt -->
+            <a href="{% url 'core:country_detail' 'egypt' %}" class="destination-card rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <div class="relative h-32 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1583424825847-f8fe3def5a85?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                         alt="Egypt" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-2 left-3 text-white">
+                        <h3 class="text-sm font-bold">Egypt</h3>
+                        <p class="text-xs">167+ tours</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Jordan -->
+            <a href="{% url 'core:country_detail' 'jordan' %}" class="destination-card rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <div class="relative h-32 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                         alt="Jordan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <div class="absolute bottom-2 left-3 text-white">
+                        <h3 class="text-sm font-bold">Jordan</h3>
+                        <p class="text-xs">450+ tours</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Browse by Property Type Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Browse by Property Type</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Find the perfect accommodation for your travel style
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-200 transition-colors">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Hotels</h3>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-green-200 transition-colors">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Apartments</h3>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-200 transition-colors">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 0v10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Resorts</h3>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-orange-200 transition-colors">
+                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Villas</h3>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-pink-200 transition-colors">
+                    <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Hostels</h3>
+            </div>
+
+            <div class="text-center p-6 bg-white rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-200 transition-colors">
+                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900">Chalets</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Attractions Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Popular Attractions</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover the most iconic landmarks and hidden gems
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- First Row -->
+            <a href="{% url 'core:country_detail' 'jordan' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Petra" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Petra</h3>
+                        <p class="text-sm">Jordan</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'uae' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Burj Khalifa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Burj Khalifa</h3>
+                        <p class="text-sm">UAE</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'turkey' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Cappadocia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Cappadocia</h3>
+                        <p class="text-sm">Turkey</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'egypt' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1583424825847-f8fe3def5a85?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Pyramids of Giza" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Pyramids of Giza</h3>
+                        <p class="text-sm">Egypt</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Second Row -->
+            <a href="{% url 'core:country_detail' 'jordan' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Dead Sea" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Dead Sea</h3>
+                        <p class="text-sm">Jordan</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'uae' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1590155989543-4a654134572f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Palm Jumeirah" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Palm Jumeirah</h3>
+                        <p class="text-sm">UAE</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'turkey' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Hagia Sophia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Hagia Sophia</h3>
+                        <p class="text-sm">Turkey</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'uae' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="/static/core/images/grandmosque1.webp"
+                         alt="Sheikh Zayed Grand Mosque" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Sheikh Zayed Grand Mosque</h3>
+                        <p class="text-sm">UAE</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Third Row -->
+            <a href="{% url 'core:country_detail' 'jordan' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1564759298141-d34dfb936f8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Wadi Rum" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Wadi Rum</h3>
+                        <p class="text-sm">Jordan</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'uae' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1585452515426-6b0e51a2d4b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Dubai Mall" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Dubai Mall</h3>
+                        <p class="text-sm">UAE</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'turkey' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1563401073-c8ba6b4b0d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Blue Mosque" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Blue Mosque</h3>
+                        <p class="text-sm">Turkey</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url 'core:country_detail' 'egypt' %}" class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1471919743851-c4df8b6ee221?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Valley of the Kings" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <h3 class="text-xl font-bold">Valley of the Kings</h3>
+                        <p class="text-sm">Egypt</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="text-center mt-8">
+            <button class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors inline-flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+                View All Attractions
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Deals for the Weekend Section -->
+<section class="py-16 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Deals for the Weekend</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Limited-time offers for your perfect getaway
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-full">40% OFF</span>
+                    <span class="text-gray-500 text-sm">Ends Tomorrow</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Dubai Desert Safari</h3>
+                <p class="text-gray-600 mb-4">Experience the magic of the Arabian desert with camel rides and traditional dinner</p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$89</span>
+                        <span class="text-gray-500 line-through ml-2">$149</span>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">30% OFF</span>
+                    <span class="text-gray-500 text-sm">Weekend Special</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Istanbul City Tour</h3>
+                <p class="text-gray-600 mb-4">Explore the historic sites of Istanbul including Hagia Sophia and Blue Mosque</p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$65</span>
+                        <span class="text-gray-500 line-through ml-2">$95</span>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Book Now</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-purple-100 text-purple-800 text-sm font-semibold px-3 py-1 rounded-full">25% OFF</span>
+                    <span class="text-gray-500 text-sm">Flash Sale</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Pyramids of Giza</h3>
+                <p class="text-gray-600 mb-4">Visit the last remaining wonder of the ancient world with expert guides</p>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$75</span>
+                        <span class="text-gray-500 line-through ml-2">$100</span>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Featured Accommodations Section -->
 <section class="py-20 bg-white">
     <div class="container mx-auto px-6">
@@ -736,7 +1102,7 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="{% url 'accommodations' %}" class="btn-secondary inline-flex items-center">
+            <a href="{% url 'core:accommodations' %}" class="btn-secondary inline-flex items-center">
                 View All Accommodations
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -824,12 +1190,340 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="{% url 'tours' %}" class="btn-secondary inline-flex items-center">
+            <a href="{% url 'core:tours' %}" class="btn-secondary inline-flex items-center">
                 Explore All Experiences
                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
             </a>
+        </div>
+    </div>
+</section>
+
+<!-- Find Things to Do by Interest Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Find Things to Do by Interest</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Explore activities tailored to your passions and interests
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Adventure</h3>
+            </div>
+
+            <div class="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Culture</h3>
+            </div>
+
+            <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17M17 13v4a2 2 0 01-2 2H9a2 2 0 01-2-2v-4m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Food & Drink</h3>
+            </div>
+
+            <div class="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Nightlife</h3>
+            </div>
+
+            <div class="text-center p-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Family Fun</h3>
+            </div>
+
+            <div class="text-center p-4 bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl hover:shadow-lg transition-all duration-300 group cursor-pointer">
+                <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-semibold text-gray-900 text-sm">Romance</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Explore Experiences Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Explore Experiences</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Unique activities and memorable moments await you
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Desert Adventures</h3>
+                <p class="text-gray-600 mb-4">Experience the magic of endless sand dunes, camel rides, and starlit nights in the Arabian desert.</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-600 font-semibold">From $89</span>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Explore →</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Historical Tours</h3>
+                <p class="text-gray-600 mb-4">Journey through ancient civilizations and explore UNESCO World Heritage sites with expert guides.</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-600 font-semibold">From $65</span>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Explore →</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Culinary Experiences</h3>
+                <p class="text-gray-600 mb-4">Savor authentic flavors and learn traditional cooking techniques from local chefs and families.</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-600 font-semibold">From $45</span>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Explore →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inspiration to Get You Going Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Inspiration to Get You Going</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Travel stories and ideas to spark your wanderlust
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Dubai skyline" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-full">Travel Guide</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">Ultimate Dubai Experience: 5 Days of Luxury and Adventure</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Discover the perfect blend of modern marvels and traditional charm in the heart of the UAE with our comprehensive Dubai guide.</p>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Read More →</button>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Petra" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full">Hidden Gems</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">Jordan's Hidden Treasures Beyond Petra</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Explore the lesser-known wonders of Jordan, from floating in the Dead Sea to camping under the stars in Wadi Rum.</p>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Read More →</button>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Turkey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-purple-600 text-white text-sm font-semibold px-3 py-1 rounded-full">Culture</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">Turkey: Where East Meets West in Perfect Harmony</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Immerse yourself in the rich tapestry of Turkish culture, from Istanbul's bazaars to Cappadocia's fairy chimneys.</p>
+                    <button class="text-blue-600 hover:text-blue-800 font-medium">Read More →</button>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- Your Next Trip is Waiting Section -->
+<section class="py-16 bg-gradient-to-br from-purple-600 via-blue-600 to-teal-600 text-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Your Next Trip is Waiting</h2>
+        <p class="text-xl mb-12 max-w-3xl mx-auto">
+            From ancient wonders to modern marvels, discover destinations that will create memories to last a lifetime
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-12">
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="UAE" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">UAE</h3>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="Jordan" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">Jordan</h3>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="Turkey" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">Turkey</h3>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="Egypt" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">Egypt</h3>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1539020140153-e365f8dc0c7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="Morocco" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">Morocco</h3>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden border-4 border-white/20 group-hover:border-white/50 transition-all duration-300">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                         alt="Lebanon" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-semibold text-sm">Lebanon</h3>
+            </div>
+        </div>
+
+        <button class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            Start Planning Your Trip
+        </button>
+    </div>
+</section>
+
+<!-- Iconic Places You Need to See Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Iconic Places You Need to See</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Bucket-list destinations that define a lifetime of travel
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="relative h-80 rounded-2xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Petra" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-bold mb-2">Petra</h3>
+                    <p class="text-sm opacity-90">Jordan's Rose City carved in stone</p>
+                    <div class="flex items-center mt-2 text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        UNESCO World Heritage
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative h-80 rounded-2xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Burj Khalifa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-bold mb-2">Burj Khalifa</h3>
+                    <p class="text-sm opacity-90">World's tallest building in Dubai</p>
+                    <div class="flex items-center mt-2 text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        Architectural Marvel
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative h-80 rounded-2xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Cappadocia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-bold mb-2">Cappadocia</h3>
+                    <p class="text-sm opacity-90">Turkey's fairy chimney landscape</p>
+                    <div class="flex items-center mt-2 text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        Hot Air Balloons
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative h-80 rounded-2xl overflow-hidden group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                     alt="Pyramids of Giza" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <h3 class="text-2xl font-bold mb-2">Pyramids of Giza</h3>
+                    <p class="text-sm opacity-90">Ancient wonder of the world</p>
+                    <div class="flex items-center mt-2 text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        4,500+ Years Old
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -977,13 +1671,13 @@
             Your dream journey starts here.
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="{% url 'accommodations' %}" class="btn-primary inline-flex items-center text-lg px-8 py-4">
+            <a href="{% url 'core:accommodations' %}" class="btn-primary inline-flex items-center text-lg px-8 py-4">
                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
                 Explore Accommodations
             </a>
-            <a href="{% url 'tours' %}" class="btn-secondary inline-flex items-center text-lg px-8 py-4">
+            <a href="{% url 'core:tours' %}" class="btn-secondary inline-flex items-center text-lg px-8 py-4">
                 <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"></path>
                 </svg>

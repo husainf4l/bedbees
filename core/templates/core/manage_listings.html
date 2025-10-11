@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Publish Listings - BedBees{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="mb-6 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+        <p class="text-blue-900"><strong>👤 Logged in as:</strong> {{ current_user }}</p>
+        <p class="text-blue-800 text-sm mt-1">Showing only listings owned by you</p>
+        <p class="text-blue-700 text-xs mt-2">📊 Total in database: {{ total_accommodations }} accommodations, {{ total_tours }} tours</p>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-8">📋 Publish Your Listings</h1>
+    
+    <!-- CSRF Token for forms -->
+    {% csrf_token %}
+    
+    <!-- Your Accommodations -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">🏠 Your Accommodations</h2>
+        
+        {% if accommodations %}
+            <div class="space-y-4">
+                {% for accommodation in accommodations %}
+                <div class="bg-white rounded-lg shadow-md p-6 border-2 {% if accommodation.status == 'published' %}border-green-500{% else %}border-gray-200{% endif %}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-gray-900">{{ accommodation.property_name }}</h3>
+                            <p class="text-gray-600 mt-1">📍 {{ accommodation.city }}, {{ accommodation.country }}</p>
+                            <p class="text-sm text-gray-500 mt-2">ID: {{ accommodation.id }}</p>
+                        </div>
+                        
+                        <div class="ml-4">
+                            {% include 'core/components/publish_button.html' with listing=accommodation listing_type='accommodation' %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 italic">No accommodations found. <a href="{% url 'core:create_accommodation' %}" class="text-blue-600 hover:underline">Create one</a>?</p>
+        {% endif %}
+    </div>
+    
+    <!-- Your Tours -->
+    <div class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">🗺️ Your Tours</h2>
+        
+        {% if tours %}
+            <div class="space-y-4">
+                {% for tour in tours %}
+                <div class="bg-white rounded-lg shadow-md p-6 border-2 {% if tour.status == 'published' %}border-green-500{% else %}border-gray-200{% endif %}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-gray-900">{{ tour.tour_name }}</h3>
+                            <p class="text-gray-600 mt-1">📍 {{ tour.city }}, {{ tour.country }}</p>
+                            <p class="text-sm text-gray-500 mt-2">ID: {{ tour.id }} | Category: {{ tour.get_category_display }}</p>
+                        </div>
+                        
+                        <div class="ml-4">
+                            {% include 'core/components/publish_button.html' with listing=tour listing_type='tour' %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 italic">No tours found. <a href="{% url 'core:create_tour' %}" class="text-blue-600 hover:underline">Create one</a>?</p>
+        {% endif %}
+    </div>
+    
+    <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+        <h3 class="font-semibold text-blue-900 mb-2">💡 Tips:</h3>
+        <ul class="list-disc list-inside text-blue-800 space-y-1">
+            <li>Published listings appear on the homepage and search results</li>
+            <li>Draft listings are only visible to you</li>
+            <li>You can unpublish anytime to temporarily hide a listing</li>
+            <li>Published listings can still be edited</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

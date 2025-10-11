@@ -4,213 +4,486 @@
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">Create a New Listing</h1>
-            <p class="text-xl text-gray-600">Choose the type of listing you want to create</p>
-        </div>
-
-        <!-- Listing Type Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Accommodation Card -->
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 overflow-hidden group cursor-pointer" onclick="window.location.href='{% url 'create_accommodation' %}'">
-                <div class="relative h-64">
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Accommodation" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Accommodation</h3>
-                        </div>
-                        <p class="text-white/90 text-sm">Hotels, apartments, villas, and more</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <ul class="space-y-3 mb-6">
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>List your property for nightly stays</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Manage room inventory and pricing</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Set amenities and house rules</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-                        Create Accommodation
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tour/Experience Card -->
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-purple-500 transition-all duration-300 overflow-hidden group cursor-pointer" onclick="window.location.href='{% url 'create_tour' %}'">
-                <div class="relative h-64">
-                    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tours" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Tour & Experience</h3>
-                        </div>
-                        <p class="text-white/90 text-sm">Activities, tours, and unique experiences</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <ul class="space-y-3 mb-6">
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Offer tours and activities</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Set group sizes and schedules</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Create detailed itineraries</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-                        Create Tour
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tour Guide Card -->
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-indigo-500 transition-all duration-300 overflow-hidden group cursor-pointer" onclick="window.location.href='{% url 'create_tour_guide' %}'">
-                <div class="relative h-64">
-                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tour Guide" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Tour Guide</h3>
-                        </div>
-                        <p class="text-white/90 text-sm">Professional guide services</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <ul class="space-y-3 mb-6">
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Offer personalized tour services</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Set hourly or daily rates</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Showcase certifications & expertise</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-                        Create Tour Guide Profile
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Rental Car Card -->
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-orange-500 transition-all duration-300 overflow-hidden group cursor-pointer" onclick="window.location.href='{% url 'create_rental_car' %}'">
-                <div class="relative h-64">
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Rental Car" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Rental Car</h3>
-                        </div>
-                        <p class="text-white/90 text-sm">Vehicles for rent</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <ul class="space-y-3 mb-6">
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>List cars, SUVs, and vans</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Set rental rates and policies</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-700">
-                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Manage vehicle availability</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 px-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-                        Create Rental Car Listing
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Back Button -->
-        <div class="text-center mt-12">
-            <a href="{% url 'hostdashboard' %}" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                Back to Dashboard
-            </a>
-        </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        Create a New Listing
+      </h1>
+      <p class="text-xl text-gray-600">
+        Choose the type of listing you want to create
+      </p>
     </div>
+
+    <!-- Listing Type Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Accommodation Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-blue-500 transition-all duration-300 overflow-hidden group cursor-pointer"
+        onclick="window.location.href='{% url 'core:create_accommodation' %}'"
+      >
+        <div class="relative h-64">
+          <img
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Accommodation"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+          ></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Accommodation</h3>
+            </div>
+            <p class="text-white/90 text-sm">
+              Hotels, apartments, villas, and more
+            </p>
+          </div>
+        </div>
+        <div class="p-6">
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>List your property for nightly stays</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Manage room inventory and pricing</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Set amenities and house rules</span>
+            </li>
+          </ul>
+          <button
+            class="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            Create Accommodation
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tour/Experience Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-purple-500 transition-all duration-300 overflow-hidden group cursor-pointer"
+        onclick="window.location.href='{% url 'core:create_tour' %}'"
+      >
+        <div class="relative h-64">
+          <img
+            src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Tours"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+          ></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Tour & Experience</h3>
+            </div>
+            <p class="text-white/90 text-sm">
+              Activities, tours, and unique experiences
+            </p>
+          </div>
+        </div>
+        <div class="p-6">
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-purple-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Offer tours and activities</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-purple-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Set group sizes and schedules</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-purple-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Create detailed itineraries</span>
+            </li>
+          </ul>
+          <button
+            class="w-full py-3 px-6 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            Create Tour
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tour Guide Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-indigo-500 transition-all duration-300 overflow-hidden group cursor-pointer"
+        onclick="window.location.href='{% url 'core:create_tour_guide' %}'"
+      >
+        <div class="relative h-64">
+          <img
+            src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Tour Guide"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+          ></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Tour Guide</h3>
+            </div>
+            <p class="text-white/90 text-sm">Professional guide services</p>
+          </div>
+        </div>
+        <div class="p-6">
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-indigo-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Offer personalized tour services</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-indigo-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Set hourly or daily rates</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-indigo-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Showcase certifications & expertise</span>
+            </li>
+          </ul>
+          <button
+            class="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            Create Tour Guide Profile
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rental Car Card -->
+      <div
+        class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 hover:border-orange-500 transition-all duration-300 overflow-hidden group cursor-pointer"
+        onclick="window.location.href='{% url 'core:create_rental_car' %}'"
+      >
+        <div class="relative h-64">
+          <img
+            src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            alt="Rental Car"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+          ></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white">Rental Car</h3>
+            </div>
+            <p class="text-white/90 text-sm">Vehicles for rent</p>
+          </div>
+        </div>
+        <div class="p-6">
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-orange-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>List cars, SUVs, and vans</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-orange-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Set rental rates and policies</span>
+            </li>
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg
+                class="w-5 h-5 text-orange-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+              <span>Manage vehicle availability</span>
+            </li>
+          </ul>
+          <button
+            class="w-full py-3 px-6 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+          >
+            Create Rental Car Listing
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-12">
+      <a
+        href="{% url 'core:hostdashboard' %}"
+        class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -1,243 +1,437 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Share Trip Tours - Meet Fellow Travelers - Bedbees{% endblock %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% block title %}Share Trip Tours - Meet Fellow
+Travelers - Bedbees{% endblock %} {% block content %}
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-16 mb-8">
-    <img src="{% static 'core/images/hero-image-new.webp' %}" alt="Hero Image" class="absolute inset-0 w-full h-full object-cover z-0" loading="eager" width="1920" height="1080">
-    <div class="absolute inset-0 bg-black/40 z-10"></div>
-    <div class="relative z-20 container mx-auto px-4 text-center">
-        <h1 class="text-4xl font-bold mb-4">Share Trip Tours</h1>
-        <p class="text-lg mb-6 max-w-2xl mx-auto text-green-100">
-            Connect with like-minded travelers and share unforgettable experiences across the Middle East.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
-                <div class="text-2xl font-bold">{{ total_tours }}</div>
-                <div class="text-green-200 text-sm">Available Tours</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
-                <div class="text-2xl font-bold">{{ average_rating }}</div>
-                <div class="text-green-200 text-sm">Average Rating</div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
-                <div class="text-2xl font-bold">{{ total_reviews }}</div>
-                <div class="text-green-200 text-sm">Happy Travelers</div>
-            </div>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="#tours" class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Explore Tours
-            </a>
-            <a href="/tours/" class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                All Experiences
-            </a>
-        </div>
+<section
+  class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-16 mb-8"
+>
+  <img
+    src="{% static 'core/images/hero-image-new.webp' %}"
+    alt="Hero Image"
+    class="absolute inset-0 w-full h-full object-cover z-0"
+    loading="eager"
+    width="1920"
+    height="1080"
+  />
+  <div class="absolute inset-0 bg-black/40 z-10"></div>
+  <div class="relative z-20 container mx-auto px-4 text-center">
+    <h1 class="text-4xl font-bold mb-4">Share Trip Tours</h1>
+    <p class="text-lg mb-6 max-w-2xl mx-auto text-green-100">
+      Connect with like-minded travelers and share unforgettable experiences
+      across the Middle East.
+    </p>
+    <div
+      class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6"
+    >
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
+        <div class="text-2xl font-bold">{{ total_tours }}</div>
+        <div class="text-green-200 text-sm">Available Tours</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
+        <div class="text-2xl font-bold">{{ average_rating }}</div>
+        <div class="text-green-200 text-sm">Average Rating</div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3">
+        <div class="text-2xl font-bold">{{ total_reviews }}</div>
+        <div class="text-green-200 text-sm">Happy Travelers</div>
+      </div>
     </div>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a
+        href="#tours"
+        class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+      >
+        Explore Tours
+      </a>
+      <a
+        href="/tours/"
+        class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+      >
+        All Experiences
+      </a>
+    </div>
+  </div>
 </section>
 
 <div class="container mx-auto px-4 py-6">
-    <!-- Why Share Trips Section -->
-    <section class="mb-8 bg-white rounded-2xl shadow-lg p-6">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-3">Why Choose Share Trip Tours?</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Experience the joy of traveling with fellow adventurers while keeping costs affordable and connections meaningful.
-            </p>
+  <!-- Why Share Trips Section -->
+  <section class="mb-8 bg-white rounded-2xl shadow-lg p-6">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-3">
+        Why Choose Share Trip Tours?
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Experience the joy of traveling with fellow adventurers while keeping
+        costs affordable and connections meaningful.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center p-4 bg-green-50 rounded-xl">
+        <div
+          class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3"
+        >
+          <svg
+            class="w-6 h-6 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            ></path>
+          </svg>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="text-center p-4 bg-green-50 rounded-xl">
-                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Meet Fellow Travelers</h3>
-                <p class="text-sm text-gray-600">Connect with like-minded adventurers and make lasting friendships.</p>
-            </div>
-            <div class="text-center p-4 bg-blue-50 rounded-xl">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Affordable Adventures</h3>
-                <p class="text-sm text-gray-600">Split costs with fellow travelers for budget-friendly experiences.</p>
-            </div>
-            <div class="text-center p-4 bg-purple-50 rounded-xl">
-                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Verified & Safe</h3>
-                <p class="text-sm text-gray-600">All travelers are verified for your safety and peace of mind.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Share Trip Tours Grid -->
-    <section id="tours" class="mb-8">
-        <h2 class="text-2xl font-bold text-center mb-6 text-gray-900">Available Share Trip Tours</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for tour in tours %}
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <img src="{{ tour.image }}" alt="{{ tour.title }}" class="w-full h-48 object-cover" loading="lazy">
-                <div class="p-6">
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-xl font-semibold text-gray-900 line-clamp-2">{{ tour.title }}</h3>
-                        <div class="text-right flex-shrink-0 ml-2">
-                            <div class="text-2xl font-bold text-green-600">${{ tour.price }}</div>
-                            <div class="text-sm text-gray-500">per person</div>
-                        </div>
-                    </div>
-
-                    <!-- Location and Duration -->
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span class="truncate">{{ tour.location }}</span>
-                        <span class="mx-2">•</span>
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>{{ tour.duration }}</span>
-                    </div>
-
-                    <!-- Group Size and Difficulty -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center text-sm text-gray-600">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
-                            <span>{{ tour.group_size }}</span>
-                        </div>
-                        <span class="px-2 py-1 text-xs font-medium rounded-full
-                            {% if tour.difficulty == 'Easy' %}bg-green-100 text-green-800
-                            {% elif tour.difficulty == 'Moderate' %}bg-yellow-100 text-yellow-800
-                            {% else %}bg-red-100 text-red-800{% endif %}">
-                            {{ tour.difficulty }}
-                        </span>
-                    </div>
-
-                    <!-- Rating and Reviews -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center">
-                            {% for i in "12345" %}
-                            <svg class="w-4 h-4 {% if forloop.counter <= tour.rating %}text-yellow-400{% else %}text-gray-300{% endif %}" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                            </svg>
-                            {% endfor %}
-                            <span class="ml-2 text-sm font-medium text-gray-900">{{ tour.rating }}</span>
-                        </div>
-                        <span class="text-sm text-gray-500">({{ tour.reviews }} reviews)</span>
-                    </div>
-
-                    <!-- Description -->
-                    <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ tour.full_description }}</p>
-
-                    <!-- Highlights -->
-                    {% if tour.highlights %}
-                    <div class="mb-4">
-                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Highlights:</h4>
-                        <ul class="text-sm text-gray-600 space-y-1">
-                            {% for highlight in tour.highlights %}
-                            <li class="flex items-start">
-                                <svg class="w-3 h-3 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                </svg>
-                                {{ highlight }}
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-
-                    <!-- Meeting Point -->
-                    {% if tour.meeting_point %}
-                    <div class="mb-4">
-                        <h4 class="text-sm font-semibold text-gray-900 mb-1">Meeting Point:</h4>
-                        <p class="text-sm text-gray-600">{{ tour.meeting_point }}</p>
-                    </div>
-                    {% endif %}
-
-                    <!-- Includes/Excludes -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        {% if tour.includes %}
-                        <div>
-                            <h4 class="text-sm font-semibold text-green-700 mb-2">Includes:</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                {% for item in tour.includes %}
-                                <li class="flex items-start">
-                                    <svg class="w-3 h-3 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    {{ item }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                        {% if tour.excludes %}
-                        <div>
-                            <h4 class="text-sm font-semibold text-red-700 mb-2">Excludes:</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                {% for item in tour.excludes %}
-                                <li class="flex items-start">
-                                    <svg class="w-3 h-3 text-red-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    {{ item }}
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                    <!-- CTA Button -->
-                    <button class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        </svg>
-                        Join This Tour
-                    </button>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-span-full text-center py-16">
-                <div class="max-w-md mx-auto">
-                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No share trip tours available</h3>
-                    <p class="text-gray-600 mb-6">Check back soon for new shared adventure opportunities!</p>
-                    <a href="/tours/" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-                        Explore All Tours
-                    </a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="text-center bg-gradient-to-r from-green-600 to-blue-700 rounded-2xl p-8 text-white">
-        <h2 class="text-2xl font-bold mb-3">Ready to Start Your Shared Adventure?</h2>
-        <p class="text-lg mb-6 max-w-xl mx-auto opacity-90">
-            Join our community of travelers and discover amazing experiences while making new friends.
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          Meet Fellow Travelers
+        </h3>
+        <p class="text-sm text-gray-600">
+          Connect with like-minded adventurers and make lasting friendships.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="/tours/" class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Browse All Tours
-            </a>
-            <a href="/accommodations/" class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                Find Accommodations
-            </a>
+      </div>
+      <div class="text-center p-4 bg-blue-50 rounded-xl">
+        <div
+          class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3"
+        >
+          <svg
+            class="w-6 h-6 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+            ></path>
+          </svg>
         </div>
-    </section>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          Affordable Adventures
+        </h3>
+        <p class="text-sm text-gray-600">
+          Split costs with fellow travelers for budget-friendly experiences.
+        </p>
+      </div>
+      <div class="text-center p-4 bg-purple-50 rounded-xl">
+        <div
+          class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3"
+        >
+          <svg
+            class="w-6 h-6 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+          Verified & Safe
+        </h3>
+        <p class="text-sm text-gray-600">
+          All travelers are verified for your safety and peace of mind.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Share Trip Tours Grid -->
+  <section id="tours" class="mb-8">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-900">
+      Available Share Trip Tours
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for tour in tours %}
+      <div
+        class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      >
+        <img
+          src="{{ tour.image }}"
+          alt="{{ tour.title }}"
+          class="w-full h-48 object-cover"
+          loading="lazy"
+        />
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-semibold text-gray-900 line-clamp-2">
+              {{ tour.title }}
+            </h3>
+            <div class="text-right flex-shrink-0 ml-2">
+              <div class="text-2xl font-bold text-green-600">
+                ${{ tour.price }}
+              </div>
+              <div class="text-sm text-gray-500">per person</div>
+            </div>
+          </div>
+
+          <!-- Location and Duration -->
+          <div class="flex items-center text-gray-600 mb-3 text-sm">
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            <span class="truncate">{{ tour.location }}</span>
+            <span class="mx-2">•</span>
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span>{{ tour.duration }}</span>
+          </div>
+
+          <!-- Group Size and Difficulty -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center text-sm text-gray-600">
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
+              <span>{{ tour.group_size }}</span>
+            </div>
+            <span
+              class="px-2 py-1 text-xs font-medium rounded-full {% if tour.difficulty == 'Easy' %}bg-green-100 text-green-800 {% elif tour.difficulty == 'Moderate' %}bg-yellow-100 text-yellow-800 {% else %}bg-red-100 text-red-800{% endif %}"
+            >
+              {{ tour.difficulty }}
+            </span>
+          </div>
+
+          <!-- Rating and Reviews -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              {% for i in "12345" %}
+              <svg
+                class="w-4 h-4 {% if forloop.counter <= tour.rating %}text-yellow-400{% else %}text-gray-300{% endif %}"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              {% endfor %}
+              <span class="ml-2 text-sm font-medium text-gray-900"
+                >{{ tour.rating }}</span
+              >
+            </div>
+            <span class="text-sm text-gray-500"
+              >({{ tour.reviews }} reviews)</span
+            >
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-gray-600 mb-4 line-clamp-2">
+            {{ tour.full_description }}
+          </p>
+
+          <!-- Highlights -->
+          {% if tour.highlights %}
+          <div class="mb-4">
+            <h4 class="text-sm font-semibold text-gray-900 mb-2">
+              Highlights:
+            </h4>
+            <ul class="text-sm text-gray-600 space-y-1">
+              {% for highlight in tour.highlights %}
+              <li class="flex items-start">
+                <svg
+                  class="w-3 h-3 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                {{ highlight }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Meeting Point -->
+          {% if tour.meeting_point %}
+          <div class="mb-4">
+            <h4 class="text-sm font-semibold text-gray-900 mb-1">
+              Meeting Point:
+            </h4>
+            <p class="text-sm text-gray-600">{{ tour.meeting_point }}</p>
+          </div>
+          {% endif %}
+
+          <!-- Includes/Excludes -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {% if tour.includes %}
+            <div>
+              <h4 class="text-sm font-semibold text-green-700 mb-2">
+                Includes:
+              </h4>
+              <ul class="text-sm text-gray-600 space-y-1">
+                {% for item in tour.includes %}
+                <li class="flex items-start">
+                  <svg
+                    class="w-3 h-3 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  {{ item }}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %} {% if tour.excludes %}
+            <div>
+              <h4 class="text-sm font-semibold text-red-700 mb-2">Excludes:</h4>
+              <ul class="text-sm text-gray-600 space-y-1">
+                {% for item in tour.excludes %}
+                <li class="flex items-start">
+                  <svg
+                    class="w-3 h-3 text-red-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  {{ item }}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- CTA Button -->
+          <button
+            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              ></path>
+            </svg>
+            Join This Tour
+          </button>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-full text-center py-16">
+        <div class="max-w-md mx-auto">
+          <svg
+            class="w-16 h-16 text-gray-300 mx-auto mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            ></path>
+          </svg>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">
+            No share trip tours available
+          </h3>
+          <p class="text-gray-600 mb-6">
+            Check back soon for new shared adventure opportunities!
+          </p>
+          <a
+            href="/tours/"
+            class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+          >
+            Explore All Tours
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section
+    class="text-center bg-gradient-to-r from-green-600 to-blue-700 rounded-2xl p-8 text-white"
+  >
+    <h2 class="text-2xl font-bold mb-3">
+      Ready to Start Your Shared Adventure?
+    </h2>
+    <p class="text-lg mb-6 max-w-xl mx-auto opacity-90">
+      Join our community of travelers and discover amazing experiences while
+      making new friends.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a
+        href="/tours/"
+        class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+      >
+        Browse All Tours
+      </a>
+      <a
+        href="/accommodations/"
+        class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+      >
+        Find Accommodations
+      </a>
+    </div>
+  </section>
 </div>
 {% endblock %}

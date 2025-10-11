@@ -30,7 +30,8 @@ def get_accommodation_calendar(request, accommodation_id):
     Get calendar data for a specific accommodation
     Query params: start_date, end_date (YYYY-MM-DD format)
     """
-    accommodation = get_object_or_404(Accommodation, id=accommodation_id, host=request.user.profile)
+    # Filter by User, not UserProfile (host field is ForeignKey to User)
+    accommodation = get_object_or_404(Accommodation, id=accommodation_id, host=request.user)
     
     start_date_str = request.GET.get('start_date')
     end_date_str = request.GET.get('end_date')
@@ -81,7 +82,7 @@ def get_accommodation_calendar(request, accommodation_id):
                 'date': current_date.isoformat(),
                 'is_available': True,
                 'is_blocked': False,
-                'price': float(accommodation.price_per_night) if hasattr(accommodation, 'price_per_night') else 0,
+                'price': float(accommodation.base_price) if accommodation.base_price else 0,
                 'original_price': None,
                 'minimum_stay': 1,
                 'maximum_stay': None,
@@ -112,7 +113,7 @@ def get_accommodation_calendar(request, accommodation_id):
         'success': True,
         'accommodation': {
             'id': accommodation.id,
-            'name': accommodation.name,
+            'name': accommodation.property_name,  # Use property_name, not name
         },
         'calendar': calendar_data,
         'stats': stats,
@@ -440,16 +441,29 @@ def get_user_accommodations(request):
     """
     Get all accommodations for the logged-in host
     """
-    if not hasattr(request.user, 'profile') or not request.user.profile.is_host:
+    # Check if user has host profile
+    if hasattr(request.user, 'profile') and not request.user.profile.is_host:
         return JsonResponse({'error': 'User is not a host'}, status=403)
     
-    accommodations = Accommodation.objects.filter(host=request.user.profile).values(
-        'id', 'name', 'property_type', 'city', 'country'
+    # Filter by the User, not UserProfile (host field is ForeignKey to User)
+    accommodations = Accommodation.objects.filter(host=request.user).values(
+        'id', 'property_name', 'property_type', 'city', 'country'
     )
+    
+    # Format the response with 'name' key for frontend compatibility
+    accommodations_list = []
+    for acc in accommodations:
+        accommodations_list.append({
+            'id': acc['id'],
+            'name': acc['property_name'],
+            'property_type': acc['property_type'],
+            'city': acc['city'],
+            'country': acc['country'],
+        })
     
     return JsonResponse({
         'success': True,
-        'accommodations': list(accommodations),
+        'accommodations': accommodations_list,
     })
 
 
@@ -459,10 +473,12 @@ def get_user_tours(request):
     """
     Get all tours for the logged-in host
     """
-    if not hasattr(request.user, 'profile') or not request.user.profile.is_host:
+    # Check if user has host profile
+    if hasattr(request.user, 'profile') and not request.user.profile.is_host:
         return JsonResponse({'error': 'User is not a host'}, status=403)
     
-    tours = Tour.objects.filter(host=request.user.profile).values(
+    # Filter by the User, not UserProfile (host field is ForeignKey to User)
+    tours = Tour.objects.filter(host=request.user).values(
         'id', 'name', 'category', 'city', 'country'
     )
     

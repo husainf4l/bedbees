@@ -16,6 +16,7 @@ Dimensions: Up to 6000x4000px (way too big for web!)
 ```
 
 ### Problems:
+
 - ❌ 16MB images take 3-5 seconds to load on 4G
 - ❌ 6000px width is 3x larger than any screen needs
 - ❌ JPG format is less efficient than WebP
@@ -27,12 +28,14 @@ Dimensions: Up to 6000x4000px (way too big for web!)
 ## 🎯 Optimization Strategy
 
 ### Target Metrics:
+
 - **Hero images:** 1920x1080px max, <300KB, WebP format
 - **Gallery images:** 800x600px max, <150KB, WebP format
 - **Thumbnails:** 400x300px max, <50KB, WebP format
 - **Total folder size:** <25MB (90% reduction!)
 
 ### Benefits:
+
 - ✅ **10x faster** page loads
 - ✅ **90% less** bandwidth usage
 - ✅ **Better SEO** (Google loves fast sites)
@@ -57,6 +60,7 @@ python optimize_images.py
 ```
 
 The script will:
+
 - ✅ Resize images to appropriate dimensions
 - ✅ Convert all to WebP format
 - ✅ Compress with 85% quality (imperceptible loss)
@@ -93,6 +97,7 @@ find static/core/images -name "*.png" -exec mogrify \
 ### Using Online Tools
 
 **For small batches:**
+
 1. **TinyPNG** - https://tinypng.com/ (up to 20 images)
 2. **Squoosh** - https://squoosh.app/ (Google's tool)
 3. **Compressor.io** - https://compressor.io/
@@ -102,12 +107,14 @@ find static/core/images -name "*.png" -exec mogrify \
 ## 📋 File-by-File Priority
 
 ### Critical (Load First):
+
 ```
 hero-image-new.jpg         → 15MB → Target: 250KB
                               Resize: 1920x1080
 ```
 
 ### High Priority (Above fold):
+
 ```
 jordan-wadi-rum-dunes.jpg      → 16MB → Target: 150KB (800x600)
 jordan-dead-sea-main.webp      → 12MB → Target: 150KB (800x600)
@@ -115,6 +122,7 @@ jordan-petra-treasury.webp     → 6MB  → Target: 150KB (800x600)
 ```
 
 ### Medium Priority (Gallery):
+
 All other attraction images → Target: 100-150KB each (800x600)
 
 ---
@@ -123,11 +131,11 @@ All other attraction images → Target: 100-150KB each (800x600)
 
 ### WebP vs JPG vs PNG
 
-| Format | Best For | Size | Browser Support |
-|--------|----------|------|-----------------|
-| **WebP** | Everything! | Smallest | 96%+ (2025) |
-| **JPG** | Photos (fallback) | Medium | 100% |
-| **PNG** | Logos, icons | Large | 100% |
+| Format   | Best For          | Size     | Browser Support |
+| -------- | ----------------- | -------- | --------------- |
+| **WebP** | Everything!       | Smallest | 96%+ (2025)     |
+| **JPG**  | Photos (fallback) | Medium   | 100%            |
+| **PNG**  | Logos, icons      | Large    | 100%            |
 
 **Recommendation:** Use WebP with JPG fallback
 
@@ -139,32 +147,32 @@ All other attraction images → Target: 100-150KB each (800x600)
 
 ```html
 <!-- Before (slow) -->
-<img src="{% static 'core/images/hero-image-new.jpg' %}" alt="Hero">
+<img src="{% static 'core/images/hero-image-new.jpg' %}" alt="Hero" />
 
 <!-- After (optimized) -->
-<img 
-  src="{% static 'core/images/hero-image-new.webp' %}" 
+<img
+  src="{% static 'core/images/hero-image-new.webp' %}"
   alt="Hero"
   loading="lazy"
-  width="1920" 
+  width="1920"
   height="1080"
->
+/>
 ```
 
 ### Add Picture Element (Fallback)
 
 ```html
 <picture>
-  <source srcset="{% static 'core/images/hero.webp' %}" type="image/webp">
-  <source srcset="{% static 'core/images/hero.jpg' %}" type="image/jpeg">
-  <img src="{% static 'core/images/hero.jpg' %}" alt="Hero" loading="lazy">
+  <source srcset="{% static 'core/images/hero.webp' %}" type="image/webp" />
+  <source srcset="{% static 'core/images/hero.jpg' %}" type="image/jpeg" />
+  <img src="{% static 'core/images/hero.jpg' %}" alt="Hero" loading="lazy" />
 </picture>
 ```
 
 ### Responsive Images
 
 ```html
-<img 
+<img
   srcset="
     {% static 'core/images/hero-400.webp' %} 400w,
     {% static 'core/images/hero-800.webp' %} 800w,
@@ -174,7 +182,7 @@ All other attraction images → Target: 100-150KB each (800x600)
   src="{% static 'core/images/hero-800.webp' %}"
   alt="Hero"
   loading="lazy"
->
+/>
 ```
 
 ---
@@ -190,6 +198,7 @@ curl -o /dev/null -s -w "Time: %{time_total}s\nSize: %{size_download} bytes\n" \
 ```
 
 **Test with:**
+
 - [PageSpeed Insights](https://pagespeed.web.dev/)
 - [GTmetrix](https://gtmetrix.com/)
 - [WebPageTest](https://www.webpagetest.org/)
@@ -252,18 +261,18 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 def optimize_uploaded_image(image_file, max_width=1920, max_height=1080):
     """Optimize image on upload"""
     img = Image.open(image_file)
-    
+
     # Resize
     if img.width > max_width or img.height > max_height:
         img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
-    
+
     # Convert to WebP
     output = BytesIO()
     img.save(output, format='WEBP', quality=85)
     output.seek(0)
-    
+
     return InMemoryUploadedFile(
-        output, 'ImageField', 
+        output, 'ImageField',
         f"{image_file.name.split('.')[0]}.webp",
         'image/webp', output.tell(), None
     )
@@ -274,6 +283,7 @@ def optimize_uploaded_image(image_file, max_width=1920, max_height=1080):
 ## 📊 Expected Results
 
 ### Before Optimization:
+
 ```
 Total size: 235MB
 Average file: 6.5MB
@@ -283,6 +293,7 @@ PageSpeed score: 45/100
 ```
 
 ### After Optimization:
+
 ```
 Total size: 20-25MB (90% reduction)
 Average file: 150KB (97% reduction)
@@ -296,6 +307,7 @@ PageSpeed score: 85+/100
 ## ✅ Optimization Checklist
 
 ### Immediate Actions:
+
 - [ ] Create backup: `cp -r static/core/images static/core/images_backup`
 - [ ] Install Pillow: `pip install Pillow`
 - [ ] Run optimization script: `python optimize_images.py`
@@ -304,6 +316,7 @@ PageSpeed score: 85+/100
 - [ ] Enable GZIP compression
 
 ### Short-term Improvements:
+
 - [ ] Add responsive images with srcset
 - [ ] Implement WebP with JPG fallback
 - [ ] Add loading="lazy" to all images
@@ -311,6 +324,7 @@ PageSpeed score: 85+/100
 - [ ] Test on mobile devices
 
 ### Long-term Strategy:
+
 - [ ] Set up image CDN
 - [ ] Implement automatic optimization on upload
 - [ ] Create image processing pipeline
@@ -338,6 +352,7 @@ Use picture element with fallback (see template examples above)
 ### Images look blurry?
 
 Increase quality setting:
+
 ```python
 WEBP_QUALITY = 90  # Instead of 85
 ```
@@ -345,6 +360,7 @@ WEBP_QUALITY = 90  # Instead of 85
 ### Need different sizes?
 
 Create multiple versions:
+
 ```bash
 # Hero: 1920x1080
 # Desktop: 1200x800
@@ -357,6 +373,7 @@ Create multiple versions:
 ## 📞 Quick Reference
 
 ### Commands:
+
 ```bash
 # Check folder size
 du -sh static/core/images/
@@ -372,6 +389,7 @@ python -c "from PIL import Image; img = Image.open('input.jpg'); img.save('outpu
 ```
 
 ### Resources:
+
 - **Pillow Docs:** https://pillow.readthedocs.io/
 - **WebP Guide:** https://developers.google.com/speed/webp
 - **Image Optimization:** https://web.dev/fast/#optimize-your-images

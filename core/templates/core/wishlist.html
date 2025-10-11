@@ -1,223 +1,324 @@
-{% extends 'core/base.html' %}
-{% load static %}
-
-{% block title %}My Wishlist - Bedbees{% endblock %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% load static %} {% block title %}My Wishlist -
+Bedbees{% endblock %} {% block content %}
 <div class="min-h-screen bg-gray-50">
-    <!-- Hero Section -->
-    <div class="relative h-64 flex items-center justify-center overflow-hidden bg-gradient-to-r from-pink-500 to-red-500">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M29.114%206c-1.229.009-2.348.478-3.174%201.257L.837%2031.087C.868%2031.756-.083%2032.479.062%2033.151c.168.765.86%201.301%201.628%201.331.972.041%201.848-.546%201.998-1.516l5.263-34.916c.116-.768.27-1.52.562-2.237C9.801.411%2010.227%200%2010.62%200c.265%200%20.522.07.753.204.953.559%201.431%201.742%201.211%202.742L9.62%2016.508c.525-.029%201.01.222%201.304.649.386.56.42%201.315.09%201.896L2.846%2041.631c.072.531-.08%201.064-.43%201.46-.558.632-1.523.814-2.279.406-.637-.345-1.024-.998-1.077-1.69-.076-.972.476-1.87%201.363-2.272L25.697%208.01c.443-.353.945-.544%201.47-.55.524-.006%201.026.18%201.47.53L55.077%2038.545c.887.402%201.439%201.3%201.363%202.272-.053.692-.44%201.345-1.077%201.69-.756.408-1.721.226-2.279-.406-.35-.396-.502-.929-.43-1.46L47.986%2019.053c-.33-.581-.296-1.336.09-1.896.294-.427.779-.678%201.304-.649l-3.964-13.562c-.22-1-.242-2.183.711-2.742C49.858.07%2050.115%200%2050.38%200c.393%200%20.819.411%201.131%201.031.292.717.446%201.469.562%202.237l5.263%2034.916c.15.97%201.026%201.557%201.998%201.516.768-.03%201.46-.566%201.628-1.331.145-.672-.194-1.395-.769-1.064L32.06%207.257C31.234%206.478%2030.115%206.009%2028.886%206z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E');"></div>
+  <!-- Hero Section -->
+  <div
+    class="relative h-64 flex items-center justify-center overflow-hidden bg-gradient-to-r from-pink-500 to-red-500"
+  >
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div
+        class="absolute inset-0"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M29.114%206c-1.229.009-2.348.478-3.174%201.257L.837%2031.087C.868%2031.756-.083%2032.479.062%2033.151c.168.765.86%201.301%201.628%201.331.972.041%201.848-.546%201.998-1.516l5.263-34.916c.116-.768.27-1.52.562-2.237C9.801.411%2010.227%200%2010.62%200c.265%200%20.522.07.753.204.953.559%201.431%201.742%201.211%202.742L9.62%2016.508c.525-.029%201.01.222%201.304.649.386.56.42%201.315.09%201.896L2.846%2041.631c.072.531-.08%201.064-.43%201.46-.558.632-1.523.814-2.279.406-.637-.345-1.024-.998-1.077-1.69-.076-.972.476-1.87%201.363-2.272L25.697%208.01c.443-.353.945-.544%201.47-.55.524-.006%201.026.18%201.47.53L55.077%2038.545c.887.402%201.439%201.3%201.363%202.272-.053.692-.44%201.345-1.077%201.69-.756.408-1.721.226-2.279-.406-.35-.396-.502-.929-.43-1.46L47.986%2019.053c-.33-.581-.296-1.336.09-1.896.294-.427.779-.678%201.304-.649l-3.964-13.562c-.22-1-.242-2.183.711-2.742C49.858.07%2050.115%200%2050.38%200c.393%200%20.819.411%201.131%201.031.292.717.446%201.469.562%202.237l5.263%2034.916c.15.97%201.026%201.557%201.998%201.516.768-.03%201.46-.566%201.628-1.331.145-.672-.194-1.395-.769-1.064L32.06%207.257C31.234%206.478%2030.115%206.009%2028.886%206z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+        "
+      ></div>
+    </div>
+
+    <!-- Content -->
+    <div
+      class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white"
+    >
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">My Wishlist</h1>
+      <p class="text-xl text-pink-100">
+        {{ total_items }} saved item{{ total_items|pluralize }} • {{
+        accommodations_count }} accommodation{{ accommodations_count|pluralize
+        }}, {{ tours_count }} tour{{ tours_count|pluralize }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Wishlist Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {% if wishlist_items %}
+    <!-- Filter Tabs -->
+    <div class="mb-8">
+      <div class="flex justify-center">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1">
+          <button
+            id="all-tab"
+            class="tab-button active px-6 py-3 rounded-lg font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            All ({{ total_items }})
+          </button>
+          <button
+            id="accommodations-tab"
+            class="tab-button px-6 py-3 rounded-lg font-medium text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Accommodations ({{ accommodations_count }})
+          </button>
+          <button
+            id="tours-tab"
+            class="tab-button px-6 py-3 rounded-lg font-medium text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            Tours ({{ tours_count }})
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wishlist Items -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for item in wishlist_items %}
+      <div
+        class="wishlist-item bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200 group"
+        data-type="{{ item.type }}"
+      >
+        <!-- Image -->
+        <div class="relative h-48 overflow-hidden">
+          <img
+            src="{{ item.image }}"
+            alt="{{ item.name }}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute top-4 right-4">
+            <button
+              class="w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="absolute top-4 left-4">
+            <span
+              class="px-3 py-1 bg-white bg-opacity-90 text-gray-900 text-xs font-semibold rounded-full"
+            >
+              {% if item.type == 'accommodation' %} Accommodation {% else %}
+              Tour {% endif %}
+            </span>
+          </div>
         </div>
 
         <!-- Content -->
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                My Wishlist
-            </h1>
-            <p class="text-xl text-pink-100">
-                {{ total_items }} saved item{{ total_items|pluralize }} • {{ accommodations_count }} accommodation{{ accommodations_count|pluralize }}, {{ tours_count }} tour{{ tours_count|pluralize }}
-            </p>
-        </div>
-    </div>
-
-    <!-- Wishlist Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {% if wishlist_items %}
-        <!-- Filter Tabs -->
-        <div class="mb-8">
-            <div class="flex justify-center">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-1">
-                    <button id="all-tab" class="tab-button active px-6 py-3 rounded-lg font-medium text-gray-700 hover:text-gray-900 transition-colors">
-                        All ({{ total_items }})
-                    </button>
-                    <button id="accommodations-tab" class="tab-button px-6 py-3 rounded-lg font-medium text-gray-500 hover:text-gray-700 transition-colors">
-                        Accommodations ({{ accommodations_count }})
-                    </button>
-                    <button id="tours-tab" class="tab-button px-6 py-3 rounded-lg font-medium text-gray-500 hover:text-gray-700 transition-colors">
-                        Tours ({{ tours_count }})
-                    </button>
-                </div>
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
+              {{ item.name }}
+            </h3>
+            <div class="flex items-center gap-1 ml-2">
+              <svg
+                class="w-4 h-4 text-yellow-400"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                />
+              </svg>
+              <span class="text-sm font-medium">{{ item.rating }}</span>
             </div>
-        </div>
+          </div>
 
-        <!-- Wishlist Items -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for item in wishlist_items %}
-            <div class="wishlist-item bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200 group"
-                 data-type="{{ item.type }}">
-                <!-- Image -->
-                <div class="relative h-48 overflow-hidden">
-                    <img src="{{ item.image }}" alt="{{ item.name }}"
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div class="absolute top-4 right-4">
-                        <button class="w-10 h-10 bg-white bg-opacity-90 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="absolute top-4 left-4">
-                        <span class="px-3 py-1 bg-white bg-opacity-90 text-gray-900 text-xs font-semibold rounded-full">
-                            {% if item.type == 'accommodation' %}
-                                Accommodation
-                            {% else %}
-                                Tour
-                            {% endif %}
-                        </span>
-                    </div>
-                </div>
+          <p class="text-sm text-gray-600 mb-3 flex items-center gap-1">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            {{ item.location }}
+          </p>
 
-                <!-- Content -->
-                <div class="p-6">
-                    <div class="flex items-start justify-between mb-2">
-                        <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-                            {{ item.name }}
-                        </h3>
-                        <div class="flex items-center gap-1 ml-2">
-                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                            <span class="text-sm font-medium">{{ item.rating }}</span>
-                        </div>
-                    </div>
+          <p class="text-sm text-gray-700 mb-4 line-clamp-2">
+            {{ item.description }}
+          </p>
 
-                    <p class="text-sm text-gray-600 mb-3 flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        {{ item.location }}
-                    </p>
-
-                    <p class="text-sm text-gray-700 mb-4 line-clamp-2">
-                        {{ item.description }}
-                    </p>
-
-                    <!-- Item-specific details -->
-                    {% if item.type == 'accommodation' %}
-                        <div class="flex flex-wrap gap-1 mb-4">
-                            {% for amenity in item.amenities %}
-                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">{{ amenity }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                {{ item.duration }}
-                            </span>
-                        </div>
-                        <div class="flex flex-wrap gap-1 mb-4">
-                            {% for inclusion in item.inclusions %}
-                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">{{ inclusion }}</span>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <!-- Price and Actions -->
-                    <div class="flex items-center justify-between">
-                        <div class="text-2xl font-bold text-gray-900">
-                            ${{ item.price }}
-                            {% if item.type == 'tour' %}
-                                <span class="text-sm font-normal text-gray-600">/person</span>
-                            {% else %}
-                                <span class="text-sm font-normal text-gray-600">/night</span>
-                            {% endif %}
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors">
-                                View Details
-                            </button>
-                            {% if item.type == 'accommodation' %}
-                                <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                    Book Now
-                                </button>
-                            {% else %}
-                                <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors">
-                                    Book Tour
-                                </button>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Added date -->
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <p class="text-xs text-gray-500">
-                            Added {{ item.added_date }}
-                        </p>
-                    </div>
-                </div>
-            </div>
+          <!-- Item-specific details -->
+          {% if item.type == 'accommodation' %}
+          <div class="flex flex-wrap gap-1 mb-4">
+            {% for amenity in item.get_amenities_list %}
+            <span
+              class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+              >{{ amenity }}</span
+            >
             {% endfor %}
-        </div>
+          </div>
+          {% else %}
+          <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+            <span class="flex items-center gap-1">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              {{ item.duration }}
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-1 mb-4">
+            {% for inclusion in item.inclusions %}
+            <span
+              class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full"
+              >{{ inclusion }}</span
+            >
+            {% endfor %}
+          </div>
+          {% endif %}
 
-        <!-- Continue Exploring -->
-        <div class="mt-12 text-center">
-            <a href="{% url 'home' %}"
-               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors duration-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                Continue Exploring
-            </a>
-        </div>
-        {% else %}
-        <!-- Empty Wishlist -->
-        <div class="text-center py-16">
-            <div class="max-w-md mx-auto">
-                <svg class="mx-auto h-24 w-24 text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                </svg>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Your wishlist is empty</h2>
-                <p class="text-gray-600 mb-8">Start saving your favorite accommodations and tours to create your perfect travel wishlist!</p>
-                <a href="{% url 'home' %}"
-                   class="inline-flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors duration-200">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    Start Exploring
-                </a>
+          <!-- Price and Actions -->
+          <div class="flex items-center justify-between">
+            <div class="text-2xl font-bold text-gray-900">
+              ${{ item.price }} {% if item.type == 'tour' %}
+              <span class="text-sm font-normal text-gray-600">/person</span>
+              {% else %}
+              <span class="text-sm font-normal text-gray-600">/night</span>
+              {% endif %}
             </div>
+            <div class="flex gap-2">
+              <button
+                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
+              >
+                View Details
+              </button>
+              {% if item.type == 'accommodation' %}
+              <button
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Book Now
+              </button>
+              {% else %}
+              <button
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Book Tour
+              </button>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Added date -->
+          <div class="mt-4 pt-4 border-t border-gray-100">
+            <p class="text-xs text-gray-500">Added {{ item.added_date }}</p>
+          </div>
         </div>
-        {% endif %}
+      </div>
+      {% endfor %}
     </div>
+
+    <!-- Continue Exploring -->
+    <div class="mt-12 text-center">
+      <a
+        href="{% url 'core:home' %}"
+        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors duration-200"
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          ></path>
+        </svg>
+        Continue Exploring
+      </a>
+    </div>
+    {% else %}
+    <!-- Empty Wishlist -->
+    <div class="text-center py-16">
+      <div class="max-w-md mx-auto">
+        <svg
+          class="mx-auto h-24 w-24 text-gray-400 mb-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          />
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Your wishlist is empty
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Start saving your favorite accommodations and tours to create your
+          perfect travel wishlist!
+        </p>
+        <a
+          href="{% url 'core:home' %}"
+          class="inline-flex items-center gap-2 bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-xl font-semibold transition-colors duration-200"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+          Start Exploring
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 <script>
-// Tab functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const wishlistItems = document.querySelectorAll('.wishlist-item');
+  // Tab functionality
+  document.addEventListener("DOMContentLoaded", function () {
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const wishlistItems = document.querySelectorAll(".wishlist-item");
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active', 'text-gray-900');
-                btn.classList.add('text-gray-500');
-            });
-
-            // Add active class to clicked button
-            this.classList.add('active', 'text-gray-900');
-            this.classList.remove('text-gray-500');
-
-            const filterType = this.id.replace('-tab', '');
-
-            // Filter items
-            wishlistItems.forEach(item => {
-                if (filterType === 'all' || item.dataset.type === filterType) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        // Remove active class from all buttons
+        tabButtons.forEach((btn) => {
+          btn.classList.remove("active", "text-gray-900");
+          btn.classList.add("text-gray-500");
         });
+
+        // Add active class to clicked button
+        this.classList.add("active", "text-gray-900");
+        this.classList.remove("text-gray-500");
+
+        const filterType = this.id.replace("-tab", "");
+
+        // Filter items
+        wishlistItems.forEach((item) => {
+          if (filterType === "all" || item.dataset.type === filterType) {
+            item.style.display = "block";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      });
     });
-});
+  });
 </script>
 {% endblock %}

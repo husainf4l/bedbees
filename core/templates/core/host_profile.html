@@ -1,310 +1,733 @@
-{% extends 'core/base.html' %}
-{% load profile_filters %}
-
-{% block title %}Host Profile - Bedbees{% endblock %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% load profile_filters %} {% block title %}Host
+Profile - Bedbees{% endblock %} {% block content %}
 <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <div class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <a href="{% url 'hostdashboard' %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Back to Dashboard
-                    </a>
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Host Profile</h1>
-                        <p class="text-gray-600 mt-1">Manage your hosting profile and preferences</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    {% if profile.get_verification_score < 100 %}
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                            </svg>
-                            <span class="text-sm font-medium text-yellow-800">{{ profile.get_verification_score }}% verified</span>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-sm font-medium text-green-800">Fully verified</span>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+  <!-- Header -->
+  <div class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a
+            href="{% url 'core:hostdashboard' %}"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              ></path>
+            </svg>
+            Back to Dashboard
+          </a>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Host Profile</h1>
+            <p class="text-gray-600 mt-1">
+              Manage your hosting profile and preferences
+            </p>
+          </div>
         </div>
+        <div class="flex items-center gap-3">
+          {% if profile.get_verification_score < 100 %}
+          <div
+            class="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2"
+          >
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-4 h-4 text-yellow-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                ></path>
+              </svg>
+              <span class="text-sm font-medium text-yellow-800"
+                >{{ profile.get_verification_score }}% verified</span
+              >
+            </div>
+          </div>
+          {% else %}
+          <div class="bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-4 h-4 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span class="text-sm font-medium text-green-800"
+                >Fully verified</span
+              >
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form method="post" enctype="multipart/form-data" class="space-y-8">
-            {% csrf_token %}
-            
-            <!-- Profile Picture Section -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Profile Picture</h2>
-                <div class="flex items-center gap-6">
-                    <div class="relative">
-                        {% if profile.profile_picture %}
-                            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg">
-                        {% else %}
-                            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-white shadow-lg">
-                                <span class="text-2xl font-bold text-white">{{ user.first_name|first|default:user.username|first|upper }}</span>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <div class="flex-1">
-                        <label for="{{ form.profile_picture.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Upload New Picture
-                        </label>
-                        {{ form.profile_picture }}
-                        <p class="text-xs text-gray-500 mt-2">JPG, PNG or GIF. Max file size 5MB.</p>
-                    </div>
-                </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <form method="post" enctype="multipart/form-data" class="space-y-8">
+      {% csrf_token %}
+
+      <!-- Profile Picture Section -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Profile Picture
+        </h2>
+        <div class="flex items-center gap-6">
+          <div class="relative group">
+            {% if profile.profile_picture %}
+            <img
+              id="profile-preview"
+              src="{{ profile.profile_picture.url }}"
+              alt="Profile Picture"
+              class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+            />
+            {% else %}
+            <div
+              id="profile-preview"
+              class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-white shadow-lg"
+            >
+              <span class="text-3xl font-bold text-white"
+                >{{ user.first_name|first|default:user.username|first|upper
+                }}</span
+              >
             </div>
-
-            <!-- Basic Information -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            First Name *
-                        </label>
-                        {{ form.first_name }}
-                    </div>
-                    <div>
-                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Last Name *
-                        </label>
-                        {{ form.last_name }}
-                    </div>
-                    <div>
-                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address *
-                        </label>
-                        {{ form.email }}
-                    </div>
-                    <div>
-                        <label for="{{ form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Phone Number
-                        </label>
-                        {{ form.phone_number }}
-                    </div>
-                    <div>
-                        <label for="{{ form.date_of_birth.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Date of Birth
-                        </label>
-                        {{ form.date_of_birth }}
-                    </div>
-                    <div>
-                        <label for="{{ form.languages_spoken.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Languages Spoken
-                        </label>
-                        {{ form.languages_spoken }}
-                        <p class="text-xs text-gray-500 mt-1">Separate multiple languages with commas</p>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <label for="{{ form.bio.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                        About You
-                    </label>
-                    {{ form.bio }}
-                    <p class="text-xs text-gray-500 mt-1">Tell guests about yourself and your hosting experience</p>
-                </div>
+            {% endif %}
+            <div
+              class="absolute inset-0 bg-black bg-opacity-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center cursor-pointer"
+              onclick="document.getElementById('profile-photo-input').click()"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
             </div>
-
-            <!-- Location Information -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Location</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="md:col-span-2">
-                        <label for="{{ form.address.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Street Address
-                        </label>
-                        {{ form.address }}
-                    </div>
-                    <div>
-                        <label for="{{ form.city.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            City
-                        </label>
-                        {{ form.city }}
-                    </div>
-                    <div>
-                        <label for="{{ form.country.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Country
-                        </label>
-                        {{ form.country }}
-                    </div>
-                    <div>
-                        <label for="{{ form.postal_code.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Postal Code
-                        </label>
-                        {{ form.postal_code }}
-                    </div>
-                </div>
+          </div>
+          <div class="flex-1">
+            <label
+              for="profile-photo-input"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Upload New Picture
+            </label>
+            <div class="flex items-center gap-4">
+              <label
+                for="profile-photo-input"
+                class="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                Choose Photo
+              </label>
+              <span id="file-name" class="text-sm text-gray-500 italic"
+                >No file chosen</span
+              >
             </div>
-
-            <!-- Business Information -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Business Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="{{ form.business_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Business Name
-                        </label>
-                        {{ form.business_name }}
-                    </div>
-                    <div>
-                        <label for="{{ form.business_type.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Business Type
-                        </label>
-                        {{ form.business_type }}
-                    </div>
-                </div>
+            {{ form.profile_picture }}
+            <p class="text-xs text-gray-500 mt-2">
+              JPG, PNG or GIF. Max file size 5MB.
+            </p>
+            <div id="upload-status" class="mt-2 hidden">
+              <div class="flex items-center text-sm">
+                <div
+                  class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"
+                ></div>
+                <span class="text-gray-600">Uploading...</span>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Social Media -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Social Media & Website</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="{{ form.website.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Website
-                        </label>
-                        {{ form.website }}
-                    </div>
-                    <div>
-                        <label for="{{ form.instagram.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Instagram
-                        </label>
-                        {{ form.instagram }}
-                    </div>
-                    <div>
-                        <label for="{{ form.facebook.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Facebook
-                        </label>
-                        {{ form.facebook }}
-                    </div>
-                    <div>
-                        <label for="{{ form.twitter.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
-                            Twitter/X
-                        </label>
-                        {{ form.twitter }}
-                    </div>
-                </div>
+      <!-- Basic Information -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Basic Information
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label
+              for="{{ form.first_name.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              First Name *
+            </label>
+            {{ form.first_name }}
+          </div>
+          <div>
+            <label
+              for="{{ form.last_name.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Last Name *
+            </label>
+            {{ form.last_name }}
+          </div>
+          <div>
+            <label
+              for="{{ form.email.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Email Address *
+            </label>
+            {{ form.email }}
+          </div>
+          <div>
+            <label
+              for="{{ form.phone_number.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Phone Number
+            </label>
+            {{ form.phone_number }}
+          </div>
+          <div>
+            <label
+              for="{{ form.date_of_birth.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Date of Birth
+            </label>
+            {{ form.date_of_birth }}
+          </div>
+          <div>
+            <label
+              for="{{ form.languages_spoken.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Languages Spoken
+            </label>
+            {{ form.languages_spoken }}
+            <p class="text-xs text-gray-500 mt-1">
+              Separate multiple languages with commas
+            </p>
+          </div>
+        </div>
+        <div class="mt-6">
+          <label
+            for="{{ form.bio.id_for_label }}"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            About You
+          </label>
+          {{ form.bio }}
+          <p class="text-xs text-gray-500 mt-1">
+            Tell guests about yourself and your hosting experience
+          </p>
+        </div>
+      </div>
+
+      <!-- Location Information -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">Location</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="md:col-span-2">
+            <label
+              for="{{ form.address.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Street Address
+            </label>
+            {{ form.address }}
+          </div>
+          <div>
+            <label
+              for="{{ form.city.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              City
+            </label>
+            {{ form.city }}
+          </div>
+          <div>
+            <label
+              for="{{ form.country.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Country
+            </label>
+            {{ form.country }}
+          </div>
+          <div>
+            <label
+              for="{{ form.postal_code.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Postal Code
+            </label>
+            {{ form.postal_code }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Business Information -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Business Information
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label
+              for="{{ form.business_name.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Business Name
+            </label>
+            {{ form.business_name }}
+          </div>
+          <div>
+            <label
+              for="{{ form.business_type.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Business Type
+            </label>
+            {{ form.business_type }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Media -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Social Media & Website
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label
+              for="{{ form.website.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Website
+            </label>
+            {{ form.website }}
+          </div>
+          <div>
+            <label
+              for="{{ form.instagram.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Instagram
+            </label>
+            {{ form.instagram }}
+          </div>
+          <div>
+            <label
+              for="{{ form.facebook.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Facebook
+            </label>
+            {{ form.facebook }}
+          </div>
+          <div>
+            <label
+              for="{{ form.twitter.id_for_label }}"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Twitter/X
+            </label>
+            {{ form.twitter }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication Preferences -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Communication Preferences
+        </h2>
+        <div class="space-y-4">
+          <div class="flex items-center">
+            {{ form.email_notifications }}
+            <label
+              for="{{ form.email_notifications.id_for_label }}"
+              class="ml-3 text-sm text-gray-700"
+            >
+              Email notifications for bookings and messages
+            </label>
+          </div>
+          <div class="flex items-center">
+            {{ form.sms_notifications }}
+            <label
+              for="{{ form.sms_notifications.id_for_label }}"
+              class="ml-3 text-sm text-gray-700"
+            >
+              SMS notifications for urgent updates
+            </label>
+          </div>
+          <div class="flex items-center">
+            {{ form.marketing_emails }}
+            <label
+              for="{{ form.marketing_emails.id_for_label }}"
+              class="ml-3 text-sm text-gray-700"
+            >
+              Marketing emails and promotional offers
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Status -->
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-6">
+          Verification Status
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="flex items-center justify-between p-4 border rounded-xl {% if profile.email_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}"
+          >
+            <div class="flex items-center gap-3">
+              <svg
+                class="w-6 h-6 {% if profile.email_verified %}text-green-600{% else %}text-gray-400{% endif %}"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
+              </svg>
+              <span
+                class="text-sm font-medium {% if profile.email_verified %}text-green-900{% else %}text-gray-600{% endif %}"
+                >Email</span
+              >
             </div>
+            {% if profile.email_verified %}
+            <svg
+              class="w-5 h-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            {% else %}
+            <button
+              type="button"
+              class="text-xs text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Verify
+            </button>
+            {% endif %}
+          </div>
 
-            <!-- Communication Preferences -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Communication Preferences</h2>
-                <div class="space-y-4">
-                    <div class="flex items-center">
-                        {{ form.email_notifications }}
-                        <label for="{{ form.email_notifications.id_for_label }}" class="ml-3 text-sm text-gray-700">
-                            Email notifications for bookings and messages
-                        </label>
-                    </div>
-                    <div class="flex items-center">
-                        {{ form.sms_notifications }}
-                        <label for="{{ form.sms_notifications.id_for_label }}" class="ml-3 text-sm text-gray-700">
-                            SMS notifications for urgent updates
-                        </label>
-                    </div>
-                    <div class="flex items-center">
-                        {{ form.marketing_emails }}
-                        <label for="{{ form.marketing_emails.id_for_label }}" class="ml-3 text-sm text-gray-700">
-                            Marketing emails and promotional offers
-                        </label>
-                    </div>
-                </div>
+          <div
+            class="flex items-center justify-between p-4 border rounded-xl {% if profile.phone_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}"
+          >
+            <div class="flex items-center gap-3">
+              <svg
+                class="w-6 h-6 {% if profile.phone_verified %}text-green-600{% else %}text-gray-400{% endif %}"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                ></path>
+              </svg>
+              <span
+                class="text-sm font-medium {% if profile.phone_verified %}text-green-900{% else %}text-gray-600{% endif %}"
+                >Phone</span
+              >
             </div>
+            {% if profile.phone_verified %}
+            <svg
+              class="w-5 h-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            {% else %}
+            <button
+              type="button"
+              class="text-xs text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Verify
+            </button>
+            {% endif %}
+          </div>
 
-            <!-- Verification Status -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Verification Status</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="flex items-center justify-between p-4 border rounded-xl {% if profile.email_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 {% if profile.email_verified %}text-green-600{% else %}text-gray-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="text-sm font-medium {% if profile.email_verified %}text-green-900{% else %}text-gray-600{% endif %}">Email</span>
-                        </div>
-                        {% if profile.email_verified %}
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        {% else %}
-                            <button type="button" class="text-xs text-blue-600 hover:text-blue-800 font-medium">Verify</button>
-                        {% endif %}
-                    </div>
-
-                    <div class="flex items-center justify-between p-4 border rounded-xl {% if profile.phone_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 {% if profile.phone_verified %}text-green-600{% else %}text-gray-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                            </svg>
-                            <span class="text-sm font-medium {% if profile.phone_verified %}text-green-900{% else %}text-gray-600{% endif %}">Phone</span>
-                        </div>
-                        {% if profile.phone_verified %}
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        {% else %}
-                            <button type="button" class="text-xs text-blue-600 hover:text-blue-800 font-medium">Verify</button>
-                        {% endif %}
-                    </div>
-
-                    <div class="flex items-center justify-between p-4 border rounded-xl {% if profile.id_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-6 h-6 {% if profile.id_verified %}text-green-600{% else %}text-gray-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path>
-                            </svg>
-                            <span class="text-sm font-medium {% if profile.id_verified %}text-green-900{% else %}text-gray-600{% endif %}">ID Document</span>
-                        </div>
-                        {% if profile.id_verified %}
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        {% else %}
-                            <button type="button" class="text-xs text-blue-600 hover:text-blue-800 font-medium">Verify</button>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                    <div class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h4 class="text-sm font-medium text-blue-900 mb-1">Why verify your profile?</h4>
-                            <p class="text-sm text-blue-700">Verified hosts get more bookings, build trust with guests, and access premium features.</p>
-                        </div>
-                    </div>
-                </div>
+          <div
+            class="flex items-center justify-between p-4 border rounded-xl {% if profile.id_verified %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-200{% endif %}"
+          >
+            <div class="flex items-center gap-3">
+              <svg
+                class="w-6 h-6 {% if profile.id_verified %}text-green-600{% else %}text-gray-400{% endif %}"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
+                ></path>
+              </svg>
+              <span
+                class="text-sm font-medium {% if profile.id_verified %}text-green-900{% else %}text-gray-600{% endif %}"
+                >ID Document</span
+              >
             </div>
-
-            <!-- Form Actions -->
-            <div class="flex items-center justify-end gap-4">
-                <a href="{% url 'hostdashboard' %}" class="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
-                    Cancel
-                </a>
-                <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-200/50 hover:-translate-y-0.5">
-                    Save Profile
-                </button>
+            {% if profile.id_verified %}
+            <svg
+              class="w-5 h-5 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            {% else %}
+            <button
+              type="button"
+              class="text-xs text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Verify
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+          <div class="flex items-start gap-3">
+            <svg
+              class="w-5 h-5 text-blue-600 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <div>
+              <h4 class="text-sm font-medium text-blue-900 mb-1">
+                Why verify your profile?
+              </h4>
+              <p class="text-sm text-blue-700">
+                Verified hosts get more bookings, build trust with guests, and
+                access premium features.
+              </p>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex items-center justify-end gap-4">
+        <a
+          href="{% url 'core:hostdashboard' %}"
+          class="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors"
+        >
+          Cancel
+        </a>
+        <button
+          type="submit"
+          class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-blue-200/50 hover:-translate-y-0.5"
+        >
+          Save Profile
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
+
+<!-- Photo Upload JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const photoInput = document.getElementById("profile-photo-input");
+    const profilePreview = document.getElementById("profile-preview");
+    const fileName = document.getElementById("file-name");
+    const uploadStatus = document.getElementById("upload-status");
+
+    if (photoInput) {
+      photoInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+
+        if (file) {
+          // Validate file type
+          if (!file.type.startsWith("image/")) {
+            alert("Please select an image file (JPG, PNG, or GIF)");
+            photoInput.value = "";
+            return;
+          }
+
+          // Validate file size (5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            alert("File size must be less than 5MB");
+            photoInput.value = "";
+            return;
+          }
+
+          // Update file name display
+          fileName.textContent = file.name;
+          fileName.classList.remove("italic", "text-gray-500");
+          fileName.classList.add("text-gray-900", "font-medium");
+
+          // Preview the image
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            // Remove old preview
+            if (profilePreview.tagName === "DIV") {
+              const img = document.createElement("img");
+              img.id = "profile-preview";
+              img.className =
+                "w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg";
+              img.src = event.target.result;
+              profilePreview.parentNode.replaceChild(img, profilePreview);
+            } else {
+              profilePreview.src = event.target.result;
+            }
+          };
+          reader.readAsDataURL(file);
+
+          // Optionally upload immediately via AJAX
+          // Uncomment the following lines if you want immediate upload
+          /*
+                uploadPhotoAjax(file);
+                */
+        }
+      });
+    }
+
+    function uploadPhotoAjax(file) {
+      const formData = new FormData();
+      formData.append("profile_picture", file);
+      formData.append(
+        "csrfmiddlewaretoken",
+        document.querySelector("[name=csrfmiddlewaretoken]").value
+      );
+
+      // Show upload status
+      uploadStatus.classList.remove("hidden");
+
+      fetch('{% url "core:upload_profile_photo" %}', {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          uploadStatus.classList.add("hidden");
+
+          if (data.success) {
+            // Show success message
+            showMessage("success", data.message);
+
+            // Update preview with uploaded photo URL
+            if (data.photo_url) {
+              const preview = document.getElementById("profile-preview");
+              if (preview.tagName === "DIV") {
+                const img = document.createElement("img");
+                img.id = "profile-preview";
+                img.className =
+                  "w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg";
+                img.src = data.photo_url;
+                preview.parentNode.replaceChild(img, preview);
+              } else {
+                preview.src = data.photo_url;
+              }
+            }
+          } else {
+            showMessage("error", data.message);
+            photoInput.value = "";
+            fileName.textContent = "No file chosen";
+          }
+        })
+        .catch((error) => {
+          uploadStatus.classList.add("hidden");
+          showMessage("error", "Error uploading photo. Please try again.");
+          console.error("Upload error:", error);
+        });
+    }
+
+    function showMessage(type, message) {
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+        type === "success" ? "bg-green-500" : "bg-red-500"
+      } text-white`;
+      messageDiv.textContent = message;
+      document.body.appendChild(messageDiv);
+
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 3000);
+    }
+  });
+</script>
+
 {% endblock %}

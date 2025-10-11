@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Publish Button</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">Test Publishing System</h1>
+        
+        <div class="space-y-4">
+            <h2 class="text-lg font-semibold">Test URLs:</h2>
+            
+            <div class="border rounded p-4">
+                <h3 class="font-medium mb-2">Accommodation Publishing:</h3>
+                <p class="text-sm text-gray-600 mb-2">Replace {id} with actual accommodation ID</p>
+                <code class="bg-gray-100 px-2 py-1 rounded text-sm">
+                    POST /accommodation/{id}/publish/
+                </code>
+            </div>
+            
+            <div class="border rounded p-4">
+                <h3 class="font-medium mb-2">Tour Publishing:</h3>
+                <p class="text-sm text-gray-600 mb-2">Replace {id} with actual tour ID</p>
+                <code class="bg-gray-100 px-2 py-1 rounded text-sm">
+                    POST /tour/{id}/publish/
+                </code>
+            </div>
+            
+            <div class="mt-6 p-4 bg-blue-50 rounded">
+                <h3 class="font-semibold mb-2">How to test:</h3>
+                <ol class="list-decimal list-inside space-y-1 text-sm">
+                    <li>Go to Django shell: <code class="bg-white px-2 py-1 rounded">python manage.py shell</code></li>
+                    <li>Run: <code class="bg-white px-2 py-1 rounded">from core.models import Accommodation</code></li>
+                    <li>Check: <code class="bg-white px-2 py-1 rounded">Accommodation.objects.all()</code></li>
+                    <li>Note an ID and use it in the form below</li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Test Form -->
+        <div class="mt-8 border-t pt-6">
+            <h2 class="text-lg font-semibold mb-4">Quick Test Form:</h2>
+            <form method="POST" action="/accommodation/1/publish/" class="space-y-4">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Accommodation ID:</label>
+                    <input type="number" name="id" value="1" 
+                           class="border rounded px-3 py-2 w-full">
+                </div>
+                
+                <button type="submit" 
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium">
+                    🚀 Test Publish
+                </button>
+            </form>
+            
+            <p class="mt-4 text-sm text-gray-600">
+                ⚠️ Make sure you're logged in and the accommodation exists with this ID
+            </p>
+        </div>
+    </div>
+</body>
+</html>

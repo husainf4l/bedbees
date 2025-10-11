@@ -286,7 +286,7 @@
             {% endif %}
           </p>
           {% if filter_status != 'all' or filter_type != 'all' %}
-          <a href="{% url 'bookings' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Clear Filters</a>
+          <a href="{% url 'core:bookings' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Clear Filters</a>
           {% endif %}
         </div>
       {% endif %}

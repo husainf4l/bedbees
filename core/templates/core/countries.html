@@ -20,7 +20,7 @@
     <section class="py-8 bg-gray-50">
         <div class="max-w-4xl mx-auto px-6">
             <div class="bg-white rounded-lg shadow-md p-6">
-                <form method="GET" action="{% url 'countries' %}" class="flex flex-col md:flex-row gap-4">
+                <form method="GET" action="{% url 'core:countries' %}" class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1">
                         <input
                             type="text"
@@ -44,7 +44,7 @@
             {% if countries %}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {% for country in countries %}
-                        <a href="{% url 'country_detail' country.code %}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+                        <a href="{% url 'core:country_detail' country.code %}" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
                             <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                                 <span class="text-white text-6xl">{{ country.flag|default:'🌍' }}</span>
                             </div>
@@ -74,10 +74,10 @@
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Start Your Journey?</h2>
             <p class="text-gray-600 mb-8">Browse accommodations and experiences in your favorite destinations</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{% url 'accommodations' %}" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                <a href="{% url 'core:accommodations' %}" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
                     Find Accommodations
                 </a>
-                <a href="{% url 'destinations' %}" class="px-8 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold rounded-lg transition-colors">
+                <a href="{% url 'core:destinations' %}" class="px-8 py-3 border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold rounded-lg transition-colors">
                     View Destinations
                 </a>
             </div>

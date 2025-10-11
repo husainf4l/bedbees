@@ -1,1725 +1,732 @@
-{% extends 'core/base.html' %}{% extends 'core/base.html' %}{% extends 'core/base.html' %}{% extends 'core/base.html' %}{% extends 'core/base.html' %}
-
-
+{% extends 'core/base.html' %}
 
 {% block title %}Accommodations - Bedbees{% endblock %}
 
-
-
-{% block content %}{% block title %}Accommodations - Bedbees{% endblock %}
-
+{% block content %}
 <!-- Hero Section with Search -->
-
 <section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-32 mb-12">
-
     <div class="absolute inset-0 bg-black/50"></div>
-
-    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>{% block content %}{% block title %}Accommodations - Bedbees{% endblock %}
-
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
+    
     <div class="relative container mx-auto px-4">
-
-        <div class="text-center mb-8"><!-- Hero Section with Search -->
-
+        <div class="text-center mb-8">
             <h1 class="text-5xl md:text-6xl font-bold mb-4">Discover Your Perfect Stay</h1>
-
-            <p class="text-xl md:text-2xl mb-2 text-green-100"><section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-32 mb-12">
-
+            <p class="text-xl md:text-2xl mb-2 text-green-100">
                 Luxury Hotels & Boutique Accommodations
-
-            </p>    <div class="absolute inset-0 bg-black/50"></div>
-
-            <p class="text-lg text-green-50 max-w-3xl mx-auto">
-
-                Experience world-class hospitality across the Middle East and beyond    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>{% block content %}{% block title %}Accommodations - Bedbees{% endblock %}
-
             </p>
-
-        </div>    <div class="relative container mx-auto px-4">
-
-
-
-        <!-- Search Bar -->        <div class="text-center mb-8"><!-- Hero Section with Search -->
-
-        <div class="max-w-5xl mx-auto">
-
-            <form method="GET" action="/accommodations/" class="bg-white rounded-2xl shadow-2xl p-6">            <h1 class="text-5xl md:text-6xl font-bold mb-4">Discover Your Perfect Stay</h1>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-
-                    <!-- Destination -->            <p class="text-xl md:text-2xl mb-2 text-green-100"><section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-32 mb-12">{% block title %}Accommodations - Bedbees{% endblock %}
-
-                    <div class="lg:col-span-2">
-
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">                Luxury Hotels & Boutique Accommodations
-
-                            <svg class="w-4 h-4 inline mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>            </p>    <div class="absolute inset-0 bg-black/50"></div>
-
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-
-                            </svg>            <p class="text-lg text-green-50 max-w-3xl mx-auto">
-
-                            Destination
-
-                        </label>                Experience world-class hospitality across the Middle East and beyond    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>{% block content %}
-
-                        <input
-
-                            type="text"            </p>
-
-                            name="q"
-
-                            value="{{ search_query }}"        </div>    <div class="relative container mx-auto px-4">
-
-                            placeholder="Where are you going?"
-
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
-
-                        >
-
-                    </div>        <!-- Search Bar -->        <div class="text-center mb-8"><!-- Hero Section with Search -->{% block content %}
-
-
-
-                    <!-- Check-in -->        <div class="max-w-5xl mx-auto">
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in</label>            <form method="GET" action="/accommodations/" class="bg-white rounded-2xl shadow-2xl p-6">            <h1 class="text-5xl md:text-6xl font-bold mb-4">Discover Your Perfect Stay</h1>
-
-                        <input
-
-                            type="date"                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-
-                            name="checkin"
-
-                            value="{{ checkin }}"                    <!-- Destination -->            <p class="text-xl md:text-2xl mb-2 text-green-100"><section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-32 mb-12"><!-- Hero Section -->
-
-                            min="{% now 'Y-m-d' %}"
-
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                    <div class="lg:col-span-2">
-
-                        >
-
-                    </div>                        <label class="block text-sm font-semibold text-gray-700 mb-2">                Luxury Hotels & Boutique Accommodations
-
-
-
-                    <!-- Check-out -->                            <svg class="w-4 h-4 inline mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out</label>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>            </p>    <div class="absolute inset-0 bg-black/50"></div><section class="relative bg-gradient-to-r from-green-600 to-blue-700 text-white py-20 mb-8">
-
-                        <input
-
-                            type="date"                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-
-                            name="checkout"
-
-                            value="{{ checkout }}"                            </svg>            <p class="text-lg text-green-50 max-w-3xl mx-auto">
-
-                            min="{% now 'Y-m-d' %}"
-
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                            Destination
-
-                        >
-
-                    </div>                        </label>                Experience world-class hospitality across the Middle East and beyond    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>    <div class="absolute inset-0 bg-black/40"></div>
-
-
-
-                    <!-- Search Button -->                        <input
-
-                    <div class="flex items-end">
-
-                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">                            type="text"            </p>
-
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>                            name="q"
-
-                            </svg>
-
-                            Search                            value="{{ search_query }}"        </div>    <div class="relative container mx-auto px-4">    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
-
-                        </button>
-
-                    </div>                            placeholder="Where are you going?"
-
-                </div>
-
-            </form>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
-
+            <p class="text-lg text-green-50 max-w-3xl mx-auto">
+                Experience world-class hospitality across the Middle East and beyond
+            </p>
         </div>
 
-    </div>                        >
+        <!-- Clean Search Form -->
+        <div class="max-w-5xl mx-auto mb-4">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-white mb-2">Find Your Perfect Stay</h2>
+            </div>
+            
+            <form method="GET" action="/accommodations/" class="space-y-4">
+                <!-- Main Search Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                    <!-- Destination -->
+                    <div class="lg:col-span-5">
+                        <div class="relative">
+                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Destination
+                            </label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    name="q"
+                                    value="{{ search_query }}"
+                                    placeholder="Where are you going?"
+                                    class="w-full pl-10 pr-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900 placeholder-gray-500"
+                                >
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Check-in -->
+                    <div class="lg:col-span-2">
+                        <div class="relative">
+                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Check-in
+                            </label>
+                            <input
+                                type="date"
+                                name="checkin"
+                                value="{{ checkin }}"
+                                min="{% now 'Y-m-d' %}"
+                                class="w-full px-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Check-out -->
+                    <div class="lg:col-span-2">
+                        <div class="relative">
+                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Check-out
+                            </label>
+                            <input
+                                type="date"
+                                name="checkout"
+                                value="{{ checkout }}"
+                                min="{% now 'Y-m-d' %}"
+                                class="w-full px-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Guests & Rooms -->
+                    <div class="lg:col-span-3">
+                        <div class="grid grid-cols-3 gap-2">
+                            <!-- Adults -->
+                            <div>
+                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    Adults
+                                </label>
+                                <select name="adults" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
+                                    {% for i in "12345678" %}
+                                    <option value="{{ i }}" {% if adults == i %}selected{% endif %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Children -->
+                            <div>
+                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                    Kids
+                                </label>
+                                <select name="kids" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
+                                    {% for i in "0123456" %}
+                                    <option value="{{ i }}" {% if kids == i %}selected{% endif %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Rooms -->
+                            <div>
+                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
+                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                    Rooms
+                                </label>
+                                <select name="rooms" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
+                                    {% for i in "12345678" %}
+                                    <option value="{{ i }}" {% if rooms == i %}selected{% endif %}>{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="flex justify-center pt-3">
+                    <button type="submit" class="group bg-white hover:bg-gray-50 text-gray-900 px-8 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center border-2 border-white/30">
+                        <svg class="w-5 h-5 mr-2 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search Accommodations
+                        <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </section>
 
-                    </div>        <!-- Search Bar -->        <div class="text-center mb-8">    <div class="relative container mx-auto px-4 text-center">
-
-<div class="container mx-auto px-4 py-8">
-
-    <!-- Property Type Filters -->
-
-    <section class="mb-12">
-
-        <div class="flex flex-wrap justify-center gap-3">                    <!-- Check-in -->        <div class="max-w-5xl mx-auto">
-
-            <a href="/accommodations/" class="px-5 py-2.5 text-sm rounded-full {% if not current_type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-                All Properties                    <div>
-
-            </a>
-
-            {% for type in types %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in</label>            <form method="GET" action="/accommodations/" class="bg-white rounded-2xl shadow-2xl p-6">            <h1 class="text-5xl md:text-6xl font-bold mb-4">Discover Your Perfect Stay</h1>        <h1 class="text-4xl font-bold mb-4">Luxury Hotels & Accommodations</h1>
-
-            <a href="/accommodations/?type={{ type }}" class="px-5 py-2.5 text-sm rounded-full {% if current_type == type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-                {{ type|title }}                        <input
-
-            </a>
-
-            {% endfor %}                            type="date"                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-
+<div class="container mx-auto px-4 py-6">
+    <!-- Compact Filter Section -->
+    <section class="mb-8">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Explore by Category</h2>
+            <p class="text-gray-600 text-sm">Find the perfect accommodation type for your needs</p>
         </div>
 
-    </section>                            name="checkin"
-
-
-
-    <!-- Featured Accommodations -->                            value="{{ checkin }}"                    <!-- Destination -->            <p class="text-xl md:text-2xl mb-2 text-green-100">
-
-    <section class="mb-16">
-
-        <div class="flex items-center justify-between mb-8">                            min="{% now 'Y-m-d' %}"
-
-            <div>
-
-                <h2 class="text-3xl font-bold text-gray-900">Featured Accommodations</h2>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                    <div class="lg:col-span-2">
-
-                <p class="text-gray-600 mt-2">Handpicked luxury stays for exceptional experiences</p>
-
-            </div>                        >
-
-            <a href="#all-accommodations" class="text-green-600 hover:text-green-700 font-semibold flex items-center">
-
-                View All                    </div>                        <label class="block text-sm font-semibold text-gray-700 mb-2">                Luxury Hotels & Boutique Accommodations        <!-- Clean Search Form -->
-
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-
-                </svg>
-
-            </a>                    <!-- Check-out -->                            <svg class="w-4 h-4 inline mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-        </div>
-
-                    <div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {% for accommodation in accommodations|slice:":3" %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out</label>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>            </p>        <div class="max-w-5xl mx-auto mb-4">
-
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-                <div class="relative overflow-hidden">                        <input
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-
-                    <div class="absolute top-4 right-4">                            type="date"                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-
-                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>
-
-                    </div>                            name="checkout"
-
-                </div>
-
-                <div class="p-6">                            value="{{ checkout }}"                            </svg>            <p class="text-lg text-green-50 max-w-3xl mx-auto">            <div class="text-center mb-6">
-
-                    <div class="flex items-center justify-between mb-2">
-
-                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>                            min="{% now 'Y-m-d' %}"
-
-                        <div class="flex items-center">
-
-                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                            Destination
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>                        >
-
-                            <span class="ml-1 text-sm font-semibold text-gray-900">{{ accommodation.rating }}</span>
-
-                        </div>                    </div>                        </label>                Experience world-class hospitality across the Middle East and beyond                <h2 class="text-2xl font-bold text-white mb-2">Find Your Perfect Stay</h2>
-
-                    </div>
-
-                    <h3 class="text-xl font-bold mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>
-
-                    <div class="flex items-center text-gray-600 mb-4">
-
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                    <!-- Search Button -->                        <input
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>                    <div class="flex items-end">
-
-                        <span class="text-sm">{{ accommodation.location }}</span>
-
-                    </div>                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">                            type="text"            </p>            </div>
-
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-
-                        <div>                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                            <div class="text-2xl font-bold text-gray-900">${{ accommodation.price }}</div>
-
-                            <div class="text-xs text-gray-500">per night</div>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>                            name="q"
-
-                        </div>
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors duration-200">                            </svg>
-
-                            View Details
-
-                        </a>                            Search                            value="{{ search_query }}"        </div>
-
-                    </div>
-
-                </div>                        </button>
-
-            </div>
-
-            {% endfor %}                    </div>                            placeholder="Where are you going?"
-
-        </div>
-
-    </section>                </div>
-
-
-
-    <!-- Luxury Accommodations -->            </form>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"            <form method="GET" action="/accommodations/" class="space-y-4">
-
-    <section class="mb-16">
-
-        <div class="flex items-center justify-between mb-8">        </div>
-
-            <div>
-
-                <h2 class="text-3xl font-bold text-gray-900">Luxury Accommodations</h2>    </div>                        >
-
-                <p class="text-gray-600 mt-2">Premium properties with world-class amenities</p>
-
-            </div></section>
-
-        </div>
-
-                    </div>        <!-- Search Bar -->                <!-- Main Search Row -->
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {% for accommodation in accommodations|slice:"3:7" %}<div class="container mx-auto px-4 py-8">
-
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-                <div class="relative overflow-hidden">    <!-- Property Type Filters -->
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-
-                    <div class="absolute top-3 left-3">    <section class="mb-12">
-
-                        <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Luxury</span>
-
-                    </div>        <div class="flex flex-wrap justify-center gap-3">                    <!-- Check-in -->        <div class="max-w-5xl mx-auto">                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-                </div>
-
-                <div class="p-4">            <a href="/accommodations/" class="px-5 py-2.5 text-sm rounded-full {% if not current_type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                All Properties                    <div>
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            </a>
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            {% for type in types %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in</label>            <form method="GET" action="/accommodations/" class="bg-white rounded-2xl shadow-2xl p-6">                    <!-- Destination -->
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>            <a href="/accommodations/?type={{ type }}" class="px-5 py-2.5 text-sm rounded-full {% if current_type == type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                {{ type|title }}                        <input
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">            </a>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>            {% endfor %}                            type="date"                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">                    <div class="lg:col-span-5">
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>        </div>
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>    </section>                            name="checkin"
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>    <!-- Featured Accommodations -->                            value="{{ checkin }}"                    <!-- Destination -->                        <div class="relative">
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>    <section class="mb-16">
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book        <div class="flex items-center justify-between mb-8">                            min="{% now 'Y-m-d' %}"
-
-                        </a>
-
-                    </div>            <div>
-
-                </div>
-
-            </div>                <h2 class="text-3xl font-bold text-gray-900">Featured Accommodations</h2>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                    <div class="lg:col-span-2">                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-            {% endfor %}
-
-        </div>                <p class="text-gray-600 mt-2">Handpicked luxury stays for exceptional experiences</p>
-
-    </section>
-
-            </div>                        >
-
-    <!-- All Accommodations -->
-
-    <section id="all-accommodations" class="mb-16">            <a href="#all-accommodations" class="text-green-600 hover:text-green-700 font-semibold flex items-center">
-
-        <div class="flex items-center justify-between mb-8">
-
-            <div>                View All                    </div>                        <label class="block text-sm font-semibold text-gray-700 mb-2">                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                <h2 class="text-3xl font-bold text-gray-900">All Accommodations</h2>
-
-                <p class="text-gray-600 mt-2">Browse our complete collection of properties</p>                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            </div>
-
-        </div>                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-
-
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">                </svg>
-
-            {% for accommodation in accommodations %}
-
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">            </a>                    <!-- Check-out -->                            <svg class="w-4 h-4 inline mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                <div class="relative overflow-hidden">
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">        </div>
-
-                </div>
-
-                <div class="p-4">                    <div>
-
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            {% for accommodation in accommodations|slice:":3" %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out</label>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>                <div class="relative overflow-hidden">                        <input
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">                    <div class="absolute top-4 right-4">                            type="date"                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>                                </svg>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>                    </div>                            name="checkout"
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>                </div>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                <div class="p-6">                            value="{{ checkout }}"                            </svg>                                Destination
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>                    <div class="flex items-center justify-between mb-2">
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>                            min="{% now 'Y-m-d' %}"
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book                        <div class="flex items-center">
-
-                        </a>
-
-                    </div>                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                            Destination                            </label>
-
-                </div>
-
-            </div>                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-            {% empty %}
-
-            <div class="col-span-full text-center py-16">                            </svg>                        >
-
-                <div class="max-w-md mx-auto">
-
-                    <svg class="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">                            <span class="ml-1 text-sm font-semibold text-gray-900">{{ accommodation.rating }}</span>
-
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                    </svg>                        </div>                    </div>                        </label>                            <div class="relative">
-
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>
-
-                    <p class="text-gray-600 mb-6">We couldn't find any accommodations matching your criteria. Try adjusting your search.</p>                    </div>
-
-                    <a href="/accommodations/" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-
-                        Show All Accommodations                    <h3 class="text-xl font-bold mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>
-
-                    </a>
-
-                </div>                    <div class="flex items-center text-gray-600 mb-4">
-
-            </div>
-
-            {% endfor %}                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                    <!-- Search Button -->                        <input                                <input
-
-        </div>
-
-    </section>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-
-
-    <!-- Why Choose Us -->                        </svg>                    <div class="flex items-end">
-
-    <section class="mb-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">
-
-        <div class="text-center mb-8">                        <span class="text-sm">{{ accommodation.location }}</span>
-
-            <h2 class="text-3xl font-bold mb-2">Why Choose Bedbees</h2>
-
-            <p class="text-green-100">Your trusted partner for unforgettable stays</p>                    </div>                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">                            type="text"                                    type="text"
-
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">{{ total_accommodations }}</div>                        <div>                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                <div class="text-green-100 text-sm">Properties Available</div>
-
-            </div>                            <div class="text-2xl font-bold text-gray-900">${{ accommodation.price }}</div>
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">4.8</div>                            <div class="text-xs text-gray-500">per night</div>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>                            name="q"                                    name="q"
-
-                <div class="text-green-100 text-sm">Average Rating</div>
-
-            </div>                        </div>
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">50k+</div>                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors duration-200">                            </svg>
-
-                <div class="text-green-100 text-sm">Happy Guests</div>
-
-            </div>                            View Details
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">24/7</div>                        </a>                            Search                            value="{{ search_query }}"                                    value="{{ search_query }}"
-
-                <div class="text-green-100 text-sm">Customer Support</div>
-
-            </div>                    </div>
-
-        </div>
-
-    </section>                </div>                        </button>
-
-
-
-    <!-- Call to Action -->            </div>
-
-    <section class="text-center bg-gray-50 rounded-2xl p-12">
-
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Book Your Perfect Stay?</h2>            {% endfor %}                    </div>                            placeholder="Where are you going?"                                    placeholder="Where are you going?"
-
-        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-
-            Join thousands of travelers who trust Bedbees for exceptional accommodations worldwide.        </div>
-
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">    </section>                </div>
-
-            <a href="/" class="inline-block bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
-
-                Back to Home
-
-            </a>
-
-            <a href="/tours/" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">    <!-- Luxury Accommodations -->            </form>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                                    class="w-full pl-10 pr-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900 placeholder-gray-500"
-
-                Explore Tours
-
-            </a>    <section class="mb-16">
-
-        </div>
-
-    </section>        <div class="flex items-center justify-between mb-8">        </div>
-
-</div>
-
-            <div>
-
-{% block extra_js %}
-
-<script>                <h2 class="text-3xl font-bold text-gray-900">Luxury Accommodations</h2>    </div>                        >                                >
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    const checkinInput = document.querySelector('input[name="checkin"]');                <p class="text-gray-600 mt-2">Premium properties with world-class amenities</p>
-
-    const checkoutInput = document.querySelector('input[name="checkout"]');
-
-            </div></section>
-
-    if (checkinInput && checkoutInput) {
-
-        checkinInput.addEventListener('change', function() {        </div>
-
-            const checkinDate = new Date(this.value);
-
-            if (checkinDate) {                    </div>                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
-
-                const checkoutDate = new Date(checkoutInput.value);
-
-                if (!checkoutDate || checkoutDate <= checkinDate) {        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                    const nextDay = new Date(checkinDate);
-
-                    nextDay.setDate(nextDay.getDate() + 1);            {% for accommodation in accommodations|slice:"3:7" %}<div class="container mx-auto px-4 py-8">
-
-                    checkoutInput.value = nextDay.toISOString().split('T')[0];
-
-                }            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-            }
-
-        });                <div class="relative overflow-hidden">    <!-- Property Type Filters -->                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-
-
-        checkoutInput.addEventListener('change', function() {                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-
-            const checkinDate = new Date(checkinInput.value);
-
-            const checkoutDate = new Date(this.value);                    <div class="absolute top-3 left-3">    <section class="mb-12">
-
-            if (checkinDate && checkoutDate && checkoutDate <= checkinDate) {
-
-                const nextDay = new Date(checkinDate);                        <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Luxury</span>
-
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                this.value = nextDay.toISOString().split('T')[0];                    </div>        <div class="flex flex-wrap justify-center gap-3">                    <!-- Check-in -->                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-
-            }
-
-        });                </div>
-
-    }
-
-});                <div class="p-4">            <a href="/accommodations/" class="px-5 py-2.5 text-sm rounded-full {% if not current_type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-</script>
-
-{% endblock %}                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-
-
-{% endblock %}                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                All Properties                    <div>                                    </svg>
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            </a>
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            {% for type in types %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in</label>                                </div>
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>            <a href="/accommodations/?type={{ type }}" class="px-5 py-2.5 text-sm rounded-full {% if current_type == type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                {{ type|title }}                        <input                            </div>
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">            </a>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>            {% endfor %}                            type="date"                        </div>
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>        </div>
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>    </section>                            name="checkin"                    </div>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>    <!-- Featured Accommodations -->                            value="{{ checkin }}"
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>    <section class="mb-16">
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book        <div class="flex items-center justify-between mb-8">                            min="{% now 'Y-m-d' %}"                    <!-- Check-in -->
-
-                        </a>
-
-                    </div>            <div>
-
-                </div>
-
-            </div>                <h2 class="text-3xl font-bold text-gray-900">Featured Accommodations</h2>                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                    <div class="lg:col-span-2">
-
-            {% endfor %}
-
-        </div>                <p class="text-gray-600 mt-2">Handpicked luxury stays for exceptional experiences</p>
-
-    </section>
-
-            </div>                        >                        <div class="relative">
-
-    <!-- All Accommodations -->
-
-    <section id="all-accommodations" class="mb-16">            <a href="#all-accommodations" class="text-green-600 hover:text-green-700 font-semibold flex items-center">
-
-        <div class="flex items-center justify-between mb-8">
-
-            <div>                View All                    </div>                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-                <h2 class="text-3xl font-bold text-gray-900">All Accommodations</h2>
-
-                <p class="text-gray-600 mt-2">Browse our complete collection of properties</p>                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            </div>
-
-        </div>                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">                </svg>
-
-            {% for accommodation in accommodations %}
-
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">            </a>                    <!-- Check-out -->                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-
-                <div class="relative overflow-hidden">
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">        </div>
-
-                </div>
-
-                <div class="p-4">                    <div>                                </svg>
-
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            {% for accommodation in accommodations|slice:":3" %}                        <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out</label>                                Check-in
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>                <div class="relative overflow-hidden">                        <input                            </label>
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">                    <div class="absolute top-4 right-4">                            type="date"                            <input
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>                    </div>                            name="checkout"                                type="date"
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>                </div>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                <div class="p-6">                            value="{{ checkout }}"                                name="checkin"
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>                    <div class="flex items-center justify-between mb-2">
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>                            min="{% now 'Y-m-d' %}"                                value="{{ checkin }}"
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book                        <div class="flex items-center">
-
-                        </a>
-
-                    </div>                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"                                min="{% now 'Y-m-d' %}"
-
-                </div>
-
-            </div>                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-            {% empty %}
-
-            <div class="col-span-full text-center py-16">                            </svg>                        >                                class="w-full px-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900"
-
-                <div class="max-w-md mx-auto">
-
-                    <svg class="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">                            <span class="ml-1 text-sm font-semibold text-gray-900">{{ accommodation.rating }}</span>
-
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                    </svg>                        </div>                    </div>                            >
-
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>
-
-                    <p class="text-gray-600 mb-6">We couldn't find any accommodations matching your criteria. Try adjusting your search.</p>                    </div>
-
-                    <a href="/accommodations/" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-
-                        Show All Accommodations                    <h3 class="text-xl font-bold mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                        </div>
-
-                    </a>
-
-                </div>                    <div class="flex items-center text-gray-600 mb-4">
-
-            </div>
-
-            {% endfor %}                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                    <!-- Search Button -->                    </div>
-
-        </div>
-
-    </section>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-
-
-    <!-- Why Choose Us -->                        </svg>                    <div class="flex items-end">
-
-    <section class="mb-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">
-
-        <div class="text-center mb-8">                        <span class="text-sm">{{ accommodation.location }}</span>
-
-            <h2 class="text-3xl font-bold mb-2">Why Choose Bedbees</h2>
-
-            <p class="text-green-100">Your trusted partner for unforgettable stays</p>                    </div>                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">                    <!-- Check-out -->
-
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">{{ total_accommodations }}</div>                        <div>                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">                    <div class="lg:col-span-2">
-
-                <div class="text-green-100 text-sm">Properties Available</div>
-
-            </div>                            <div class="text-2xl font-bold text-gray-900">${{ accommodation.price }}</div>
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">4.8</div>                            <div class="text-xs text-gray-500">per night</div>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>                        <div class="relative">
-
-                <div class="text-green-100 text-sm">Average Rating</div>
-
-            </div>                        </div>
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">50k+</div>                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors duration-200">                            </svg>                            <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-                <div class="text-green-100 text-sm">Happy Guests</div>
-
-            </div>                            View Details
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">24/7</div>                        </a>                            Search                                <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                <div class="text-green-100 text-sm">Customer Support</div>
-
-            </div>                    </div>
-
-        </div>
-
-    </section>                </div>                        </button>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-
-
-
-    <!-- Call to Action -->            </div>
-
-    <section class="text-center bg-gray-50 rounded-2xl p-12">
-
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Book Your Perfect Stay?</h2>            {% endfor %}                    </div>                                </svg>
-
-        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-
-            Join thousands of travelers who trust Bedbees for exceptional accommodations worldwide.        </div>
-
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">    </section>                </div>                                Check-out
-
-            <a href="/" class="inline-block bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
-
-                Back to Home
-
-            </a>
-
-            <a href="/tours/" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">    <!-- Luxury Accommodations -->            </form>                            </label>
-
-                Explore Tours
-
-            </a>    <section class="mb-16">
-
-        </div>
-
-    </section>        <div class="flex items-center justify-between mb-8">        </div>                            <input
-
-</div>
-
-            <div>
-
-{% block extra_js %}
-
-<script>                <h2 class="text-3xl font-bold text-gray-900">Luxury Accommodations</h2>    </div>                                type="date"
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    const checkinInput = document.querySelector('input[name="checkin"]');                <p class="text-gray-600 mt-2">Premium properties with world-class amenities</p>
-
-    const checkoutInput = document.querySelector('input[name="checkout"]');
-
-            </div></section>                                name="checkout"
-
-    if (checkinInput && checkoutInput) {
-
-        checkinInput.addEventListener('change', function() {        </div>
-
-            const checkinDate = new Date(this.value);
-
-            if (checkinDate) {                                value="{{ checkout }}"
-
-                const checkoutDate = new Date(checkoutInput.value);
-
-                if (!checkoutDate || checkoutDate <= checkinDate) {        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                    const nextDay = new Date(checkinDate);
-
-                    nextDay.setDate(nextDay.getDate() + 1);            {% for accommodation in accommodations|slice:"3:7" %}<div class="container mx-auto px-4 py-8">                                min="{% now 'Y-m-d' %}"
-
-                    checkoutInput.value = nextDay.toISOString().split('T')[0];
-
-                }            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-
-            }
-
-        });                <div class="relative overflow-hidden">    <!-- Property Type Filters -->                                class="w-full px-3 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900"
-
-
-
-        checkoutInput.addEventListener('change', function() {                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-
-            const checkinDate = new Date(checkinInput.value);
-
-            const checkoutDate = new Date(this.value);                    <div class="absolute top-3 left-3">    <section class="mb-12">                            >
-
-            if (checkinDate && checkoutDate && checkoutDate <= checkinDate) {
-
-                const nextDay = new Date(checkinDate);                        <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Luxury</span>
-
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                this.value = nextDay.toISOString().split('T')[0];                    </div>        <div class="flex flex-wrap justify-center gap-3">                        </div>
-
-            }
-
-        });                </div>
-
-    }
-
-});                <div class="p-4">            <a href="/accommodations/" class="px-5 py-2.5 text-sm rounded-full {% if not current_type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">                    </div>
-
-</script>
-
-{% endblock %}                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-
-
-{% endblock %}                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                All Properties
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            </a>                    <!-- Guests & Rooms -->
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            {% for type in types %}                    <div class="lg:col-span-3">
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>            <a href="/accommodations/?type={{ type }}" class="px-5 py-2.5 text-sm rounded-full {% if current_type == type %}bg-green-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %} transition-colors font-medium">                        <div class="grid grid-cols-3 gap-2">
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                {{ type|title }}                            <!-- Adults -->
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">            </a>                            <div>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>            {% endfor %}                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>        </div>                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>    </section>                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                                    </svg>
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>    <!-- Featured Accommodations -->                                    Adults
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>    <section class="mb-16">                                </label>
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book        <div class="flex items-center justify-between mb-8">                                <select name="adults" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
-
-                        </a>
-
-                    </div>            <div>                                    {% for i in "12345678" %}
-
-                </div>
-
-            </div>                <h2 class="text-3xl font-bold text-gray-900">Featured Accommodations</h2>                                    <option value="{{ i }}" {% if adults == i %}selected{% endif %}>{{ i }}</option>
-
-            {% endfor %}
-
-        </div>                <p class="text-gray-600 mt-2">Handpicked luxury stays for exceptional experiences</p>                                    {% endfor %}
-
-    </section>
-
-            </div>                                </select>
-
-    <!-- All Accommodations -->
-
-    <section id="all-accommodations" class="mb-16">            <a href="#all-accommodations" class="text-green-600 hover:text-green-700 font-semibold flex items-center">                            </div>
-
-        <div class="flex items-center justify-between mb-8">
-
-            <div>                View All
-
-                <h2 class="text-3xl font-bold text-gray-900">All Accommodations</h2>
-
-                <p class="text-gray-600 mt-2">Browse our complete collection of properties</p>                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                            <!-- Children -->
-
-            </div>
-
-        </div>                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>                            <div>
-
-
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">                </svg>                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-            {% for accommodation in accommodations %}
-
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">            </a>                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                <div class="relative overflow-hidden">
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">        </div>                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-
-                </div>
-
-                <div class="p-4">                                    </svg>
-
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>
-
-                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">                                    Kids
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">            {% for accommodation in accommodations|slice:":3" %}                                </label>
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-                        </svg>            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">                                <select name="kids" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
-
-                        <span class="truncate">{{ accommodation.location }}</span>
-
-                    </div>                <div class="relative overflow-hidden">                                    {% for i in "0123456" %}
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <div class="flex items-center">                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">                                    <option value="{{ i }}" {% if kids == i %}selected{% endif %}>{{ i }}</option>
-
-                            {% for i in "12345" %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">                    <div class="absolute top-4 right-4">                                    {% endfor %}
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>                        <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">Featured</span>                                </select>
-
-                            {% endfor %}
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>                    </div>                            </div>
-
-                        </div>
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>                </div>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                <div class="p-6">                            <!-- Rooms -->
-
-                        <div>
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>                    <div class="flex items-center justify-between mb-2">                            <div>
-
-                            <div class="text-xs text-gray-500">per night</div>
-
-                        </div>                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>                                <label class="block text-xs font-semibold text-white mb-1 flex items-center">
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
-
-                            Book                        <div class="flex items-center">                                    <svg class="w-3 h-3 mr-1 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                        </a>
-
-                    </div>                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                </div>
-
-            </div>                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>                                    </svg>
-
-            {% empty %}
-
-            <div class="col-span-full text-center py-16">                            </svg>                                    Rooms
-
-                <div class="max-w-md mx-auto">
-
-                    <svg class="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">                            <span class="ml-1 text-sm font-semibold text-gray-900">{{ accommodation.rating }}</span>                                </label>
-
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                    </svg>                        </div>                                <select name="rooms" class="w-full px-2 py-3 text-base bg-white/90 border-2 border-white/30 rounded-lg focus:border-white focus:ring-2 focus:ring-white/50 transition-all duration-200 text-gray-900">
-
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>
-
-                    <p class="text-gray-600 mb-6">We couldn't find any accommodations matching your criteria. Try adjusting your search.</p>                    </div>                                    {% for i in "12345678" %}
-
-                    <a href="/accommodations/" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-
-                        Show All Accommodations                    <h3 class="text-xl font-bold mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                                    <option value="{{ i }}" {% if rooms == i %}selected{% endif %}>{{ i }}</option>
-
-                    </a>
-
-                </div>                    <div class="flex items-center text-gray-600 mb-4">                                    {% endfor %}
-
-            </div>
-
-            {% endfor %}                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                                </select>
-
-        </div>
-
-    </section>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>                            </div>
-
-
-
-    <!-- Why Choose Us -->                        </svg>                        </div>
-
-    <section class="mb-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">
-
-        <div class="text-center mb-8">                        <span class="text-sm">{{ accommodation.location }}</span>                    </div>
-
-            <h2 class="text-3xl font-bold mb-2">Why Choose Bedbees</h2>
-
-            <p class="text-green-100">Your trusted partner for unforgettable stays</p>                    </div>                </div>
-
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">{{ total_accommodations }}</div>                        <div>                <!-- Search Button -->
-
-                <div class="text-green-100 text-sm">Properties Available</div>
-
-            </div>                            <div class="text-2xl font-bold text-gray-900">${{ accommodation.price }}</div>                <div class="flex justify-center pt-3">
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">4.8</div>                            <div class="text-xs text-gray-500">per night</div>                    <button type="submit" class="group bg-white hover:bg-gray-50 text-gray-900 px-8 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center border-2 border-white/30">
-
-                <div class="text-green-100 text-sm">Average Rating</div>
-
-            </div>                        </div>                        <svg class="w-5 h-5 mr-2 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">50k+</div>                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors duration-200">                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-
-                <div class="text-green-100 text-sm">Happy Guests</div>
-
-            </div>                            View Details                        </svg>
-
-            <div>
-
-                <div class="text-4xl font-bold mb-2">24/7</div>                        </a>                        Search Accommodations
-
-                <div class="text-green-100 text-sm">Customer Support</div>
-
-            </div>                    </div>                        <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-        </div>
-
-    </section>                </div>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-
-
-
-    <!-- Call to Action -->            </div>                        </svg>
-
-    <section class="text-center bg-gray-50 rounded-2xl p-12">
-
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Book Your Perfect Stay?</h2>            {% endfor %}                    </button>
-
-        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-
-            Join thousands of travelers who trust Bedbees for exceptional accommodations worldwide.        </div>                </div>
-
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">    </section>            </form>
-
-            <a href="/" class="inline-block bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
-
-                Back to Home        </div>
-
-            </a>
-
-            <a href="/tours/" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">    <!-- Luxury Accommodations -->    </div>
-
-                Explore Tours
-
-            </a>    <section class="mb-16"></section>
-
-        </div>
-
-    </section>        <div class="flex items-center justify-between mb-8">
-
-</div>
-
-            <div><div class="container mx-auto px-4 py-6">
-
-{% block extra_js %}
-
-<script>                <h2 class="text-3xl font-bold text-gray-900">Luxury Accommodations</h2>    <!-- Compact Filter Section -->
-
-document.addEventListener('DOMContentLoaded', function() {
-
-    const checkinInput = document.querySelector('input[name="checkin"]');                <p class="text-gray-600 mt-2">Premium properties with world-class amenities</p>    <section class="mb-8">
-
-    const checkoutInput = document.querySelector('input[name="checkout"]');
-
-            </div>        <div class="text-center mb-6">
-
-    if (checkinInput && checkoutInput) {
-
-        checkinInput.addEventListener('change', function() {        </div>            <h2 class="text-2xl font-bold text-gray-900 mb-2">Explore by Category</h2>
-
-            const checkinDate = new Date(this.value);
-
-            if (checkinDate) {            <p class="text-gray-600 text-sm">Find the perfect accommodation type for your needs</p>
-
-                const checkoutDate = new Date(checkoutInput.value);
-
-                if (!checkoutDate || checkoutDate <= checkinDate) {        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">        </div>
-
-                    const nextDay = new Date(checkinDate);
-
-                    nextDay.setDate(nextDay.getDate() + 1);            {% for accommodation in accommodations|slice:"3:7" %}
-
-                    checkoutInput.value = nextDay.toISOString().split('T')[0];
-
-                }            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">        <div class="flex flex-wrap justify-center gap-3 mb-6">
-
-            }
-
-        });                <div class="relative overflow-hidden">            <a href="/accommodations/" class="group px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 {% if not current_type %}bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25{% else %}bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:shadow-md{% endif %}">
-
-
-
-        checkoutInput.addEventListener('change', function() {                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">                <span class="flex items-center">
-
-            const checkinDate = new Date(checkinInput.value);
-
-            const checkoutDate = new Date(this.value);                    <div class="absolute top-3 left-3">                    <svg class="w-3 h-3 mr-1 {% if not current_type %}text-white{% else %}text-gray-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            if (checkinDate && checkoutDate && checkoutDate <= checkinDate) {
-
-                const nextDay = new Date(checkinDate);                        <span class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold">Luxury</span>                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                this.value = nextDay.toISOString().split('T')[0];                    </div>                    </svg>
-
-            }
-
-        });                </div>                    All Types
-
-    }
-
-});                <div class="p-4">                </span>
-
-</script>
-
-{% endblock %}                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>            </a>
-
-
-
-{% endblock %}                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>            {% for type in types %}
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">            <a href="/accommodations/?type={{ type }}" class="group px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 {% if current_type == type %}bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25{% else %}bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:shadow-md{% endif %}">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                <span class="flex items-center">
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>                    <svg class="w-3 h-3 mr-1 {% if current_type == type %}text-white{% else %}text-gray-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                        </svg>                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                        <span class="truncate">{{ accommodation.location }}</span>                    </svg>
-
-                    </div>                    {{ type|title }}
-
-                    <div class="flex items-center justify-between mb-3">                </span>
-
-                        <div class="flex items-center">            </a>
-
-                            {% for i in "12345" %}            {% endfor %}
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">        </div>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>    </section>
-
-                            </svg>
-
-                            {% endfor %}    <!-- Compact Accommodations Grid -->
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>    <section id="accommodations" class="mb-8">
-
-                        </div>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>            {% for accommodation in accommodations %}
-
-                    </div>            <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden">
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                <!-- Image Container -->
-
-                        <div>                <div class="relative overflow-hidden">
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
-
-                            <div class="text-xs text-gray-500">per night</div>                    <div class="absolute top-3 right-3">
-
-                        </div>                        <div class="bg-white/90 backdrop-blur-sm rounded-full p-1.5 shadow-lg">
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">                            <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-
-                            Book                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
-
-                        </a>                            </svg>
-
-                    </div>                        </div>
-
-                </div>                    </div>
-
-            </div>                    <!-- Type Badge -->
-
-            {% endfor %}                    <div class="absolute top-3 left-3">
-
-        </div>                        <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
-
-    </section>                            {{ accommodation.type|title }}
-
-                        </span>
-
-    <!-- All Accommodations -->                    </div>
-
-    <section id="all-accommodations" class="mb-16">                </div>
-
-        <div class="flex items-center justify-between mb-8">
-
-            <div>                <!-- Content -->
-
-                <h2 class="text-3xl font-bold text-gray-900">All Accommodations</h2>                <div class="p-4">
-
-                <p class="text-gray-600 mt-2">Browse our complete collection of properties</p>                    <h3 class="text-lg font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{{ accommodation.name }}</h3>
-
-            </div>
-
-        </div>                    <!-- Location -->
-
-                    <div class="flex items-center text-gray-600 mb-2">
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">                        <svg class="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            {% for accommodation in accommodations %}                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-
-                <div class="relative overflow-hidden">                        </svg>
-
-                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">                        <span class="text-sm">{{ accommodation.location }}</span>
-
-                </div>                    </div>
-
-                <div class="p-4">
-
-                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">{{ accommodation.type|title }}</span>                    <!-- Rating and Reviews -->
-
-                    <h3 class="text-lg font-semibold mt-2 mb-2 text-gray-900 line-clamp-2 group-hover:text-green-600 transition-colors">{{ accommodation.name }}</h3>                    <div class="flex items-center justify-between mb-3">
-
-                    <div class="flex items-center text-gray-600 mb-3 text-sm">                        <div class="flex items-center">
-
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">                            {% for i in "12345" %}
-
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %}" fill="currentColor" viewBox="0 0 20 20">
-
-                        </svg>                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                        <span class="truncate">{{ accommodation.location }}</span>                            </svg>
-
-                    </div>                            {% endfor %}
-
-                    <div class="flex items-center justify-between mb-3">                            <span class="ml-1 text-xs font-semibold text-gray-900">{{ accommodation.rating }}</span>
-
-                        <div class="flex items-center">                            <span class="ml-1 text-xs text-gray-500">({{ accommodation.reviews }} reviews)</span>
-
-                            {% for i in "12345" %}                        </div>
-
-                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %} fill-current" viewBox="0 0 20 20">                    </div>
-
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-
-                            </svg>                    <!-- Property Details -->
-
-                            {% endfor %}                    <div class="flex items-center gap-3 mb-3 text-xs text-gray-600">
-
-                            <span class="ml-1 text-xs">{{ accommodation.rating }}</span>                        <div class="flex items-center">
-
-                        </div>                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                        <span class="text-xs text-gray-500">({{ accommodation.reviews }})</span>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
-
-                    </div>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0M9 9h6"></path>
-
-                    <div class="flex items-center justify-between pt-3 border-t border-gray-200">                            </svg>
-
-                        <div>                            {{ accommodation.bedrooms }} bed{{ accommodation.bedrooms|pluralize }}
-
-                            <div class="text-lg font-bold text-gray-900">${{ accommodation.price }}</div>                        </div>
-
-                            <div class="text-xs text-gray-500">per night</div>                        <div class="flex items-center">
-
-                        </div>                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                        <a href="/accommodations/{{ accommodation.id }}/" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v16l4-4m0 0l4 4m-4-4v4m0-4l4-4m4 4V4"></path>
-
-                            Book                            </svg>
-
-                        </a>                            {{ accommodation.bathrooms }} bath{{ accommodation.bathrooms|pluralize }}
-
-                    </div>                        </div>
-
-                </div>                        <div class="flex items-center">
-
-            </div>                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-            {% empty %}                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-
-            <div class="col-span-full text-center py-16">                            </svg>
-
-                <div class="max-w-md mx-auto">                            Up to {{ accommodation.max_guests }} guest{{ accommodation.max_guests|pluralize }}
-
-                    <svg class="w-20 h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">                        </div>
-
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>                    </div>
-
+        <div class="flex flex-wrap justify-center gap-3 mb-6">
+            <a href="/accommodations/" class="group px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 {% if not current_type %}bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25{% else %}bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:shadow-md{% endif %}">
+                <span class="flex items-center">
+                    <svg class="w-3 h-3 mr-1 {% if not current_type %}text-white{% else %}text-gray-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
+                    All Types
+                </span>
+            </a>
 
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>                    <!-- Room Type -->
+            {% for type in types %}
+            <a href="/accommodations/?type={{ type }}" class="group px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 transform hover:scale-105 {% if current_type == type %}bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25{% else %}bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:shadow-md{% endif %}">
+                <span class="flex items-center">
+                    <svg class="w-3 h-3 mr-1 {% if current_type == type %}text-white{% else %}text-gray-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    {{ type|title }}
+                </span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
 
-                    <p class="text-gray-600 mb-6">We couldn't find any accommodations matching your criteria. Try adjusting your search.</p>                    <div class="mb-3">
+    <!-- Homes Guests Love Section -->
+    <section class="mb-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Homes Guests Love</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover our most beloved properties with exceptional guest reviews
+            </p>
+        </div>
 
-                    <a href="/accommodations/" class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">                        <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full font-medium">
-
-                        Show All Accommodations                            {{ accommodation.room_type }}
-
-                    </a>                        </span>
-
-                </div>                    </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Guest Love Property 1 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Luxury Villa Dubai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                            Guest Favorite
+                        </span>
+                    </div>
+                    <div class="absolute top-4 right-4">
+                        <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            9.8 Rating
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Luxury Villa with Pool</h3>
+                    <p class="text-gray-600 mb-4">Dubai, UAE • 4 bedrooms • Up to 8 guests</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-2xl font-bold text-gray-900">$450</span>
+                            <span class="text-gray-600">/night</span>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            {% endfor %}                    <!-- Price and CTA -->
-
-        </div>                    <div class="flex items-center justify-between">
-
-    </section>                        <div>
-
-                            <div class="text-xl font-bold text-gray-900">${{ accommodation.price }}</div>
-
-    <!-- Why Choose Us -->                            <div class="text-xs text-gray-600">per night</div>
-
-    <section class="mb-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white">                        </div>
-
-        <div class="text-center mb-8">                        <a href="/accommodations/{{ accommodation.id }}/?checkin={{ checkin }}&checkout={{ checkout }}&adults={{ adults }}&kids={{ kids }}&rooms={{ rooms }}" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25 flex items-center text-sm">
-
-            <h2 class="text-3xl font-bold mb-2">Why Choose Bedbees</h2>                            <span>View Details</span>
-
-            <p class="text-green-100">Your trusted partner for unforgettable stays</p>                            <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-        </div>                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">                            </svg>
-
-            <div>                        </a>
-
-                <div class="text-4xl font-bold mb-2">{{ total_accommodations }}</div>                    </div>
-
-                <div class="text-green-100 text-sm">Properties Available</div>                </div>
-
-            </div>            </div>
-
-            <div>            {% empty %}
-
-                <div class="text-4xl font-bold mb-2">4.8</div>            <div class="col-span-full text-center py-16">
-
-                <div class="text-green-100 text-sm">Average Rating</div>                <div class="max-w-md mx-auto">
-
-            </div>                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-
-            <div>                        <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                <div class="text-4xl font-bold mb-2">50k+</div>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-
-                <div class="text-green-100 text-sm">Happy Guests</div>                        </svg>
-
-            </div>                    </div>
-
-            <div>                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>
-
-                <div class="text-4xl font-bold mb-2">24/7</div>                    <p class="text-gray-600 mb-6 text-sm">We couldn't find any accommodations matching your criteria. Try adjusting your filters or search terms.</p>
-
-                <div class="text-green-100 text-sm">Customer Support</div>                    <a href="/accommodations/" class="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25">
-
-            </div>                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-        </div>                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-
-    </section>                        </svg>
-
-                        Show All Accommodations
-
-    <!-- Call to Action -->                    </a>
-
-    <section class="text-center bg-gray-50 rounded-2xl p-12">                </div>
-
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Book Your Perfect Stay?</h2>            </div>
-
-        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">            {% endfor %}
-
-            Join thousands of travelers who trust Bedbees for exceptional accommodations worldwide.        </div>
-
-        </p>    </section>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-
-            <a href="/" class="inline-block bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">    <!-- Compact Stats Section -->
-
-                Back to Home    <section class="mb-8">
-
-            </a>        <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-xl p-6 text-white relative overflow-hidden">
-
-            <a href="/tours/" class="inline-block bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">            <!-- Background Pattern -->
-
-                Explore Tours            <div class="absolute inset-0 opacity-10">
-
-            </a>                <div class="absolute top-0 left-0 w-24 h-24 bg-white rounded-full -translate-x-12 -translate-y-12"></div>
-
-        </div>                <div class="absolute top-0 right-0 w-18 h-18 bg-white rounded-full translate-x-9 -translate-y-9"></div>
-
-    </section>                <div class="absolute bottom-0 left-1/4 w-16 h-16 bg-white rounded-full translate-y-8"></div>
-
-</div>                <div class="absolute bottom-0 right-1/3 w-12 h-12 bg-white rounded-full translate-y-6"></div>
-
+            <!-- Guest Love Property 2 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Boutique Hotel Jordan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                            Guest Favorite
+                        </span>
+                    </div>
+                    <div class="absolute top-4 right-4">
+                        <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            9.6 Rating
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Boutique Desert Resort</h3>
+                    <p class="text-gray-600 mb-4">Wadi Rum, Jordan • 2 bedrooms • Up to 4 guests</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-2xl font-bold text-gray-900">$280</span>
+                            <span class="text-gray-600">/night</span>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
             </div>
 
-{% block extra_js %}
+            <!-- Guest Love Property 3 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Historic Hotel Turkey" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                            Guest Favorite
+                        </span>
+                    </div>
+                    <div class="absolute top-4 right-4">
+                        <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            9.7 Rating
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Historic Cave Hotel</h3>
+                    <p class="text-gray-600 mb-4">Cappadocia, Turkey • 1 bedroom • Up to 2 guests</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-2xl font-bold text-gray-900">$320</span>
+                            <span class="text-gray-600">/night</span>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>            <div class="relative">
+    <!-- Stay at Our Top Unique Properties Section -->
+    <section class="mb-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Stay at Our Top Unique Properties</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Experience extraordinary accommodations that offer something truly special
+            </p>
+        </div>
 
-document.addEventListener('DOMContentLoaded', function() {                <div class="text-center mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Unique Property 1 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Underwater Hotel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Unique Experience
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Underwater Suite</h3>
+                    <p class="text-gray-600 mb-4">Experience luxury beneath the waves with panoramic ocean views from your bedroom. This one-of-a-kind accommodation offers an unforgettable underwater adventure.</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">$890</span>
+                            <span class="text-gray-600">/night</span>
+                        </div>
+                        <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                            Discover More
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    const checkinInput = document.querySelector('input[name="checkin"]');                    <h3 class="text-xl font-bold mb-1">Trusted by Travelers Worldwide</h3>
+            <!-- Unique Property 2 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1520637836862-4d197d17c862?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Desert Dome" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Unique Experience
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Glass Desert Dome</h3>
+                    <p class="text-gray-600 mb-4">Sleep under the stars in our transparent dome accommodation. Watch the desert sky transform from day to night while enjoying luxury amenities.</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">$650</span>
+                            <span class="text-gray-600">/night</span>
+                        </div>
+                        <button class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors font-semibold">
+                            Discover More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    const checkoutInput = document.querySelector('input[name="checkout"]');                    <p class="text-blue-100 text-sm">Join thousands of satisfied guests who choose Bedbees for their perfect stay</p>
+    <!-- Deals for the Weekend Section -->
+    <section class="mb-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Deals for the Weekend</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Limited-time offers for your perfect weekend getaway
+            </p>
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Deal 1 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-orange-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-orange-500 text-white text-sm font-semibold px-3 py-1 rounded-full">50% OFF</span>
+                    <span class="text-gray-500 text-sm">Ends Sunday</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Beachfront Resort Special</h3>
+                <p class="text-gray-600 mb-4">Enjoy luxury beachfront accommodation with full board and spa access included.</p>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$199</span>
+                        <span class="text-gray-500 line-through ml-2">$399</span>
+                    </div>
+                    <span class="text-gray-600 text-sm">per night</span>
+                </div>
+                <button class="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold">
+                    Book Weekend Deal
+                </button>
+            </div>
+
+            <!-- Deal 2 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full">40% OFF</span>
+                    <span class="text-gray-500 text-sm">Weekend Only</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">City Center Hotel</h3>
+                <p class="text-gray-600 mb-4">Prime location in the heart of the city with complimentary breakfast and Wi-Fi.</p>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$120</span>
+                        <span class="text-gray-500 line-through ml-2">$200</span>
+                    </div>
+                    <span class="text-gray-600 text-sm">per night</span>
+                </div>
+                <button class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors font-semibold">
+                    Book Weekend Deal
+                </button>
+            </div>
+
+            <!-- Deal 3 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-200">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="bg-purple-500 text-white text-sm font-semibold px-3 py-1 rounded-full">35% OFF</span>
+                    <span class="text-gray-500 text-sm">Flash Sale</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Mountain Retreat</h3>
+                <p class="text-gray-600 mb-4">Escape to nature with stunning mountain views and outdoor activities included.</p>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <span class="text-2xl font-bold text-blue-600">$159</span>
+                        <span class="text-gray-500 line-through ml-2">$245</span>
+                    </div>
+                    <span class="text-gray-600 text-sm">per night</span>
+                </div>
+                <button class="w-full bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600 transition-colors font-semibold">
+                    Book Weekend Deal
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Hotels Section -->
+    <section class="mb-12">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Popular Hotels</h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Explore hotels and more accommodation options chosen by travelers
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Popular Hotel 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-40 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Grand Palace Hotel" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            ⭐ Popular
+                        </span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 mb-1">Grand Palace Hotel</h3>
+                    <p class="text-gray-600 text-sm mb-2">Dubai, UAE</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">$380/night</span>
+                        <div class="flex items-center text-yellow-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="ml-1 text-sm font-semibold text-gray-900">4.8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Hotel 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-40 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Heritage Hotel" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            ⭐ Popular
+                        </span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 mb-1">Heritage Boutique</h3>
+                    <p class="text-gray-600 text-sm mb-2">Istanbul, Turkey</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">$220/night</span>
+                        <div class="flex items-center text-yellow-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="ml-1 text-sm font-semibold text-gray-900">4.6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Hotel 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-40 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Nile View Hotel" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            ⭐ Popular
+                        </span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 mb-1">Nile Luxury Hotel</h3>
+                    <p class="text-gray-600 text-sm mb-2">Cairo, Egypt</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">$180/night</span>
+                        <div class="flex items-center text-yellow-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="ml-1 text-sm font-semibold text-gray-900">4.7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Hotel 4 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div class="relative h-40 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                         alt="Desert Resort Jordan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            ⭐ Popular
+                        </span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 mb-1">Desert Star Resort</h3>
+                    <p class="text-gray-600 text-sm mb-2">Petra, Jordan</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">$290/night</span>
+                        <div class="flex items-center text-yellow-400">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="ml-1 text-sm font-semibold text-gray-900">4.9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="bg-blue-600 text-white px-8 py-3 rounded-xl hover:bg-blue-700 transition-colors font-semibold inline-flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Explore All Hotels and More
+            </button>
+        </div>
+    </section>
+
+    <!-- Compact Accommodations Grid -->
+    <section id="accommodations" class="mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for accommodation in accommodations %}
+            <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden">
+                <!-- Image Container -->
+                <div class="relative overflow-hidden">
+                    <img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute top-3 right-3">
+                        <div class="bg-white/90 backdrop-blur-sm rounded-full p-1.5 shadow-lg">
+                            <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Type Badge -->
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+                            {{ accommodation.type|title }}
+                        </span>
+                    </div>
                 </div>
 
-    if (checkinInput && checkoutInput) {
+                <!-- Content -->
+                <div class="p-4">
+                    <h3 class="text-lg font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{{ accommodation.name }}</h3>
+                    
+                    <!-- Location -->
+                    <div class="flex items-center text-gray-600 mb-2">
+                        <svg class="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="text-sm">{{ accommodation.location }}</span>
+                    </div>
 
-        checkinInput.addEventListener('change', function() {                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <!-- Rating and Reviews -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            {% for i in "12345" %}
+                            <svg class="w-3 h-3 {% if forloop.counter <= accommodation.rating %}text-yellow-400{% else %}text-gray-300{% endif %}" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            {% endfor %}
+                            <span class="ml-1 text-xs font-semibold text-gray-900">{{ accommodation.rating }}</span>
+                            <span class="ml-1 text-xs text-gray-500">({{ accommodation.reviews }} reviews)</span>
+                        </div>
+                    </div>
 
-            const checkinDate = new Date(this.value);                    <div class="group">
+                    <!-- Property Details -->
+                    <div class="flex items-center gap-3 mb-3 text-xs text-gray-600">
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0M9 9h6"></path>
+                            </svg>
+                            {{ accommodation.bedrooms }} bed{{ accommodation.bedrooms|pluralize }}
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v16l4-4m0 0l4 4m-4-4v4m0-4l4-4m4 4V4"></path>
+                            </svg>
+                            {{ accommodation.bathrooms }} bath{{ accommodation.bathrooms|pluralize }}
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            </svg>
+                            Up to {{ accommodation.max_guests }} guest{{ accommodation.max_guests|pluralize }}
+                        </div>
+                    </div>
 
-            if (checkinDate) {                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">{{ total_accommodations }}</div>
+                    <!-- Room Type -->
+                    <div class="mb-3">
+                        <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full font-medium">
+                            {{ accommodation.room_type }}
+                        </span>
+                    </div>
 
-                const checkoutDate = new Date(checkoutInput.value);                        <div class="text-blue-100 text-xs uppercase tracking-wide">Available Stays</div>
+                    <!-- Price and CTA -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-xl font-bold text-gray-900">${{ accommodation.price }}</div>
+                            <div class="text-xs text-gray-600">per night</div>
+                        </div>
+                        <a href="/accommodations/{{ accommodation.id }}/?checkin={{ checkin }}&checkout={{ checkout }}&adults={{ adults }}&kids={{ kids }}&rooms={{ rooms }}" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25 flex items-center text-sm">
+                            <span>View Details</span>
+                            <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-16">
+                <div class="max-w-md mx-auto">
+                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">No accommodations found</h3>
+                    <p class="text-gray-600 mb-6 text-sm">We couldn't find any accommodations matching your criteria. Try adjusting your filters or search terms.</p>
+                    <a href="/accommodations/" class="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Show All Accommodations
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
-                if (!checkoutDate || checkoutDate <= checkinDate) {                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
+    <!-- Compact Stats Section -->
+    <section class="mb-8">
+        <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-xl p-6 text-white relative overflow-hidden">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-24 h-24 bg-white rounded-full -translate-x-12 -translate-y-12"></div>
+                <div class="absolute top-0 right-0 w-18 h-18 bg-white rounded-full translate-x-9 -translate-y-9"></div>
+                <div class="absolute bottom-0 left-1/4 w-16 h-16 bg-white rounded-full translate-y-8"></div>
+                <div class="absolute bottom-0 right-1/3 w-12 h-12 bg-white rounded-full translate-y-6"></div>
+            </div>
 
-                    const nextDay = new Date(checkinDate);                    </div>
+            <div class="relative">
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold mb-1">Trusted by Travelers Worldwide</h3>
+                    <p class="text-blue-100 text-sm">Join thousands of satisfied guests who choose Bedbees for their perfect stay</p>
+                </div>
 
-                    nextDay.setDate(nextDay.getDate() + 1);                    <div class="group">
-
-                    checkoutInput.value = nextDay.toISOString().split('T')[0];                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">4.7</div>
-
-                }                        <div class="text-blue-100 text-xs uppercase tracking-wide">Average Rating</div>
-
-            }                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
-
-        });                    </div>
-
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                     <div class="group">
+                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">{{ total_accommodations }}</div>
+                        <div class="text-blue-100 text-xs uppercase tracking-wide">Available Stays</div>
+                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">4.7</div>
+                        <div class="text-blue-100 text-xs uppercase tracking-wide">Average Rating</div>
+                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">50k+</div>
+                        <div class="text-blue-100 text-xs uppercase tracking-wide">Happy Guests</div>
+                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
+                    </div>
+                    <div class="group">
+                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                        <div class="text-blue-100 text-xs uppercase tracking-wide">Customer Support</div>
+                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        checkoutInput.addEventListener('change', function() {                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">50k+</div>
-
-            const checkinDate = new Date(checkinInput.value);                        <div class="text-blue-100 text-xs uppercase tracking-wide">Happy Guests</div>
-
-            const checkoutDate = new Date(this.value);                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
-
-            if (checkinDate && checkoutDate && checkoutDate <= checkinDate) {                    </div>
-
-                const nextDay = new Date(checkinDate);                    <div class="group">
-
-                nextDay.setDate(nextDay.getDate() + 1);                        <div class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
-
-                this.value = nextDay.toISOString().split('T')[0];                        <div class="text-blue-100 text-xs uppercase tracking-wide">Customer Support</div>
-
-            }                        <div class="w-8 h-0.5 bg-white/30 mx-auto mt-1 rounded-full"></div>
-
-        });                    </div>
-
-    }                </div>
-
-});            </div>
-
-</script>        </div>
-
-{% endblock %}    </section>
-
-
-
-{% endblock %}    <!-- Compact Call to Action -->
-
+    <!-- Compact Call to Action -->
     <section class="text-center bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-8">
         <div class="max-w-2xl mx-auto">
             <div class="bg-white rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-lg">

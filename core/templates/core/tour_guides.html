@@ -1,194 +1,341 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Tour Guides - Bedbees{% endblock %}
-
-{% block content %}
+{% extends 'core/base.html' %} {% block title %}Tour Guides - Bedbees{% endblock
+%} {% block content %}
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-r from-green-600 to-teal-700 text-white py-20 mb-8">
-    <div class="absolute inset-0 bg-black/20"></div>
-    <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');"></div>
-    <div class="relative container mx-auto px-4 text-center">
-        <h1 class="text-4xl font-bold mb-4">Expert Local Tour Guides</h1>
-        <p class="text-lg mb-8 max-w-2xl mx-auto text-green-100">
-            Connect with certified local guides for authentic experiences and unforgettable journeys.
-        </p>
+<section
+  class="relative bg-gradient-to-r from-green-600 to-teal-700 text-white py-20 mb-8"
+>
+  <div class="absolute inset-0 bg-black/20"></div>
+  <div
+    class="absolute inset-0 bg-cover bg-center opacity-30"
+    style="
+      background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    "
+  ></div>
+  <div class="relative container mx-auto px-4 text-center">
+    <h1 class="text-4xl font-bold mb-4">Expert Local Tour Guides</h1>
+    <p class="text-lg mb-8 max-w-2xl mx-auto text-green-100">
+      Connect with certified local guides for authentic experiences and
+      unforgettable journeys.
+    </p>
 
-        <!-- Search Form -->
-        <div class="max-w-4xl mx-auto mb-6">
-            <form method="GET" action="{% url 'tour_guides' %}" class="bg-white rounded-lg shadow-lg p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Destination</label>
-                        <input
-                            type="text"
-                            name="destination"
-                            placeholder="Where are you going?"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
-                        >
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Specialty</label>
-                        <select name="specialty" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900">
-                            <option value="">All Specialties</option>
-                            <option value="cultural">Cultural Heritage</option>
-                            <option value="historical">Historical Sites</option>
-                            <option value="adventure">Adventure Tours</option>
-                            <option value="food">Food Tours</option>
-                            <option value="photography">Photography Tours</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Language</label>
-                        <select name="language" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900">
-                            <option value="">Any Language</option>
-                            <option value="english">English</option>
-                            <option value="arabic">Arabic</option>
-                            <option value="french">French</option>
-                            <option value="german">German</option>
-                            <option value="spanish">Spanish</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            Search
-                        </button>
-                    </div>
-                </div>
-            </form>
+    <!-- Search Form -->
+    <div class="max-w-4xl mx-auto mb-6">
+      <form
+        method="GET"
+        action="{% url 'core:tour_guides' %}"
+        class="bg-white rounded-lg shadow-lg p-6"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Destination</label
+            >
+            <input
+              type="text"
+              name="destination"
+              placeholder="Where are you going?"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Specialty</label
+            >
+            <select
+              name="specialty"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
+            >
+              <option value="">All Specialties</option>
+              <option value="cultural">Cultural Heritage</option>
+              <option value="historical">Historical Sites</option>
+              <option value="adventure">Adventure Tours</option>
+              <option value="food">Food Tours</option>
+              <option value="photography">Photography Tours</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2"
+              >Language</label
+            >
+            <select
+              name="language"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900"
+            >
+              <option value="">Any Language</option>
+              <option value="english">English</option>
+              <option value="arabic">Arabic</option>
+              <option value="french">French</option>
+              <option value="german">German</option>
+              <option value="spanish">Spanish</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button
+              type="submit"
+              class="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+              Search
+            </button>
+          </div>
         </div>
-
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="#guides" class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Browse Guides
-            </a>
-            <a href="#featured" class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                Top Rated
-            </a>
-        </div>
+      </form>
     </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a
+        href="#guides"
+        class="inline-block bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+      >
+        Browse Guides
+      </a>
+      <a
+        href="#featured"
+        class="inline-block border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+      >
+        Top Rated
+      </a>
+    </div>
+  </div>
 </section>
 
 <div class="container mx-auto px-4 py-6">
-    <!-- Tour Guides Grid -->
-    <section id="guides" class="mb-8">
-        <h2 class="text-2xl font-bold mb-6 text-gray-900">
-            Professional Tour Guides
-            <span class="text-gray-600 text-lg font-normal">({{ total_guides }})</span>
-        </h2>
+  <!-- Tour Guides Grid -->
+  <section id="guides" class="mb-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-900">
+      Professional Tour Guides
+      <span class="text-gray-600 text-lg font-normal"
+        >({{ total_guides }})</span
+      >
+    </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for guide in tour_guides %}
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="relative">
-                    <img src="{{ guide.image }}" alt="{{ guide.name }}" class="w-full h-64 object-cover">
-                    <div class="absolute top-4 right-4">
-                        <div class="bg-white px-3 py-1 rounded-full flex items-center gap-1 shadow-lg">
-                            <svg class="w-4 h-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
-                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                            </svg>
-                            <span class="font-bold text-gray-900">{{ guide.rating }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-xl font-bold mb-2 text-gray-900">{{ guide.name }}</h3>
-                    <div class="flex items-center text-gray-600 mb-2 text-sm">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span>{{ guide.location }}</span>
-                    </div>
-
-                    <div class="flex items-center text-sm text-gray-600 mb-3">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        {{ guide.years_experience }} years experience
-                    </div>
-
-                    <p class="text-gray-600 text-sm mb-3">{{ guide.bio|truncatewords:15 }}</p>
-
-                    <div class="mb-3">
-                        <div class="text-xs font-semibold text-gray-700 mb-1">Specialties:</div>
-                        <div class="flex flex-wrap gap-1">
-                            {% for specialty in guide.specialties %}
-                            <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">{{ specialty }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <div class="text-xs font-semibold text-gray-700 mb-1">Languages:</div>
-                        <div class="flex flex-wrap gap-1">
-                            {% for language in guide.languages %}
-                            <span class="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">{{ language }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                        <div>
-                            <span class="text-2xl font-bold text-gray-900">${{ guide.price_per_day }}</span>
-                            <span class="text-gray-600 text-sm">/day</span>
-                        </div>
-                        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
-                            Contact
-                        </button>
-                    </div>
-                    <div class="mt-2 text-center text-xs text-gray-500">
-                        {{ guide.reviews }} reviews
-                    </div>
-                </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for guide in tour_guides %}
+      <div
+        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+      >
+        <div class="relative">
+          <img
+            src="{{ guide.image }}"
+            alt="{{ guide.name }}"
+            class="w-full h-64 object-cover"
+          />
+          <div class="absolute top-4 right-4">
+            <div
+              class="bg-white px-3 py-1 rounded-full flex items-center gap-1 shadow-lg"
+            >
+              <svg
+                class="w-4 h-4 text-yellow-500 fill-current"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"
+                />
+              </svg>
+              <span class="font-bold text-gray-900">{{ guide.rating }}</span>
             </div>
-            {% endfor %}
+          </div>
         </div>
-    </section>
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-2 text-gray-900">{{ guide.name }}</h3>
+          <div class="flex items-center text-gray-600 mb-2 text-sm">
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+            <span>{{ guide.location }}</span>
+          </div>
 
-    <!-- Why Choose Section -->
-    <section class="bg-gray-50 rounded-lg p-8 mb-8">
-        <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Why Book a Local Tour Guide?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="text-center">
-                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Local Expertise</h3>
-                <p class="text-gray-600 text-sm">Insider knowledge and hidden gems</p>
+          <div class="flex items-center text-sm text-gray-600 mb-3">
+            <svg
+              class="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              ></path>
+            </svg>
+            {{ guide.years_experience }} years experience
+          </div>
+
+          <p class="text-gray-600 text-sm mb-3">
+            {{ guide.bio|truncatewords:15 }}
+          </p>
+
+          <div class="mb-3">
+            <div class="text-xs font-semibold text-gray-700 mb-1">
+              Specialties:
             </div>
-            <div class="text-center">
-                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Personalized Tours</h3>
-                <p class="text-gray-600 text-sm">Customized to your interests</p>
+            <div class="flex flex-wrap gap-1">
+              {% for specialty in guide.specialties %}
+              <span
+                class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded"
+                >{{ specialty }}</span
+              >
+              {% endfor %}
             </div>
-            <div class="text-center">
-                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Multilingual</h3>
-                <p class="text-gray-600 text-sm">Guides speak your language</p>
+          </div>
+
+          <div class="mb-4">
+            <div class="text-xs font-semibold text-gray-700 mb-1">
+              Languages:
             </div>
-            <div class="text-center">
-                <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-900 mb-2">Certified & Safe</h3>
-                <p class="text-gray-600 text-sm">Licensed professional guides</p>
+            <div class="flex flex-wrap gap-1">
+              {% for language in guide.languages %}
+              <span class="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded"
+                >{{ language }}</span
+              >
+              {% endfor %}
             </div>
+          </div>
+
+          <div
+            class="flex items-center justify-between pt-4 border-t border-gray-200"
+          >
+            <div>
+              <span class="text-2xl font-bold text-gray-900"
+                >${{ guide.price_per_day }}</span
+              >
+              <span class="text-gray-600 text-sm">/day</span>
+            </div>
+            <button
+              class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+            >
+              Contact
+            </button>
+          </div>
+          <div class="mt-2 text-center text-xs text-gray-500">
+            {{ guide.reviews }} reviews
+          </div>
         </div>
-    </section>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="bg-gray-50 rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">
+      Why Book a Local Tour Guide?
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div
+          class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Local Expertise</h3>
+        <p class="text-gray-600 text-sm">Insider knowledge and hidden gems</p>
+      </div>
+      <div class="text-center">
+        <div
+          class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Personalized Tours</h3>
+        <p class="text-gray-600 text-sm">Customized to your interests</p>
+      </div>
+      <div class="text-center">
+        <div
+          class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Multilingual</h3>
+        <p class="text-gray-600 text-sm">Guides speak your language</p>
+      </div>
+      <div class="text-center">
+        <div
+          class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+        >
+          <svg
+            class="w-8 h-8 text-yellow-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Certified & Safe</h3>
+        <p class="text-gray-600 text-sm">Licensed professional guides</p>
+      </div>
+    </div>
+  </section>
 </div>
 {% endblock %}

@@ -5,17 +5,31 @@
 
 class BedBeesCalendar {
     constructor(containerId, options = {}) {
+        console.log('🔧 BedBeesCalendar constructor called', { containerId, options });
+        
         this.container = document.getElementById(containerId);
+        if (!this.container) {
+            console.error('❌ Calendar container not found:', containerId);
+            return;
+        }
+        
         this.listingId = options.listingId;
-        this.listingType = options.listingType || 'accommodation'; // 'accommodation' or 'tour'
+        this.listingType = options.listingType || 'accommodation';
         this.currentDate = new Date();
         this.selectedDates = [];
         this.calendarData = {};
+        
+        console.log('✅ Calendar initialized', {
+            listingId: this.listingId,
+            listingType: this.listingType,
+            container: this.container
+        });
         
         this.init();
     }
     
     init() {
+        console.log('🚀 Initializing calendar...');
         this.loadCalendarData();
         this.setupEventListeners();
     }
@@ -31,45 +45,82 @@ class BedBeesCalendar {
         const startDateStr = this.formatDate(startDate);
         const endDateStr = this.formatDate(endDate);
         
+        console.log('📅 Loading calendar data', {
+            year,
+            month: month + 1,
+            startDate: startDateStr,
+            endDate: endDateStr,
+            listingId: this.listingId
+        });
+        
         try {
             const endpoint = this.listingType === 'accommodation' 
                 ? `/api/accommodation/${this.listingId}/calendar/`
                 : `/api/tour/${this.listingId}/calendar/`;
             
-            const response = await fetch(`${endpoint}?start_date=${startDateStr}&end_date=${endDateStr}`);
+            const url = `${endpoint}?start_date=${startDateStr}&end_date=${endDateStr}`;
+            console.log('🌐 Fetching from:', url);
+            
+            const response = await fetch(url);
+            console.log('📡 Response status:', response.status);
+            
             const data = await response.json();
+            console.log('📦 Response data:', data);
             
             if (data.success) {
                 this.calendarData = {};
                 data.calendar.forEach(day => {
                     this.calendarData[day.date] = day;
                 });
+                console.log('✅ Calendar data loaded:', Object.keys(this.calendarData).length, 'days');
                 this.renderCalendar();
                 this.updateStats(data.stats);
+            } else {
+                console.error('❌ API returned success=false:', data);
+                this.showError(data.error || 'Failed to load calendar');
             }
         } catch (error) {
-            console.error('Error loading calendar:', error);
-            this.showError('Failed to load calendar data');
+            console.error('❌ Error loading calendar:', error);
+            this.showError('Failed to load calendar data: ' + error.message);
         }
     }
     
     renderCalendar() {
+        console.log('🎨 Rendering calendar...');
         const year = this.currentDate.getFullYear();
         const month = this.currentDate.getMonth();
         
         // Update month/year display
         const monthNames = ["January", "February", "March", "April", "May", "June",
                            "July", "August", "September", "October", "November", "December"];
-        document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
+        const monthYearElement = document.getElementById('calendar-month-year');
+        if (monthYearElement) {
+            monthYearElement.textContent = `${monthNames[month]} ${year}`;
+            console.log('📆 Month/Year updated:', `${monthNames[month]} ${year}`);
+        } else {
+            console.warn('⚠️ calendar-month-year element not found');
+        }
         
         // Get calendar grid
         const grid = document.getElementById('calendar-grid');
+        if (!grid) {
+            console.error('❌ calendar-grid element not found!');
+            return;
+        }
+        
         grid.innerHTML = '';
+        console.log('🧹 Grid cleared');
         
         // Calculate calendar days
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const today = new Date();
+        
+        console.log('📊 Calendar stats:', {
+            firstDay,
+            daysInMonth,
+            calendarDataKeys: Object.keys(this.calendarData).length
+        });
         
         // Add empty cells for days before month starts
         for (let i = 0; i < firstDay; i++) {
@@ -87,6 +138,8 @@ class BedBeesCalendar {
             const dayCell = this.createDayCell(day, date, dayData);
             grid.appendChild(dayCell);
         }
+        
+        console.log('✅ Calendar rendered with', grid.children.length, 'cells');
     }
     
     createDayCell(day, date, dayData) {

@@ -76,7 +76,21 @@ class UserProfile(models.Model):
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
     id_verified = models.BooleanField(default=False)
-    
+
+    # Document Uploads for Verification
+    identity_document = models.FileField(upload_to='verification_documents/identity/', blank=True, null=True, help_text="Government-issued ID (passport, driver's license, etc.)")
+    business_license = models.FileField(upload_to='verification_documents/business/', blank=True, null=True, help_text="Business registration or license document")
+    tax_document = models.FileField(upload_to='verification_documents/tax/', blank=True, null=True, help_text="Tax registration or EIN document")
+    insurance_document = models.FileField(upload_to='verification_documents/insurance/', blank=True, null=True, help_text="Liability insurance certificate")
+    banking_document = models.FileField(upload_to='verification_documents/banking/', blank=True, null=True, help_text="Bank account verification document")
+
+    # Document Verification Status
+    identity_document_verified = models.BooleanField(default=False)
+    business_license_document_verified = models.BooleanField(default=False)
+    tax_document_verified = models.BooleanField(default=False)
+    insurance_document_verified = models.BooleanField(default=False)
+    banking_document_verified = models.BooleanField(default=False)
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -91,15 +105,21 @@ class UserProfile(models.Model):
         """Calculate verification score out of 100"""
         score = 0
         if self.email_verified:
-            score += 25
-        if self.phone_verified:
-            score += 25
-        if self.id_verified:
-            score += 25
-        if self.business_license_verified:
             score += 15
-        if self.payment_verified:
+        if self.phone_verified:
+            score += 15
+        if self.id_verified:
+            score += 20
+        if self.identity_document_verified:
+            score += 15
+        if self.business_license_verified or self.business_license_document_verified:
+            score += 15
+        if self.tax_document_verified:
             score += 10
+        if self.insurance_document_verified:
+            score += 5
+        if self.banking_document_verified:
+            score += 5
         return score
 
     def get_years_hosting(self):
@@ -1828,6 +1848,22 @@ class Accommodation(models.Model):
     # Status
     is_published = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    
+    # Publishing & Approval System
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('pending', 'Pending Approval'),
+        ('approved', 'Approved'),
+        ('published', 'Published'),
+        ('rejected', 'Rejected'),
+        ('suspended', 'Suspended'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    published_at = models.DateTimeField(null=True, blank=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_accommodations')
+    rejection_reason = models.TextField(blank=True, null=True)
+    requires_approval = models.BooleanField(default=False, help_text="Set to True if listing needs admin approval after edits")
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
@@ -1835,6 +1871,42 @@ class Accommodation(models.Model):
 
     def __str__(self):
         return f"{self.property_name} - {self.city}, {self.country}"
+
+    def get_amenities_list(self):
+        """Parse amenities from comma-separated string to list"""
+        if not self.amenities:
+            return []
+        
+        # Handle case where amenities is stored as string representation of list
+        # e.g., "['Free WiFi,Cable TV,Parking']"
+        if self.amenities.startswith('[') and self.amenities.endswith(']'):
+            try:
+                import ast
+                parsed = ast.literal_eval(self.amenities)
+                if isinstance(parsed, list):
+                    # If it's a list with one comma-separated string, split it
+                    if len(parsed) == 1 and ',' in parsed[0]:
+                        return [amenity.strip() for amenity in parsed[0].split(',') if amenity.strip()]
+                    # If it's already a proper list, return it
+                    return [str(item).strip() for item in parsed if str(item).strip()]
+            except:
+                pass
+        
+        # Handle normal comma-separated string
+        return [amenity.strip() for amenity in self.amenities.split(',') if amenity.strip()]
+
+    def publish(self):
+        """Publish the accommodation listing"""
+        from django.utils import timezone
+        self.is_published = True
+        self.status = 'published'
+        if not self.published_at:
+            self.published_at = timezone.now()
+        self.save()
+    
+    def get_location_display(self):
+        """Get formatted location string"""
+        return f"{self.city}, {self.country}"
 
     class Meta:
         ordering = ['-created_at']
@@ -2154,6 +2226,22 @@ class Tour(models.Model):
     # Status
     is_published = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    
+    # Publishing & Approval System
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('pending', 'Pending Approval'),
+        ('approved', 'Approved'),
+        ('published', 'Published'),
+        ('rejected', 'Rejected'),
+        ('suspended', 'Suspended'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    published_at = models.DateTimeField(null=True, blank=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_tours')
+    rejection_reason = models.TextField(blank=True, null=True)
+    requires_approval = models.BooleanField(default=False, help_text="Set to True if listing needs admin approval after edits")
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
@@ -2161,6 +2249,19 @@ class Tour(models.Model):
 
     def __str__(self):
         return f"{self.tour_name} - {self.city}, {self.country}"
+    
+    def publish(self):
+        """Publish the tour listing"""
+        from django.utils import timezone
+        self.is_published = True
+        self.status = 'published'
+        if not self.published_at:
+            self.published_at = timezone.now()
+        self.save()
+    
+    def get_location_display(self):
+        """Get formatted location string"""
+        return f"{self.city}, {self.country}"
 
     class Meta:
         ordering = ['-created_at']
@@ -2876,6 +2977,22 @@ class RentalCar(models.Model):
     condition = models.CharField(max_length=100, default="Excellent", help_text="Vehicle condition")
     is_active = models.BooleanField(default=True)
     is_published = models.BooleanField(default=False)
+    
+    # Publishing & Approval System
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('pending', 'Pending Approval'),
+        ('approved', 'Approved'),
+        ('published', 'Published'),
+        ('rejected', 'Rejected'),
+        ('suspended', 'Suspended'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    published_at = models.DateTimeField(null=True, blank=True)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_rental_cars')
+    rejection_reason = models.TextField(blank=True, null=True)
+    requires_approval = models.BooleanField(default=False, help_text="Set to True if listing needs admin approval after edits")
 
     # Additional Details
     color = models.CharField(max_length=50, blank=True)
@@ -2912,6 +3029,19 @@ class RentalCar(models.Model):
 
     def __str__(self):
         return f"{self.brand} {self.model} ({self.year}) - {self.city}"
+    
+    def publish(self):
+        """Publish the rental car listing"""
+        from django.utils import timezone
+        self.is_published = True
+        self.status = 'published'
+        if not self.published_at:
+            self.published_at = timezone.now()
+        self.save()
+    
+    def get_location_display(self):
+        """Get formatted location string"""
+        return f"{self.city}, {self.country}"
 
 
 class TourGuidePhoto(models.Model):
@@ -3237,3 +3367,356 @@ class CalendarBulkUpdate(models.Model):
     
     def __str__(self):
         return f"{self.listing_type} #{self.listing_id} - {self.update_type} ({self.start_date} to {self.end_date})"
+
+
+# ============================================================================
+# GENIUS REWARDS SYSTEM
+# ============================================================================
+
+class Booking(models.Model):
+    """
+    Booking model for accommodations and tours
+    Tracks user bookings and their status for rewards calculation
+    """
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    BOOKING_TYPE_CHOICES = [
+        ('accommodation', 'Accommodation'),
+        ('tour', 'Tour'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    booking_type = models.CharField(max_length=20, choices=BOOKING_TYPE_CHOICES)
+    
+    # Can link to either Accommodation or Tour
+    accommodation = models.ForeignKey(
+        'Accommodation', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='bookings'
+    )
+    tour = models.ForeignKey(
+        'Tour', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='bookings'
+    )
+    
+    # Booking details
+    check_in = models.DateField(null=True, blank=True)
+    check_out = models.DateField(null=True, blank=True)
+    booking_date = models.DateTimeField(auto_now_add=True)
+    
+    # Financial
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    # Points tracking
+    points_awarded = models.IntegerField(default=0, help_text="Points earned from this booking")
+    points_awarded_at = models.DateTimeField(null=True, blank=True)
+    
+    # Metadata
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['status', 'created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.booking_type} - ${self.total_amount} ({self.status})"
+    
+    @property
+    def item_name(self):
+        """Get the name of the booked item"""
+        if self.accommodation:
+            return self.accommodation.title
+        elif self.tour:
+            return self.tour.name
+        return "Unknown"
+
+
+class GeniusProfile(models.Model):
+    """
+    Genius Rewards profile for each user
+    Tracks points, level, and reward history
+    """
+    LEVEL_CHOICES = [
+        (1, 'Explorer'),
+        (2, 'Voyager'),
+        (3, 'Elite'),
+    ]
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='genius_profile')
+    
+    # Points and Level
+    total_points = models.IntegerField(default=0, help_text="Current points balance")
+    lifetime_points = models.IntegerField(default=0, help_text="Total points earned all-time")
+    level = models.IntegerField(choices=LEVEL_CHOICES, default=1)
+    
+    # Statistics
+    total_spent = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    total_bookings = models.IntegerField(default=0)
+    total_redeemed = models.IntegerField(default=0, help_text="Total points redeemed")
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    level_updated_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Genius Profile'
+        verbose_name_plural = 'Genius Profiles'
+    
+    def __str__(self):
+        return f"{self.user.username} - Level {self.level} ({self.get_level_display()}) - {self.total_points} pts"
+    
+    @property
+    def level_name(self):
+        """Get the level name"""
+        return self.get_level_display()
+    
+    @property
+    def discount_percentage(self):
+        """Get discount percentage based on level"""
+        discounts = {1: 5, 2: 10, 3: 15}
+        return discounts.get(self.level, 0)
+    
+    @property
+    def points_multiplier(self):
+        """Get points multiplier based on level"""
+        multipliers = {1: 1.0, 2: 1.1, 3: 1.2}
+        return multipliers.get(self.level, 1.0)
+    
+    @property
+    def next_level_points(self):
+        """Points needed for next level"""
+        thresholds = {1: 100, 2: 300, 3: None}
+        return thresholds.get(self.level)
+    
+    @property
+    def points_to_next_level(self):
+        """Calculate points needed to reach next level"""
+        next_threshold = self.next_level_points
+        if next_threshold is None:
+            return 0
+        return max(0, next_threshold - self.lifetime_points)
+    
+    def reward_value(self):
+        """Convert current points to dollar value (100 pts = $10)"""
+        return (self.total_points / 100) * 10
+    
+    def update_level(self):
+        """Update user level based on lifetime points"""
+        from django.utils import timezone
+        
+        old_level = self.level
+        
+        if self.lifetime_points >= 300:
+            self.level = 3
+        elif self.lifetime_points >= 100:
+            self.level = 2
+        else:
+            self.level = 1
+        
+        if old_level != self.level:
+            self.level_updated_at = timezone.now()
+            self.save()
+            return True
+        return False
+    
+    def add_points(self, booking):
+        """
+        Add points from a completed booking
+        Formula: (total_amount / 50) * 10 * multiplier
+        """
+        from django.utils import timezone
+        from decimal import Decimal
+        
+        # Calculate base points (convert to float for calculation)
+        base_points = (float(booking.total_amount) / 50) * 10
+        
+        # Apply level multiplier
+        points_earned = int(base_points * float(self.points_multiplier))
+        
+        # Update profile
+        self.total_points += points_earned
+        self.lifetime_points += points_earned
+        self.total_spent += Decimal(str(booking.total_amount))
+        self.total_bookings += 1
+        self.save()
+        
+        # Update booking
+        booking.points_awarded = points_earned
+        booking.points_awarded_at = timezone.now()
+        booking.save()
+        
+        # Check for level up
+        self.update_level()
+        
+        return points_earned
+    
+    def redeem_points(self, reward):
+        """
+        Redeem points for a reward
+        Returns (success, message)
+        """
+        if self.total_points < reward.cost_points:
+            return False, f"Insufficient points. You need {reward.cost_points} points but have {self.total_points}."
+        
+        # Deduct points
+        self.total_points -= reward.cost_points
+        self.total_redeemed += reward.cost_points
+        self.save()
+        
+        # Create redemption record
+        redemption = Redemption.objects.create(
+            user=self.user,
+            genius_profile=self,
+            reward=reward,
+            points_used=reward.cost_points
+        )
+        
+        return True, f"Successfully redeemed {reward.name}! Redemption ID: {redemption.id}"
+
+
+class Reward(models.Model):
+    """
+    Available rewards that users can redeem with points
+    """
+    REWARD_TYPE_CHOICES = [
+        ('credit', 'Credit'),
+        ('upgrade', 'Upgrade'),
+        ('getaway', 'Getaway'),
+        ('discount', 'Discount'),
+        ('special', 'Special Offer'),
+    ]
+    
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    reward_type = models.CharField(max_length=20, choices=REWARD_TYPE_CHOICES)
+    
+    # Points and Value
+    cost_points = models.IntegerField(help_text="Points required to redeem")
+    value = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        help_text="Monetary value in dollars"
+    )
+    
+    # Availability
+    is_active = models.BooleanField(default=True)
+    stock_quantity = models.IntegerField(
+        null=True, 
+        blank=True,
+        help_text="Leave blank for unlimited"
+    )
+    redeemed_count = models.IntegerField(default=0)
+    
+    # Level restrictions
+    min_level = models.IntegerField(
+        default=1,
+        choices=[(1, 'Explorer'), (2, 'Voyager'), (3, 'Elite')],
+        help_text="Minimum level required"
+    )
+    
+    # Metadata
+    image = models.ImageField(upload_to='rewards/', blank=True, null=True)
+    featured = models.BooleanField(default=False)
+    display_order = models.IntegerField(default=0)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['display_order', '-featured', 'cost_points']
+    
+    def __str__(self):
+        return f"{self.name} ({self.cost_points} pts = ${self.value})"
+    
+    @property
+    def is_available(self):
+        """Check if reward is available for redemption"""
+        if not self.is_active:
+            return False
+        if self.stock_quantity is not None and self.stock_quantity <= self.redeemed_count:
+            return False
+        return True
+    
+    @property
+    def stock_remaining(self):
+        """Get remaining stock"""
+        if self.stock_quantity is None:
+            return "Unlimited"
+        return max(0, self.stock_quantity - self.redeemed_count)
+    
+    def increment_redeemed(self):
+        """Increment redeemed count"""
+        self.redeemed_count += 1
+        self.save()
+
+
+class Redemption(models.Model):
+    """
+    Track when users redeem rewards
+    """
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('fulfilled', 'Fulfilled'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='redemptions')
+    genius_profile = models.ForeignKey(GeniusProfile, on_delete=models.CASCADE, related_name='redemptions')
+    reward = models.ForeignKey(Reward, on_delete=models.PROTECT, related_name='redemptions')
+    
+    # Redemption details
+    points_used = models.IntegerField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    
+    # Tracking
+    redeemed_at = models.DateTimeField(auto_now_add=True)
+    fulfilled_at = models.DateTimeField(null=True, blank=True)
+    
+    # Code/Reference
+    redemption_code = models.CharField(max_length=50, unique=True, blank=True)
+    notes = models.TextField(blank=True)
+    
+    class Meta:
+        ordering = ['-redeemed_at']
+        indexes = [
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['redemption_code']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.reward.name} - {self.points_used} pts ({self.status})"
+    
+    def save(self, *args, **kwargs):
+        # Generate redemption code if not set
+        if not self.redemption_code:
+            import uuid
+            self.redemption_code = f"GR{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
+    
+    def fulfill(self):
+        """Mark redemption as fulfilled"""
+        from django.utils import timezone
+        self.status = 'fulfilled'
+        self.fulfilled_at = timezone.now()
+        self.save()
+        
+        # Increment reward redeemed count
+        self.reward.increment_redeemed()

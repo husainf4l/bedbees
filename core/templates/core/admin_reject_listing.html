@@ -1,0 +1,175 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Reject Listing - BedBees Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Reject Listing
+            </h1>
+            <p class="text-gray-600">
+                Provide feedback to the host about why this listing needs revision
+            </p>
+        </div>
+
+        <!-- Listing Info Card -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                {% if listing_type == 'accommodation' %}
+                    {{ listing.property_name }}
+                {% elif listing_type == 'tour' %}
+                    {{ listing.tour_name }}
+                {% elif listing_type == 'rental_car' %}
+                    {{ listing.vehicle_name }}
+                {% else %}
+                    Listing Details
+                {% endif %}
+            </h2>
+            
+            <div class="space-y-2 text-sm text-gray-600">
+                {% if listing_type == 'accommodation' %}
+                    <p><strong>Location:</strong> {{ listing.city }}, {{ listing.country }}</p>
+                    <p><strong>Type:</strong> {{ listing.get_property_type_display }}</p>
+                    <p><strong>Price:</strong> ${{ listing.base_price }}/night</p>
+                {% elif listing_type == 'tour' %}
+                    <p><strong>Location:</strong> {{ listing.city }}, {{ listing.country }}</p>
+                    <p><strong>Category:</strong> {{ listing.get_tour_category_display }}</p>
+                    <p><strong>Price:</strong> ${{ listing.price_per_person }}/person</p>
+                {% elif listing_type == 'rental_car' %}
+                    <p><strong>Location:</strong> {{ listing.city }}, {{ listing.country }}</p>
+                    <p><strong>Vehicle:</strong> {{ listing.brand }} {{ listing.model }} ({{ listing.year }})</p>
+                    <p><strong>Daily Rate:</strong> ${{ listing.daily_rate }}</p>
+                {% endif %}
+                
+                <p><strong>Host:</strong> {{ listing.host.get_full_name|default:listing.host.username }}</p>
+                <p><strong>Submitted:</strong> {{ listing.created_at|date:"F j, Y" }}</p>
+            </div>
+        </div>
+
+        <!-- Rejection Form -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="mb-6">
+                    <label for="reason" class="block text-sm font-medium text-gray-700 mb-2">
+                        Reason for Rejection *
+                    </label>
+                    <textarea 
+                        name="reason" 
+                        id="reason" 
+                        rows="8" 
+                        required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-none"
+                        placeholder="Explain what needs to be corrected or improved. Be specific and constructive. The host will receive this feedback by email."
+                    ></textarea>
+                    <p class="mt-2 text-sm text-gray-500">
+                        💡 Tip: Be specific and constructive. Explain what needs to be fixed and how the host can improve their listing.
+                    </p>
+                </div>
+
+                <!-- Common Rejection Reasons (Quick Select) -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Quick Reasons (Click to add)
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <button 
+                            type="button" 
+                            onclick="addReason('Photos are low quality or insufficient. Please add clear, high-resolution images.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            📷 Poor Quality Photos
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addReason('Description is incomplete or unclear. Please provide more detailed information.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            📝 Incomplete Description
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addReason('Pricing information is missing or unclear. Please specify all costs.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            💰 Pricing Issues
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addReason('Location details are inaccurate or incomplete.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            📍 Location Issues
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addReason('Amenities or features list is incomplete or misleading.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            ⚙️ Amenities Issues
+                        </button>
+                        <button 
+                            type="button" 
+                            onclick="addReason('Contact information is missing or invalid.')"
+                            class="text-left px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-sm transition-colors">
+                            📞 Contact Info Issues
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-4">
+                    <button 
+                        type="submit" 
+                        class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
+                        <svg class="w-5 h-5 inline mr-2 -mt-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        Reject Listing
+                    </button>
+                    <a 
+                        href="javascript:history.back()" 
+                        class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors duration-200 text-center">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex">
+                <svg class="w-5 h-5 text-blue-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="text-sm text-blue-800">
+                    <p class="font-medium mb-1">What happens next?</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>The host will receive an email with your feedback</li>
+                        <li>The listing status will be set to "Rejected"</li>
+                        <li>The host can edit and resubmit the listing</li>
+                        <li>You'll be notified when they resubmit for review</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function addReason(text) {
+    const textarea = document.getElementById('reason');
+    const currentText = textarea.value.trim();
+    
+    if (currentText) {
+        textarea.value = currentText + '\n\n' + text;
+    } else {
+        textarea.value = text;
+    }
+    
+    // Focus on textarea and scroll to it
+    textarea.focus();
+    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+{% endblock %}

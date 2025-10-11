@@ -12,7 +12,7 @@
                 <li><svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></li>
                 <li><a href="/tours/" class="text-gray-600 hover:text-blue-600 transition-colors">Tours</a></li>
                 <li><svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></li>
-                <li><a href="{% url 'tour_detail' tour.id %}" class="text-gray-600 hover:text-blue-600 transition-colors">{{ tour.title }}</a></li>
+                <li><a href="{% url 'core:tour_detail' tour.id %}" class="text-gray-600 hover:text-blue-600 transition-colors">{{ tour.title }}</a></li>
                 <li><svg class="w-3 h-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></li>
                 <li class="text-gray-900 font-medium">Book Tour</li>
             </ol>
@@ -25,7 +25,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Booking Form -->
         <div class="lg:col-span-2">
-            <form method="POST" action="{% url 'book_tour' tour.id %}" class="space-y-6">
+            <form method="POST" action="{% url 'core:book_tour' tour.id %}" class="space-y-6">
                 {% csrf_token %}
 
                 <!-- Tour Details Summary -->
@@ -184,7 +184,7 @@
 
                 <!-- Submit Button -->
                 <div class="flex gap-4">
-                    <a href="{% url 'tour_detail' tour.id %}" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 px-6 rounded-lg transition-colors text-center">
+                    <a href="{% url 'core:tour_detail' tour.id %}" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-4 px-6 rounded-lg transition-colors text-center">
                         Back to Tour
                     </a>
                     <button type="submit" class="flex-1 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25">

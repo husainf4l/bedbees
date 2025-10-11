@@ -99,7 +99,10 @@ class HostProfileForm(forms.ModelForm):
             'hosting_approach', 'response_time', 'response_rate', 'special_services',
             'sustainability_practices', 'awards_badges',
             'website', 'instagram', 'facebook', 'twitter',
-            'email_notifications', 'sms_notifications', 'marketing_emails'
+            'email_notifications', 'sms_notifications', 'marketing_emails',
+            # Verification Documents
+            'identity_document', 'business_license', 'tax_document',
+            'insurance_document', 'banking_document'
         ]
         widgets = {
             'profile_picture': forms.FileInput(attrs={
@@ -212,6 +215,27 @@ class HostProfileForm(forms.ModelForm):
             }),
             'marketing_emails': forms.CheckboxInput(attrs={
                 'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+            }),
+            # Verification Documents
+            'identity_document': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100',
+                'accept': '.pdf,.jpg,.jpeg,.png'
+            }),
+            'business_license': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100',
+                'accept': '.pdf,.jpg,.jpeg,.png'
+            }),
+            'tax_document': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100',
+                'accept': '.pdf,.jpg,.jpeg,.png'
+            }),
+            'insurance_document': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100',
+                'accept': '.pdf,.jpg,.jpeg,.png'
+            }),
+            'banking_document': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100',
+                'accept': '.pdf,.jpg,.jpeg,.png'
             }),
         }
 

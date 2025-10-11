@@ -1,6 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from . import views, api_views, calendar_api
+from . import views, api_views, calendar_api, views_genius, views_publishing
+
+# Set the app name for namespacing
+app_name = "core"
 
 # API Router
 router = DefaultRouter()
@@ -42,6 +45,7 @@ urlpatterns = [
     ),
     path("api/user/tours/", calendar_api.get_user_tours, name="api_user_tours"),
     path("", views.home, name="home"),
+    path("manage-listings/", views.manage_listings, name="manage_listings"),
     path("tours/", views.tours, name="tours"),
     path("tours/<int:id>/", views.tour_detail, name="tour_detail"),
     # path('tours/<int:id>/book/', views.book_tour, name='book_tour'),  # Temporarily disabled
@@ -69,6 +73,9 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("hostdashboard/", views.hostdashboard, name="hostdashboard"),
     path("host-profile/", views.host_profile, name="host_profile"),
+    path(
+        "upload-profile-photo/", views.upload_profile_photo, name="upload_profile_photo"
+    ),
     path("profile/", views.profile, name="profile"),
     path("bookings/", views.bookings, name="bookings"),
     path("logout/", views.logout_view, name="logout"),
@@ -103,6 +110,30 @@ urlpatterns = [
     path("wishlist/", views.wishlist, name="wishlist"),
     # New User Account Pages
     path("genius-rewards/", views.genius_rewards, name="genius_rewards"),
+    # Genius Rewards System URLs
+    path(
+        "genius-rewards/redeem/<int:reward_id>/",
+        views_genius.redeem_reward,
+        name="redeem_reward",
+    ),
+    path(
+        "genius-rewards/api/",
+        views_genius.genius_rewards_api,
+        name="genius_rewards_api",
+    ),
+    path(
+        "genius-rewards/history/",
+        views_genius.redemption_history,
+        name="redemption_history",
+    ),
+    path(
+        "genius-rewards/bookings/", views_genius.booking_history, name="booking_history"
+    ),
+    path(
+        "reward/<int:pk>/",
+        views_genius.RewardDetailView.as_view(),
+        name="reward_detail",
+    ),
     path("credits-vouchers/", views.credits_vouchers, name="credits_vouchers"),
     path("my-account/", views.my_account, name="my_account"),
     path("reviews/", views.reviews, name="reviews"),
@@ -149,4 +180,62 @@ urlpatterns = [
     path("tour/<int:listing_id>/view/", views.view_tour, name="view_tour"),
     path("tour/<int:listing_id>/edit/", views.edit_tour, name="edit_tour"),
     path("tour/<int:listing_id>/update/", views.update_tour, name="update_tour"),
+    # Publishing System URLs
+    path(
+        "accommodation/<int:accommodation_id>/publish/",
+        views_publishing.publish_accommodation,
+        name="publish_accommodation",
+    ),
+    path(
+        "accommodation/<int:accommodation_id>/unpublish/",
+        views_publishing.unpublish_accommodation,
+        name="unpublish_accommodation",
+    ),
+    path(
+        "tour/<int:tour_id>/publish/",
+        views_publishing.publish_tour,
+        name="publish_tour",
+    ),
+    path(
+        "tour/<int:tour_id>/unpublish/",
+        views_publishing.unpublish_tour,
+        name="unpublish_tour",
+    ),
+    path(
+        "rental-car/<int:car_id>/publish/",
+        views_publishing.publish_rental_car,
+        name="publish_rental_car",
+    ),
+    path(
+        "rental-car/<int:car_id>/unpublish/",
+        views_publishing.unpublish_rental_car,
+        name="unpublish_rental_car",
+    ),
+    # Admin Approval URLs
+    path(
+        "admin/accommodation/<int:accommodation_id>/approve/",
+        views_publishing.admin_approve_accommodation,
+        name="admin_approve_accommodation",
+    ),
+    path(
+        "admin/accommodation/<int:accommodation_id>/reject/",
+        views_publishing.admin_reject_accommodation,
+        name="admin_reject_accommodation",
+    ),
+    path(
+        "admin/tour/<int:tour_id>/approve/",
+        views_publishing.admin_approve_tour,
+        name="admin_approve_tour",
+    ),
+    path(
+        "admin/tour/<int:tour_id>/reject/",
+        views_publishing.admin_reject_tour,
+        name="admin_reject_tour",
+    ),
+    # API for location-based listings
+    path(
+        "api/listings/by-location/",
+        views_publishing.get_published_listings_by_location,
+        name="api_listings_by_location",
+    ),
 ]

@@ -1,6 +1,7 @@
 # 🚀 IMMEDIATE ACTION PLAN - Image Optimization
 
 ## 🔴 **Critical Issue Found**
+
 - **Folder size:** 235MB (should be <25MB)
 - **Largest files:** 16MB each (should be <150KB)
 - **Impact:** Site loads 10x slower than it should
@@ -11,16 +12,19 @@
 ## ✅ **Quick Fix (3 Steps - Takes 5 Minutes)**
 
 ### Step 1: Backup (30 seconds)
+
 ```bash
 cp -r static/core/images static/core/images_backup
 ```
 
 ### Step 2: Run Optimization (3 minutes)
+
 ```bash
 python optimize_images.py
 ```
 
 **What it does:**
+
 - ✅ Resizes hero images to 1920x1080px
 - ✅ Resizes other images to 800x600px
 - ✅ Converts all to WebP format
@@ -29,6 +33,7 @@ python optimize_images.py
 - ✅ Shows before/after stats
 
 **Expected results:**
+
 ```
 Before: 235MB total, 16MB largest file
 After:  ~20MB total, ~150KB largest file
@@ -36,6 +41,7 @@ Reduction: 90% smaller, 10x faster loads
 ```
 
 ### Step 3: Test Site (1 minute)
+
 ```bash
 # Hard refresh browser: Ctrl + F5
 # Visit: http://127.0.0.1:8000/
@@ -47,6 +53,7 @@ Reduction: 90% smaller, 10x faster loads
 ## 📊 **What Will Happen**
 
 ### Current State (SLOW):
+
 ```
 Hero image:      15MB → 5-8 seconds to load on 4G
 Page load time:  8-12 seconds
@@ -55,6 +62,7 @@ Bandwidth:       High cost
 ```
 
 ### After Optimization (FAST):
+
 ```
 Hero image:      250KB → <1 second to load on 4G
 Page load time:  1-2 seconds
@@ -67,6 +75,7 @@ Bandwidth:       90% reduction
 ## 🎯 **Specific Files to Optimize**
 
 ### Top 10 Offenders (191MB combined):
+
 1. `jordan-wadi-rum-dunes.jpg` - 16MB → Target: 150KB
 2. `jordan-dead-sea3.webp` - 16MB → Target: 150KB
 3. `hero-image-new.jpg` - 15MB → Target: 250KB
@@ -108,16 +117,28 @@ ls -lh static/core/images/hero-image-new.*
 Find all `<img>` tags and add `loading="lazy"`:
 
 **Before:**
+
 ```html
-<img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="...">
+<img
+  src="{{ accommodation.image }}"
+  alt="{{ accommodation.name }}"
+  class="..."
+/>
 ```
 
 **After:**
+
 ```html
-<img src="{{ accommodation.image }}" alt="{{ accommodation.name }}" class="..." loading="lazy">
+<img
+  src="{{ accommodation.image }}"
+  alt="{{ accommodation.name }}"
+  class="..."
+  loading="lazy"
+/>
 ```
 
 **Files to update:**
+
 - `core/templates/core/accommodations.html` (13 images)
 - `core/templates/core/attraction_detail.html` (6 images)
 - `core/templates/core/tour_detail.html` (5 images)
@@ -126,6 +147,7 @@ Find all `<img>` tags and add `loading="lazy"`:
 ### Enable GZIP Compression
 
 Add to `bedbees/settings.py`:
+
 ```python
 MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',  # Add this first
@@ -159,14 +181,14 @@ find static/core/images/ -name "*.webp" | wc -l
 
 ## 📈 **Expected Performance Gain**
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Folder Size | 235MB | 20-25MB | 90% reduction |
-| Hero Image | 15MB | 250KB | 98% reduction |
-| Page Load | 8-12s | 1-2s | 5x faster |
-| First Paint | 3-5s | 0.5s | 6x faster |
-| Mobile Score | 45/100 | 85/100 | +40 points |
-| Bounce Rate | High | Low | Better UX |
+| Metric       | Before | After   | Improvement   |
+| ------------ | ------ | ------- | ------------- |
+| Folder Size  | 235MB  | 20-25MB | 90% reduction |
+| Hero Image   | 15MB   | 250KB   | 98% reduction |
+| Page Load    | 8-12s  | 1-2s    | 5x faster     |
+| First Paint  | 3-5s   | 0.5s    | 6x faster     |
+| Mobile Score | 45/100 | 85/100  | +40 points    |
+| Bounce Rate  | High   | Low     | Better UX     |
 
 ---
 
@@ -184,17 +206,20 @@ That's it! Your site will be **10x faster** in 3 minutes. 🚀
 ## 🆘 **Troubleshooting**
 
 ### Issue: "Pillow not found"
+
 ```bash
 pip install Pillow
 ```
 
 ### Issue: Images not showing after optimization
+
 ```bash
 python manage.py collectstatic --no-input
 # Then hard refresh browser: Ctrl + F5
 ```
 
 ### Issue: Want to restore backup
+
 ```bash
 rm -rf static/core/images
 cp -r static/core/images_backup static/core/images
@@ -205,6 +230,7 @@ cp -r static/core/images_backup static/core/images
 ## 📞 **Need Help?**
 
 Check the comprehensive guide:
+
 ```bash
 cat IMAGE_OPTIMIZATION_GUIDE.md
 ```
